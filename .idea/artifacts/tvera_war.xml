@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="tvera:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="tvera.war">
+      <element id="artifact" artifact-name="tvera:war exploded" />
+    </root>
+  </artifact>
+</component>
