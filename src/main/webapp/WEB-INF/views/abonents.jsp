@@ -257,15 +257,15 @@
           <div id="filter-panel" class="filter-panel">
             <div class="panel panel-default">
               <div class="panel-body">
-                <div class="form-group col-md-1">
+                <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.id"
                          placeholder="ID">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.name"
                          placeholder="სახელი">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.lastname"
                          placeholder="გვარი">
                 </div>
@@ -287,7 +287,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-1">
+                <div class="form-group col-md-2">
                   <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
                     <span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;
                   </button>
@@ -307,7 +307,7 @@
               <th>ქუჩა</th>
               <th>ინკასატორი</th>
               <th>ბალანსი</th>
-              <th class="col-md-4 text-center">Action</th>
+              <th class="col-md-2 text-center">Action</th>
             </tr>
             </thead>
             <tbody title="Double Click For Detailed Information">
@@ -326,7 +326,7 @@
                 <%--<c:if test="<%= isAdmin %>">--%>
                 <a ng-click="edit(r.id)" data-toggle="modal" data-target="#editModal"
                    class="btn btn-xs">
-                  <i class="fa fa-pencil"></i>&nbsp;რედაქტირება
+                  <i class="fa fa-pencil"></i>&nbsp;რედაქტ.
                 </a>&nbsp;&nbsp;
                 <a ng-click="remove(r.id)" class="btn btn-xs">
                   <i class="fa fa-trash-o"></i>&nbsp;წაშლა

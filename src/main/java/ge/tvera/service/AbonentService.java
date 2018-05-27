@@ -36,6 +36,9 @@ public class AbonentService {
         obj.setStreet((Street) abonentDAO.find(Street.class, request.getStreetId()));
 
         if (request.getId() != null) {
+            Abonent tmp = (Abonent) abonentDAO.find(Abonent.class, request.getId());
+            obj.setBalance(tmp.getBalance());
+            obj.setBill(tmp.getBill());
             obj.setId(request.getId());
             obj = (Abonent) abonentDAO.update(obj);
         } else {

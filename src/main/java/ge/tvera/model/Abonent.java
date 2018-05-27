@@ -55,7 +55,7 @@ public class Abonent {
     }
 
     @Basic
-    @Column(name = "bill", nullable = false, precision = 0)
+    @Column(name = "bill", precision = 0)
     public Double getBill() {
         return bill;
     }
@@ -75,7 +75,7 @@ public class Abonent {
     }
 
     @Basic
-    @Column(name = "balance", nullable = false, precision = 0)
+    @Column(name = "balance", precision = 0)
     public Double getBalance() {
         return balance;
     }
