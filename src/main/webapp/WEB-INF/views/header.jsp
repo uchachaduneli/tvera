@@ -144,6 +144,18 @@
         <ul class="sidebar-menu" data-widget="tree">
           <li>
             <a href="packages">
+              <i class="fa fa-users"></i>
+              <span>აბონენტი</span>
+            </a>
+          </li>
+          <li>
+            <a href="packages">
+              <i class="fa fa-dollar"></i>
+              <span>გადახდა</span>
+            </a>
+          </li>
+          <li>
+            <a href="packages">
               <i class="fa fa-tasks"></i>
               <span>პაკეტები</span>
             </a>
@@ -169,8 +181,8 @@
           <c:if test="<%= isAdmin %>">
             <li>
               <a href="users">
-                <i class="fa fa-users"></i>
-                <span>მომხმარებელი</span>
+                <i class="fa fa-address-card"></i>
+                <span>თანამშრომელი</span>
               </a>
             </li>
             <li>
