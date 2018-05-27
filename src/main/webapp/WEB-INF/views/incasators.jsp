@@ -13,7 +13,7 @@
     $scope.start = 0;
     $scope.page = 1;
     $scope.limit = "10";
-    $scope.request = {types: [], categories: [], statusHistory: []};
+    $scope.request = {};
     $scope.srchCase = {};
 //        $scope.request.docs = [];
 

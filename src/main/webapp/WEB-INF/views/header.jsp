@@ -143,6 +143,12 @@
         <hr/>
         <ul class="sidebar-menu" data-widget="tree">
           <li>
+            <a href="packages">
+              <i class="fa fa-tasks"></i>
+              <span>პაკეტები</span>
+            </a>
+          </li>
+          <li>
             <a href="streets">
               <i class="fa fa-map-marker"></i>
               <span>ქუჩა</span>

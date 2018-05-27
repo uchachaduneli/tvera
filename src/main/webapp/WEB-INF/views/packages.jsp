@@ -22,7 +22,7 @@
         $scope.list = res.data;
       }
 
-      ajaxCall($http, "street/get-streets?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
+      ajaxCall($http, "package/get-packages?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
     }
 
     $scope.loadMainData();
@@ -37,7 +37,7 @@
             }
           }
 
-          ajaxCall($http, "street/delete-street?id=" + id, null, resFnc);
+          ajaxCall($http, "package/delete-package?id=" + id, null, resFnc);
         }
       }
     };
@@ -47,7 +47,8 @@
         var selected = $filter('filter')($scope.list, {id: id}, true);
         $scope.slcted = selected[0];
         $scope.request = selected[0];
-        $scope.request.incasatorId = selected[0].incasator.id;
+        $scope.request.typeId = selected[0].type.id;
+        $scope.request.groupId = selected[0].group.id;
       }
     }
 
@@ -64,7 +65,7 @@
     };
 
     $scope.init = function () {
-      $scope.request = {};
+      $scope.request = {groupId: 1};
     };
 
     $scope.save = function () {
@@ -83,10 +84,14 @@
 
       $scope.req.id = $scope.request.id;
       $scope.req.name = $scope.request.name;
-      $scope.req.incasatorId = $scope.request.incasatorId;
+      $scope.req.personalPrice = $scope.request.personalPrice;
+      $scope.req.juridicalPrice = $scope.request.juridicalPrice;
+      $scope.req.scheduler = $scope.request.scheduler;
+      $scope.req.groupId = $scope.request.groupId;
+      $scope.req.typeId = $scope.request.typeId;
 
       console.log(angular.toJson($scope.req));
-      ajaxCall($http, "street/save-street", angular.toJson($scope.req), resFunc);
+      ajaxCall($http, "package/save-package", angular.toJson($scope.req), resFunc);
     };
 
 
@@ -106,11 +111,17 @@
       $scope.loadMainData();
     }
 
-    function getIncasators(res) {
-      $scope.incasators = res.data;
+    function getGroups(res) {
+      $scope.groups = res.data;
     }
 
-    ajaxCall($http, "misc/get-incasators", null, getIncasators);
+    ajaxCall($http, "misc/get-package-groups", null, getGroups);
+
+    function getTypes(res) {
+      $scope.types = res.data;
+    }
+
+    ajaxCall($http, "misc/get-package-types", null, getTypes);
   });
 </script>
 
@@ -135,8 +146,20 @@
               <td>{{slcted.name}}</td>
             </tr>
             <tr>
-              <th class="text-right">ინკასატორი</th>
-              <td>{{slcted.incasator.name}}</td>
+              <th class="text-right">იურიდიულ პირზე</th>
+              <td>{{slcted.juridicalPrice}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">ფიზიკურ პირზე</th>
+              <td>{{slcted.personalPrice}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">ჯგუფი</th>
+              <td>{{slcted.type.name}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">მეთოდი</th>
+              <td>{{slcted.group.name}}</td>
             </tr>
           </table>
           <div class="form-group"><br/></div>
@@ -168,14 +191,39 @@
               </div>
             </div>
             <div class="form-group col-sm-10 ">
-              <label class="control-label col-sm-3">ინკასატორი</label>
+              <label class="control-label col-sm-3">ღირებულება იურ. პირზე</label>
               <div class="col-sm-9">
-                <select class="form-control" ng-model="request.incasatorId">
-                  <option ng-repeat="s in incasators"
-                          ng-selected="s.id === request.incasatorId"
+                <input type="text" ng-model="request.juridicalPrice" name="name" required
+                       class="form-control input-sm"/>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">ღირებულება ფიზ. პირზე</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.personalPrice" name="name" required
+                       class="form-control input-sm"/>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">ჯგუფი</label>
+              <div class="col-sm-9">
+                <select class="form-control" ng-model="request.typeId">
+                  <option ng-repeat="s in types"
+                          ng-selected="s.id === request.typeId"
                           ng-value="s.id">{{s.name}}
                   </option>
                 </select>
+              </div>
+            </div>
+            <div class="form-group col-sm-10">
+              <label class="control-label col-sm-3">მეთოდი</label>
+              <div class="col-xs-9 btn-group">
+                <div class="radio col-xs-6">
+                  <label ng-repeat="s in groups">
+                    <input type="radio" ng-model="request.groupId" ng-value="s.id"
+                           class="input-sm">{{s.name}}&nbsp;&nbsp;
+                  </label>
+                </div>
               </div>
             </div>
             <div class="form-group col-sm-10"></div>
@@ -207,47 +255,9 @@
           </c:if>
         </div>
         <div class="col-md-2 col-xs-offset-8">
-          <select ng-change="rowNumbersChange()" class="pull-right form-control" ng-model="limit"
-                  id="rowCountSelectId">
-            <option value="10" selected>მაჩვენე 10</option>
-            <option value="15">15</option>
-            <option value="30">30</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
         </div>
         <div class="row">
           <hr class="col-md-12"/>
-        </div>
-        <div class="col-md-12">
-          <div id="filter-panel" class="filter-panel">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <div class="form-group col-md-3">
-                  <input type="text" class="form-control srch" ng-model="srchCase.id"
-                         placeholder="ID">
-                </div>
-                <div class="form-group col-md-3">
-                  <input type="text" class="form-control srch" ng-model="srchCase.name"
-                         placeholder="Name">
-                </div>
-                <div class="form-group col-md-3">
-                  <select class="form-control" ng-model="srchCase.incasatorId"
-                          ng-change="loadMainData()">
-                    <option value="" selected="selected">ინკასატორი</option>
-                    <option ng-repeat="v in incasators" ng-selected="v.id === srchCase.incasatorId"
-                            value="{{v.id}}">{{v.name}}
-                    </option>
-                  </select>
-                </div>
-                <div class="form-group col-md-3">
-                  <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
-                    <span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -256,15 +266,21 @@
             <tr>
               <th>ID</th>
               <th>დასახელება</th>
-              <th>ინკასატორი</th>
-              <th class="col-md-4 text-center">Action</th>
+              <th>ღირებულება იურ. პირზე</th>
+              <th>ღირებულება ფიზ. პირზე</th>
+              <th>ჯგუფი</th>
+              <th>მეთოდი</th>
+              <th class="col-md-2 text-center">Action</th>
             </tr>
             </thead>
             <tbody title="Double Click For Detailed Information">
             <tr ng-repeat="r in list" ng-dblclick="handleDoubleClick(r.id)">
               <td>{{r.id}}</td>
               <td>{{r.name}}</td>
-              <td>{{r.incasator.name}}</td>
+              <td>{{r.juridicalPrice}}</td>
+              <td>{{r.personalPrice}}</td>
+              <td>{{r.type.name}}</td>
+              <td>{{r.group.name}}</td>
               <td class="text-center">
                 <a ng-click="showDetails(r.id)" data-toggle="modal" title="Details"
                    data-target="#detailModal" class="btn btn-xs">
@@ -273,7 +289,7 @@
                 <%--<c:if test="<%= isAdmin %>">--%>
                 <a ng-click="edit(r.id)" data-toggle="modal" data-target="#editModal"
                    class="btn btn-xs">
-                  <i class="fa fa-pencil"></i>&nbsp;რედაქტირება
+                  <i class="fa fa-pencil"></i>&nbsp;რედ.
                 </a>&nbsp;&nbsp;
                 <a ng-click="remove(r.id)" class="btn btn-xs">
                   <i class="fa fa-trash-o"></i>&nbsp;წაშლა

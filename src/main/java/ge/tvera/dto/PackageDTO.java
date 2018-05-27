@@ -12,6 +12,8 @@ public class PackageDTO {
     private Integer scheduler;
     private PackageGroupDTO group;
     private PackageTypeDTO type;
+    private Integer groupId;
+    private Integer typeId;
 
     public static PackageDTO parse(ge.tvera.model.Package record) {
         if (record != null) {
@@ -22,6 +24,9 @@ public class PackageDTO {
             dto.setJuridicalPrice(record.getJuridicalPrice());
             dto.setType(PackageTypeDTO.parse(record.getType()));
             dto.setGroup(PackageGroupDTO.parse(record.getGroup()));
+            dto.setTypeId(record.getType().getId());
+            dto.setGroupId(record.getGroup().getId());
+            dto.setScheduler(record.getScheduler());
             return dto;
         } else return null;
     }
@@ -88,5 +93,21 @@ public class PackageDTO {
 
     public void setType(PackageTypeDTO type) {
         this.type = type;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
     }
 }
