@@ -6,6 +6,7 @@ import javax.persistence.*;
 public class Incasator {
     private Integer id;
     private String name;
+    private String lastname;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -28,6 +29,16 @@ public class Incasator {
         this.name = name;
     }
 
+    @Basic
+    @Column(name = "lastname", nullable = false, length = 50)
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -37,6 +48,7 @@ public class Incasator {
 
         if (id != null ? !id.equals(incasator.id) : incasator.id != null) return false;
         if (name != null ? !name.equals(incasator.name) : incasator.name != null) return false;
+        if (lastname != null ? !lastname.equals(incasator.lastname) : incasator.lastname != null) return false;
 
         return true;
     }
@@ -45,6 +57,7 @@ public class Incasator {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
         return result;
     }
 }

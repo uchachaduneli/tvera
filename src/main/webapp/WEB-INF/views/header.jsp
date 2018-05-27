@@ -143,6 +143,12 @@
         <hr/>
         <ul class="sidebar-menu" data-widget="tree">
           <li>
+            <a href="incasators">
+              <i class="fa fa-male"></i>
+              <span>ინკასატორი</span>
+            </a>
+          </li>
+          <li>
             <a href="districts">
               <i class="fa fa-building"></i>
               <span>უბნები</span>

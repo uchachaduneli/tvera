@@ -1,6 +1,7 @@
 package ge.tvera.controller;
 
 import ge.tvera.dto.DistrictDTO;
+import ge.tvera.dto.IncasatorDTO;
 import ge.tvera.misc.Response;
 import ge.tvera.service.MiscService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class MiscController {
 
     @RequestMapping({"/save-district"})
     @ResponseBody
-    public Response saveUser(@RequestBody DistrictDTO request) throws Exception {
+    public Response saveDistrict(@RequestBody DistrictDTO request) throws Exception {
         return Response.withSuccess(DistrictDTO.parse(miscService.saveDistrict(request)));
     }
 
@@ -49,6 +50,25 @@ public class MiscController {
     @ResponseBody
     public Response deleteDistrict(@RequestParam int id) {
         miscService.deleteDistrict(id);
+        return Response.withSuccess(true);
+    }
+
+    @RequestMapping("/get-incasators")
+    @ResponseBody
+    private Response getIncasators() throws Exception {
+        return Response.withSuccess(miscService.getIncasators());
+    }
+
+    @RequestMapping({"/save-incasator"})
+    @ResponseBody
+    public Response saveIncasator(@RequestBody IncasatorDTO request) throws Exception {
+        return Response.withSuccess(IncasatorDTO.parse(miscService.saveIncasator(request)));
+    }
+
+    @RequestMapping({"/delete-incasator"})
+    @ResponseBody
+    public Response deleteIncasator(@RequestParam int id) {
+        miscService.deleteIncasator(id);
         return Response.withSuccess(true);
     }
 }

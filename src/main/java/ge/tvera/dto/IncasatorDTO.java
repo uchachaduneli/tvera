@@ -9,12 +9,14 @@ public class IncasatorDTO {
 
     private Integer id;
     private String name;
+    private String lastname;
 
     public static IncasatorDTO parse(Incasator record) {
         if (record != null) {
             IncasatorDTO dto = new IncasatorDTO();
             dto.setId(record.getId());
             dto.setName(record.getName());
+            dto.setLastname(record.getLastname());
             return dto;
         } else return null;
     }
@@ -41,5 +43,13 @@ public class IncasatorDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 }
