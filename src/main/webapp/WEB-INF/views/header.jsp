@@ -143,13 +143,13 @@
         <hr/>
         <ul class="sidebar-menu" data-widget="tree">
           <li>
-            <a href="packages">
+            <a href="abonents">
               <i class="fa fa-users"></i>
               <span>აბონენტი</span>
             </a>
           </li>
           <li>
-            <a href="packages">
+            <a href="payments">
               <i class="fa fa-dollar"></i>
               <span>გადახდა</span>
             </a>
