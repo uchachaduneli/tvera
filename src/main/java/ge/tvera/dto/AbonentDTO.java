@@ -17,6 +17,7 @@ public class AbonentDTO {
     private Double bill;
     private StreetDTO street;
     private Integer streetId;
+    private Double balance;
 
     public static AbonentDTO parse(Abonent record) {
         if (record != null) {
@@ -24,6 +25,7 @@ public class AbonentDTO {
             dto.setId(record.getId());
             dto.setName(record.getName());
             dto.setBill(record.getBill());
+            dto.setBalance(record.getBalance());
             dto.setLastname(record.getLastname());
             dto.setCreateDate(record.getCreateDate());
             dto.setStreet(StreetDTO.parse(record.getStreet()));
@@ -38,6 +40,14 @@ public class AbonentDTO {
             list.add(AbonentDTO.parse(record));
         }
         return list;
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
 
     public Integer getStreetId() {

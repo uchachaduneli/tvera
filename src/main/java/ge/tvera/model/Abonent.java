@@ -11,6 +11,7 @@ public class Abonent {
     private Timestamp createDate;
     private Double bill;
     private Street street;
+    private Double balance;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -71,5 +72,15 @@ public class Abonent {
 
     public void setStreet(Street street) {
         this.street = street;
+    }
+
+    @Basic
+    @Column(name = "balance", nullable = false, precision = 0)
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
 }
