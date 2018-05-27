@@ -143,6 +143,12 @@
         <hr/>
         <ul class="sidebar-menu" data-widget="tree">
           <li>
+            <a href="streets">
+              <i class="fa fa-map-marker"></i>
+              <span>ქუჩა</span>
+            </a>
+          </li>
+          <li>
             <a href="incasators">
               <i class="fa fa-male"></i>
               <span>ინკასატორი</span>
@@ -151,14 +157,14 @@
           <li>
             <a href="districts">
               <i class="fa fa-building"></i>
-              <span>უბნები</span>
+              <span>უბანი</span>
             </a>
           </li>
           <c:if test="<%= isAdmin %>">
             <li>
               <a href="users">
                 <i class="fa fa-users"></i>
-                <span>მომხმარებლები</span>
+                <span>მომხმარებელი</span>
               </a>
             </li>
             <li>

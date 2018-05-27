@@ -9,6 +9,7 @@ public class StreetDTO {
     private Integer id;
     private String name;
     private IncasatorDTO incasator;
+    private Integer incasatorId;
 
     public static StreetDTO parse(Street record) {
         if (record != null) {
@@ -16,6 +17,7 @@ public class StreetDTO {
             dto.setId(record.getId());
             dto.setName(record.getName());
             dto.setIncasator(IncasatorDTO.parse(record.getIncasator()));
+            dto.setIncasatorId(record.getIncasator().getId());
             return dto;
         } else return null;
     }
@@ -50,5 +52,13 @@ public class StreetDTO {
 
     public void setIncasator(IncasatorDTO incasator) {
         this.incasator = incasator;
+    }
+
+    public Integer getIncasatorId() {
+        return incasatorId;
+    }
+
+    public void setIncasatorId(Integer incasatorId) {
+        this.incasatorId = incasatorId;
     }
 }
