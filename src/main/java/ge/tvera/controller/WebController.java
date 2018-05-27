@@ -20,6 +20,26 @@ public class WebController {
         return "login";
     }
 
+    @RequestMapping("/districts")
+    public String districts() {
+        return "districts";
+    }
+
+    @RequestMapping("/streets")
+    public String streets() {
+        return "streets";
+    }
+
+    @RequestMapping("/incasators")
+    public String incasators() {
+        return "incasators";
+    }
+
+    @RequestMapping("/packages")
+    public String packages() {
+        return "packages";
+    }
+
     @RequestMapping("/")
     public String defaultFnc() {
         return "";

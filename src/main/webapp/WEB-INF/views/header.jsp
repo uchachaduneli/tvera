@@ -142,17 +142,23 @@
         <img src="resources/imgs/logo.png" style="width: 100%; margin-top: 5%;"/>
         <hr/>
         <ul class="sidebar-menu" data-widget="tree">
+          <li>
+            <a href="districts">
+              <i class="fa fa-building"></i>
+              <span>უბნები</span>
+            </a>
+          </li>
           <c:if test="<%= isAdmin %>">
             <li>
               <a href="users">
                 <i class="fa fa-users"></i>
-                <span>Users</span>
+                <span>მომხმარებლები</span>
               </a>
             </li>
             <li>
               <a href="statistics">
                 <i class="fa fa-bar-chart"></i>
-                <span>Statistics</span>
+                <span>სტატისტიკა</span>
               </a>
             </li>
           </c:if>
