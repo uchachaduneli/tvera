@@ -40,6 +40,16 @@ public class WebController {
         return "packages";
     }
 
+    @RequestMapping("/abonents")
+    public String abonents() {
+        return "abonents";
+    }
+
+    @RequestMapping("/payments")
+    public String payments() {
+        return "payments";
+    }
+
     @RequestMapping("/")
     public String defaultFnc() {
         return "";
