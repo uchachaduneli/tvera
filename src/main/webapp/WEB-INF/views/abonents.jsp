@@ -128,7 +128,7 @@
       $scope.streets = res.data;
     }
 
-    ajaxCall($http, "street/get-streets", null, getStreets);
+    ajaxCall($http, "street/get-all-streets", null, getStreets);
 
     function getIncasators(res) {
       $scope.incasators = res.data;

@@ -28,6 +28,12 @@ public class StreetController {
         return Response.withSuccess(streetService.getStreets(start, limit, request));
     }
 
+    @RequestMapping("/get-all-streets")
+    @ResponseBody
+    private Response getAllSreets() throws Exception {
+        return Response.withSuccess(streetService.getAllStreets());
+    }
+
     @RequestMapping({"/save-street"})
     @ResponseBody
     public Response saveStreet(@RequestBody StreetDTO request) throws Exception {
