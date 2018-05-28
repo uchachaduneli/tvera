@@ -15,7 +15,14 @@ public class PaymentDTO {
     private Integer abonentId;
     @JsonSerialize(using = JsonDateTimeSerializeSupport.class)
     private Date createDate;
+    private Date createDateFrom;
+    private Date createDateTo;
     private String checkNumber;
+    private String abonentNumber;
+    private String name;
+    private String lastname;
+    private String personalNumber;
+    private String deviceNumber;
 
     public static PaymentDTO parse(Payment record) {
         if (record != null) {
@@ -23,6 +30,8 @@ public class PaymentDTO {
             dto.setId(record.getId());
             dto.setAmount(record.getAmount());
             dto.setAbonent(AbonentDTO.parse(record.getAbonent()));
+            dto.setAbonentNumber(dto.getAbonent().getAbonentNumber());
+            dto.setPersonalNumber(dto.getAbonent().getPersonalNumber());
             dto.setAbonentId(record.getAbonent().getId());
             dto.setCreateDate(record.getCreateDate());
             dto.setCheckNumber(record.getCheckNumber());
@@ -36,6 +45,62 @@ public class PaymentDTO {
             list.add(PaymentDTO.parse(record));
         }
         return list;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getAbonentNumber() {
+        return abonentNumber;
+    }
+
+    public void setAbonentNumber(String abonentNumber) {
+        this.abonentNumber = abonentNumber;
+    }
+
+    public String getPersonalNumber() {
+        return personalNumber;
+    }
+
+    public void setPersonalNumber(String personalNumber) {
+        this.personalNumber = personalNumber;
+    }
+
+    public String getDeviceNumber() {
+        return deviceNumber;
+    }
+
+    public void setDeviceNumber(String deviceNumber) {
+        this.deviceNumber = deviceNumber;
+    }
+
+    public Date getCreateDateFrom() {
+        return createDateFrom;
+    }
+
+    public void setCreateDateFrom(Date createDateFrom) {
+        this.createDateFrom = createDateFrom;
+    }
+
+    public Date getCreateDateTo() {
+        return createDateTo;
+    }
+
+    public void setCreateDateTo(Date createDateTo) {
+        this.createDateTo = createDateTo;
     }
 
     public String getCheckNumber() {

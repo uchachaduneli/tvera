@@ -27,6 +27,7 @@ public class AbonentDTO {
     private String comment;
     @JsonSerialize(using = JsonDateSerializeSupport.class)
     private Date billDate;
+    private Date billDateFrom;
     private Date billDateTo;
 
     public static AbonentDTO parse(Abonent record) {
@@ -55,6 +56,14 @@ public class AbonentDTO {
             list.add(AbonentDTO.parse(record));
         }
         return list;
+    }
+
+    public Date getBillDateFrom() {
+        return billDateFrom;
+    }
+
+    public void setBillDateFrom(Date billDateFrom) {
+        this.billDateFrom = billDateFrom;
     }
 
     public String getComment() {

@@ -22,6 +22,13 @@
         $scope.list = res.data;
       }
 
+      if ($scope.srchCase.createDateFrom != undefined && $scope.srchCase.createDateFrom.includes('/')) {
+        $scope.srchCase.createDateFrom = $scope.srchCase.createDateFrom.split(/\//).reverse().join('-')
+      }
+      if ($scope.srchCase.createDateTo != undefined && $scope.srchCase.createDateTo.includes('/')) {
+        $scope.srchCase.createDateTo = $scope.srchCase.createDateTo.split(/\//).reverse().join('-')
+      }
+
       ajaxCall($http, "payment/get-payments?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
     }
 
@@ -132,6 +139,10 @@
             <tr>
               <th class="text-right">აბონენტის N</th>
               <td>{{slcted.abonent.abonentNumber}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">პირადი N</th>
+              <td>{{slcted.abonent.personalNumber}}</td>
             </tr>
             <tr>
               <th class="text-right">თანხა</th>
@@ -245,11 +256,15 @@
                   <input type="text" class="form-control srch" ng-model="srchCase.abonent.id"
                          placeholder="აბონენტის ID">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                   <input type="text" class="form-control srch" ng-model="srchCase.abonent.abonentNumber"
                          placeholder="აბონენტის N">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
+                  <input type="text" class="form-control srch" ng-model="srchCase.abonent.personalNumber"
+                         placeholder="პირადი N">
+                </div>
+                <div class="form-group col-md-3">
                   <input type="text" class="form-control srch" ng-model="srchCase.abonent.checkNumber"
                          placeholder="ქვითრის N">
                 </div>
@@ -261,7 +276,20 @@
                   <input type="text" class="form-control srch" ng-model="srchCase.abonent.lastname"
                          placeholder="გვარი">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
+                  <div class="input-group">
+                    <div class="input-append">
+                      <input type="text" class="form-control srch dateInput"
+                             placeholder="დან" ng-model="srchCase.createDateFrom">
+                    </div>
+                    <span class="input-group-addon">გადახდის დრო</span>
+                    <div class="input-append">
+                      <input type="text" class="form-control srch dateInput"
+                             placeholder="მდე" ng-model="srchCase.createDateTo">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-2">
                   <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
                     <span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;
                   </button>

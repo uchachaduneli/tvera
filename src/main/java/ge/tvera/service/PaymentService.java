@@ -20,8 +20,8 @@ public class PaymentService {
     @Autowired
     private PaymentDAO paymentDAO;
 
-    public List<PaymentDTO> getPayments() {
-        return PaymentDTO.parseToList(paymentDAO.getAll(Payment.class));
+    public List<PaymentDTO> getPayments(int start, int limit, PaymentDTO srchRequest) {
+        return PaymentDTO.parseToList(paymentDAO.getPayments(start, limit, srchRequest));
     }
 
     @Transactional(rollbackFor = Throwable.class)

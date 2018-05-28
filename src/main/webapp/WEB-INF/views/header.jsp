@@ -44,6 +44,20 @@
 
   <script>
     $(document).ready(function () {
+
+      $('.dateInput').datepicker({
+        format: "dd/mm/yyyy",
+        autoclose: true,
+      })
+
+      $('.srch').keypress(function (e) {
+        var key = e.which;
+        if (key == 13) {
+          $('#srchBtnId').click();
+          return false;
+        }
+      });
+
       $(".datepicker").datepicker({language: 'ka'});
       var url = window.location;
       $('.menuItem').filter(function () {

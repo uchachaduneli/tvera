@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * @author ucha
@@ -23,8 +25,9 @@ public class PaymentController {
 
     @RequestMapping("/get-payments")
     @ResponseBody
-    private Response getPayments() throws Exception {
-        return Response.withSuccess(paymentService.getPayments());
+    private Response getPayments(@RequestParam("start") int start, @RequestParam("limit") int limit,
+                                 @RequestBody PaymentDTO request, HttpServletRequest servletRequest) throws Exception {
+        return Response.withSuccess(paymentService.getPayments(start, limit, request));
     }
 
     @RequestMapping({"/save-payment"})

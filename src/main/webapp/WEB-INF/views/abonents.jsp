@@ -9,24 +9,6 @@
 <%@include file="header.jsp" %>
 <script>
 
-
-  $(document).ready(function () {
-
-    $('.dateInput').datepicker({
-      format: "dd/mm/yyyy",
-      autoclose: true,
-    })
-
-    $('.srch').keypress(function (e) {
-      var key = e.which;
-      if (key == 13) {
-        $('#srchBtnId').click();
-        return false;
-      }
-    });
-
-  });
-
   app.controller("angController", function ($scope, $http, $filter) {
     $scope.start = 0;
     $scope.page = 1;
@@ -40,8 +22,8 @@
         $scope.list = res.data;
       }
 
-      if ($scope.srchCase.billDate != undefined && $scope.srchCase.billDate.includes('/')) {
-        $scope.srchCase.billDate = $scope.srchCase.billDate.split(/\//).reverse().join('-')
+      if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
+        $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
       }
       if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
         $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
@@ -411,7 +393,7 @@
                   <div class="input-group">
                     <div class="input-append">
                       <input type="text" class="form-control srch dateInput"
-                             placeholder="დან" ng-model="srchCase.billDate">
+                             placeholder="დან" ng-model="srchCase.billDateFrom">
                     </div>
                     <span class="input-group-addon">გადახდის თარიღი</span>
                     <div class="input-append">
