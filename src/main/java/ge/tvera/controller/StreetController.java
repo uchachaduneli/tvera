@@ -23,8 +23,9 @@ public class StreetController {
 
     @RequestMapping("/get-streets")
     @ResponseBody
-    private Response getSreets() throws Exception {
-        return Response.withSuccess(streetService.getStreets());
+    private Response getSreets(@RequestParam("start") int start, @RequestParam("limit") int limit,
+                               @RequestBody StreetDTO request) throws Exception {
+        return Response.withSuccess(streetService.getStreets(start, limit, request));
     }
 
     @RequestMapping({"/save-street"})

@@ -20,8 +20,8 @@ public class StreetService {
     @Autowired
     private StreetDAO streetDAO;
 
-    public List<StreetDTO> getStreets() {
-        return StreetDTO.parseToList(streetDAO.getAll(Street.class));
+    public List<StreetDTO> getStreets(int start, int limit, StreetDTO srchRequest) {
+        return StreetDTO.parseToList(streetDAO.getStreets(start, limit, srchRequest));
     }
 
     @Transactional(rollbackFor = Throwable.class)
