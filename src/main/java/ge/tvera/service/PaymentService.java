@@ -29,6 +29,7 @@ public class PaymentService {
 
         Payment obj = new Payment();
         obj.setAmount(request.getAmount());
+        obj.setCheckNumber(request.getCheckNumber());
         obj.setAbonent((Abonent) paymentDAO.find(Abonent.class, request.getAbonentId()));
 
         if (request.getId() != null) {

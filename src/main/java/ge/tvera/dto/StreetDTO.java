@@ -10,12 +10,14 @@ public class StreetDTO {
     private String name;
     private IncasatorDTO incasator;
     private Integer incasatorId;
+    private DistrictDTO district;
 
     public static StreetDTO parse(Street record) {
         if (record != null) {
             StreetDTO dto = new StreetDTO();
             dto.setId(record.getId());
             dto.setName(record.getName());
+            dto.setDistrict(DistrictDTO.parse(record.getDistrict()));
             dto.setIncasator(IncasatorDTO.parse(record.getIncasator()));
             dto.setIncasatorId(record.getIncasator().getId());
             return dto;
@@ -28,6 +30,14 @@ public class StreetDTO {
             list.add(StreetDTO.parse(record));
         }
         return list;
+    }
+
+    public DistrictDTO getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(DistrictDTO district) {
+        this.district = district;
     }
 
     public Integer getId() {

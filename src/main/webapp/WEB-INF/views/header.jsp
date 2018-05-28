@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="resources/css/dataTables.bootstrap.css">
   <link rel="stylesheet" href="resources/css/skin-blue-light.css">
   <link rel="stylesheet" href="resources/css/global.css">
-  <link rel="stylesheet" href="resources/css/bootstrap-select.css">
+  <%--<link rel="stylesheet" href="resources/css/bootstrap-select.css">--%>
   <link rel="stylesheet" href="resources/css/bootstrap-datepicker.css">
   <link rel="stylesheet" href="resources/css/bootstrap-datetimepicker.css">
   <link rel="stylesheet" href="resources/css/ionicons.min.css">
@@ -25,7 +25,8 @@
 
   <script src="resources/js/jquery.js"></script>
   <script src="resources/js/jquery-ui.js"></script>
-  <script src="resources/js/bootstrap-select.js"></script>
+  <%--<script src="resources/js/bootstrap-select.js"></script>--%>
+
   <script>
     $.widget.bridge('uibutton', $.ui.button);
   </script>
@@ -40,6 +41,7 @@
   <script src="resources/js/growlMessages.js"></script>
   <script src="resources/js/requireds.js"></script>
   <script src="resources/js/checklist-model.js"></script>
+
   <script>
     $(document).ready(function () {
       $(".datepicker").datepicker({language: 'ka'});

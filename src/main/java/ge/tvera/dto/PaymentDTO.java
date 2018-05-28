@@ -15,6 +15,7 @@ public class PaymentDTO {
     private Integer abonentId;
     @JsonSerialize(using = JsonDateTimeSerializeSupport.class)
     private Date createDate;
+    private String checkNumber;
 
     public static PaymentDTO parse(Payment record) {
         if (record != null) {
@@ -24,6 +25,7 @@ public class PaymentDTO {
             dto.setAbonent(AbonentDTO.parse(record.getAbonent()));
             dto.setAbonentId(record.getAbonent().getId());
             dto.setCreateDate(record.getCreateDate());
+            dto.setCheckNumber(record.getCheckNumber());
             return dto;
         } else return null;
     }
@@ -34,6 +36,14 @@ public class PaymentDTO {
             list.add(PaymentDTO.parse(record));
         }
         return list;
+    }
+
+    public String getCheckNumber() {
+        return checkNumber;
+    }
+
+    public void setCheckNumber(String checkNumber) {
+        this.checkNumber = checkNumber;
     }
 
     public Integer getId() {

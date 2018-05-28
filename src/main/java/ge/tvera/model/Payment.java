@@ -9,6 +9,7 @@ public class Payment {
     private Abonent abonent;
     private Double amount;
     private Timestamp createDate;
+    private String checkNumber;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -50,4 +51,15 @@ public class Payment {
     public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
+
+    @Basic
+    @Column(name = "check_number", nullable = false, length = 50)
+    public String getCheckNumber() {
+        return checkNumber;
+    }
+
+    public void setCheckNumber(String checkNumber) {
+        this.checkNumber = checkNumber;
+    }
+
 }

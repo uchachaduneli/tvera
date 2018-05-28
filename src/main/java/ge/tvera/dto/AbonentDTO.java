@@ -1,6 +1,7 @@
 package ge.tvera.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import ge.tvera.misc.JsonDateSerializeSupport;
 import ge.tvera.misc.JsonDateTimeSerializeSupport;
 import ge.tvera.model.Abonent;
 
@@ -17,7 +18,15 @@ public class AbonentDTO {
     private Double bill;
     private StreetDTO street;
     private Integer streetId;
+    private Integer incasatorId;
+    private Integer districtId;
     private Double balance;
+    private String abonentNumber;
+    private String personalNumber;
+    private String deviceNumber;
+    private String comment;
+    @JsonSerialize(using = JsonDateSerializeSupport.class)
+    private Date billDate;
 
     public static AbonentDTO parse(Abonent record) {
         if (record != null) {
@@ -30,6 +39,11 @@ public class AbonentDTO {
             dto.setCreateDate(record.getCreateDate());
             dto.setStreet(StreetDTO.parse(record.getStreet()));
             dto.setStreetId(record.getStreet().getId());
+            dto.setAbonentNumber(record.getAbonentNumber());
+            dto.setDeviceNumber(record.getDeviceNumber());
+            dto.setPersonalNumber(record.getPersonalNumber());
+            dto.setComment(record.getComment());
+            dto.setBillDate(record.getBillDate());
             return dto;
         } else return null;
     }
@@ -40,6 +54,62 @@ public class AbonentDTO {
             list.add(AbonentDTO.parse(record));
         }
         return list;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Date getBillDate() {
+        return billDate;
+    }
+
+    public void setBillDate(Date billDate) {
+        this.billDate = billDate;
+    }
+
+    public Integer getIncasatorId() {
+        return incasatorId;
+    }
+
+    public void setIncasatorId(Integer incasatorId) {
+        this.incasatorId = incasatorId;
+    }
+
+    public Integer getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Integer districtId) {
+        this.districtId = districtId;
+    }
+
+    public String getAbonentNumber() {
+        return abonentNumber;
+    }
+
+    public void setAbonentNumber(String abonentNumber) {
+        this.abonentNumber = abonentNumber;
+    }
+
+    public String getPersonalNumber() {
+        return personalNumber;
+    }
+
+    public void setPersonalNumber(String personalNumber) {
+        this.personalNumber = personalNumber;
+    }
+
+    public String getDeviceNumber() {
+        return deviceNumber;
+    }
+
+    public void setDeviceNumber(String deviceNumber) {
+        this.deviceNumber = deviceNumber;
     }
 
     public Double getBalance() {

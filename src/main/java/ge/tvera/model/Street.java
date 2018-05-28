@@ -7,6 +7,7 @@ public class Street {
     private Integer id;
     private String name;
     private Incasator incasator;
+    private District district;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -39,23 +40,13 @@ public class Street {
         this.incasator = incasator;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Street street = (Street) o;
-
-        if (id != null ? !id.equals(street.id) : street.id != null) return false;
-        if (name != null ? !name.equals(street.name) : street.name != null) return false;
-
-        return true;
+    @JoinColumn(name = "district_id")
+    @OneToOne
+    public District getDistrict() {
+        return district;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+    public void setDistrict(District district) {
+        this.district = district;
     }
 }

@@ -33,6 +33,11 @@ public class AbonentService {
         Abonent obj = new Abonent();
         obj.setName(request.getName());
         obj.setLastname(request.getLastname());
+        obj.setAbonentNumber(request.getAbonentNumber());
+        obj.setDeviceNumber(request.getDeviceNumber());
+        obj.setPersonalNumber(request.getPersonalNumber());
+        obj.setComment(request.getComment());
+        obj.setBillDate(new java.sql.Date(request.getBillDate().getTime()));
         obj.setStreet((Street) abonentDAO.find(Street.class, request.getStreetId()));
 
         if (request.getId() != null) {

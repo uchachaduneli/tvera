@@ -55,6 +55,7 @@
       if (id != undefined) {
         var selected = $filter('filter')($scope.list, {id: id}, true);
         $scope.slcted = selected[0];
+        console.log($scope.slcted);
       }
     };
 
@@ -84,6 +85,10 @@
       $scope.req.id = $scope.request.id;
       $scope.req.name = $scope.request.name;
       $scope.req.lastname = $scope.request.lastname;
+      $scope.req.abonentNumber = $scope.request.abonentNumber;
+      $scope.req.personalNumber = $scope.request.personalNumber;
+      $scope.req.deviceNumber = $scope.request.deviceNumber;
+      $scope.req.comment = $scope.request.comment;
       $scope.req.streetId = $scope.request.streetId;
 
       console.log(angular.toJson($scope.req));
@@ -118,6 +123,12 @@
     }
 
     ajaxCall($http, "misc/get-incasators", null, getIncasators);
+
+    function getDistricts(res) {
+      $scope.districts = res.data;
+    }
+
+    ajaxCall($http, "misc/get-districts", null, getDistricts);
   });
 </script>
 
@@ -146,12 +157,32 @@
               <td>{{slcted.lastname}}</td>
             </tr>
             <tr>
+              <th class="text-right">აბონენტის N</th>
+              <td>{{slcted.abonentNumber}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">პირადი N</th>
+              <td>{{slcted.personalNumber}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">მოწყობილობის N</th>
+              <td>{{slcted.deviceNumber}}</td>
+            </tr>
+            <tr>
               <th class="text-right">გადასახადი</th>
               <td>{{slcted.bill}}</td>
             </tr>
             <tr>
               <th class="text-right">ბალანსი</th>
               <td>{{slcted.balance}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">გადახდის თარიღი</th>
+              <td>{{slcted.billDate}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">უბანი</th>
+              <td>{{slcted.street.district.name}}</td>
             </tr>
             <tr>
               <th class="text-right">ქუჩა</th>
@@ -164,6 +195,10 @@
             <tr>
               <th class="text-right">რეგისტრაცია</th>
               <td>{{slcted.createDate}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">შენიშვნა</th>
+              <td>{{slcted.comment}}</td>
             </tr>
           </table>
           <div class="form-group"><br/></div>
@@ -202,14 +237,41 @@
               </div>
             </div>
             <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">აბონენტის N</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.abonentNumber" name="name" required
+                       class="form-control input-sm"/>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">პირადი N</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.personalNumber" name="name" required
+                       class="form-control input-sm"/>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">მოწყობილობის N</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.deviceNumber" name="name" required
+                       class="form-control input-sm"/>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
               <label class="control-label col-sm-3">ქუჩა</label>
               <div class="col-sm-9">
                 <select class="form-control" ng-model="request.streetId">
-                  <option ng-repeat="s in streets"
-                          ng-selected="s.id === request.streetId"
-                          ng-value="s.id">{{s.name}}
+                  <option ng-repeat="s in streets" ng-selected="s.id === request.streetId" ng-value="s.id">
+                    {{s.name}}
                   </option>
                 </select>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">შენიშვნა</label>
+              <div class="col-sm-9">
+                <textarea cols="5" rows="5" type="text" ng-model="request.comment" required
+                          class="form-control input-sm"> </textarea>
               </div>
             </div>
             <div class="form-group col-sm-10"></div>
@@ -263,11 +325,32 @@
                 </div>
                 <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.name"
+                         placeholder="აბონენტის N">
+                </div>
+                <div class="form-group col-md-2">
+                  <input type="text" class="form-control srch" ng-model="srchCase.name"
+                         placeholder="პირადი N">
+                </div>
+                <div class="form-group col-md-2">
+                  <input type="text" class="form-control srch" ng-model="srchCase.name"
+                         placeholder="მოწყობილობის N">
+                </div>
+                <div class="form-group col-md-2">
+                  <input type="text" class="form-control srch" ng-model="srchCase.name"
                          placeholder="სახელი">
                 </div>
                 <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.lastname"
                          placeholder="გვარი">
+                </div>
+                <div class="form-group col-md-2">
+                  <select class="form-control" ng-model="srchCase.districtId"
+                          ng-change="loadMainData()">
+                    <option value="" selected="selected">უბანი</option>
+                    <option ng-repeat="v in districts" ng-selected="v.id === srchCase.districtId"
+                            value="{{v.id}}">{{v.name}}
+                    </option>
+                  </select>
                 </div>
                 <div class="form-group col-md-2">
                   <select class="form-control" ng-model="srchCase.streetId"
@@ -302,6 +385,8 @@
             <thead>
             <tr>
               <th>ID</th>
+              <th>აბონ. N</th>
+              <th>პირადი N</th>
               <th>სახელი</th>
               <th>გვარი</th>
               <th>ქუჩა</th>
@@ -313,6 +398,8 @@
             <tbody title="Double Click For Detailed Information">
             <tr ng-repeat="r in list" ng-dblclick="handleDoubleClick(r.id)">
               <td>{{r.id}}</td>
+              <td>{{r.abonentNumber}}</td>
+              <td>{{r.personalNumber}}</td>
               <td>{{r.name}}</td>
               <td>{{r.lastname}}</td>
               <td>{{r.street.name}}</td>

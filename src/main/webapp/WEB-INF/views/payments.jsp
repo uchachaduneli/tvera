@@ -130,8 +130,16 @@
               <td>{{slcted.abonent.name}} &nbsp; {{slcted.abonent.lastname}}</td>
             </tr>
             <tr>
+              <th class="text-right">აბონენტის N</th>
+              <td>{{slcted.abonent.abonentNumber}}</td>
+            </tr>
+            <tr>
               <th class="text-right">თანხა</th>
               <td>{{slcted.amount}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">ქვითრის N</th>
+              <td>{{slcted.checkNumber}}</td>
             </tr>
             <tr>
               <th class="text-right">რეგისტრ. დრო</th>
@@ -235,7 +243,15 @@
                 </div>
                 <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.abonent.id"
-                         placeholder="Abonent ID">
+                         placeholder="აბონენტის ID">
+                </div>
+                <div class="form-group col-md-2">
+                  <input type="text" class="form-control srch" ng-model="srchCase.abonent.abonentNumber"
+                         placeholder="აბონენტის N">
+                </div>
+                <div class="form-group col-md-2">
+                  <input type="text" class="form-control srch" ng-model="srchCase.abonent.checkNumber"
+                         placeholder="ქვითრის N">
                 </div>
                 <div class="form-group col-md-3">
                   <input type="text" class="form-control srch" ng-model="srchCase.abonent.name"
@@ -262,6 +278,7 @@
               <th>ID</th>
               <th>აბონენტი</th>
               <th>თანხა</th>
+              <th>ქვითრის N</th>
               <th>რეგისტრ. დრო</th>
               <th class="col-md-2 text-center">Action</th>
             </tr>
@@ -271,6 +288,7 @@
               <td>{{r.id}}</td>
               <td>{{r.abonent.name}}&nbsp;{{r.abonent.lastname}}</td>
               <td>{{r.amount}}</td>
+              <td>{{r.checkNumber}}</td>
               <td>{{r.createDate}}</td>
               <td class="text-center">
                 <a ng-click="showDetails(r.id)" data-toggle="modal" title="Details"
