@@ -10,6 +10,7 @@ public class Payment {
     private Double amount;
     private Timestamp createDate;
     private String checkNumber;
+    private Users user;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -60,6 +61,16 @@ public class Payment {
 
     public void setCheckNumber(String checkNumber) {
         this.checkNumber = checkNumber;
+    }
+
+    @JoinColumn(name = "user_id")
+    @OneToOne
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
     }
 
 }

@@ -15,11 +15,15 @@
     $scope.limit = "10";
     $scope.request = {};
     $scope.srchCase = {};
+    $scope.founded = {};
+    $scope.abonent = {};
 //        $scope.request.docs = [];
 
     $scope.loadMainData = function () {
+      $('#loadingModal').modal('show');
       function getMainData(res) {
         $scope.list = res.data;
+        $('#loadingModal').modal('hide');
       }
 
       if ($scope.srchCase.createDateFrom != undefined && $scope.srchCase.createDateFrom.includes('/')) {
@@ -72,9 +76,15 @@
 
     $scope.init = function () {
       $scope.request = {};
+      $scope.founded = {};
+      $scope.abonent = {};
     };
 
     $scope.save = function () {
+
+      if ($scope.founded == undefined || $scope.founded.id == undefined) {
+        errorMsg('აბონენტის ID ვერ მოიძებნა');
+      }
 
       function resFunc(res) {
         if (res.errorCode == 0) {
@@ -88,14 +98,15 @@
 
       $scope.req = {};
 
-      $scope.req.id = $scope.request.id;
-      $scope.req.name = $scope.request.name;
-      $scope.req.lastname = $scope.request.lastname;
-      $scope.req.streetId = $scope.request.streetId;
+      //      $scope.req.id = $scope.request.id;
+      $scope.req.amount = $scope.request.amount;
+      $scope.req.checkNumber = $scope.request.checkNumber;
+      $scope.req.abonentId = $scope.founded.id;
 
       console.log(angular.toJson($scope.req));
       ajaxCall($http, "payment/save-payment", angular.toJson($scope.req), resFunc);
-    };
+    }
+    ;
 
 
     $scope.rowNumbersChange = function () {
@@ -113,7 +124,16 @@
       }
       $scope.loadMainData();
     }
-  });
+
+    $scope.loadAbonent = function () {
+      function getAbonentData(res) {
+        $scope.founded = res.data[0];
+      }
+
+      ajaxCall($http, "abonent/get-abonents?start=0&limit=1", angular.toJson($scope.abonent), getAbonentData);
+    }
+  })
+  ;
 </script>
 
 <div class="modal fade bs-example-modal-lg" id="detailModal" tabindex="-1" role="dialog"
@@ -156,6 +176,10 @@
               <th class="text-right">რეგისტრ. დრო</th>
               <td>{{slcted.createDate}}</td>
             </tr>
+            <tr>
+              <th class="text-right">თანამშრომელი</th>
+              <td>{{slcted.user.userDesc}}</td>
+            </tr>
           </table>
           <div class="form-group"><br/></div>
         </div>
@@ -178,35 +202,63 @@
       <div class="modal-body">
         <div class="row">
           <form class="form-horizontal" name="ediFormName">
-            <%--<div class="form-group col-sm-10 ">--%>
-            <%--<label class="control-label col-sm-3">სახელი</label>--%>
-            <%--<div class="col-sm-9">--%>
-            <%--<input type="text" ng-model="request.name" name="name" required--%>
-            <%--class="form-control input-sm"/>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="form-group col-sm-10 ">--%>
-            <%--<label class="control-label col-sm-3">გვარი</label>--%>
-            <%--<div class="col-sm-9">--%>
-            <%--<input type="text" ng-model="request.lastname" name="name" required--%>
-            <%--class="form-control input-sm"/>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="form-group col-sm-10 ">--%>
-            <%--<label class="control-label col-sm-3">ქუჩა</label>--%>
-            <%--<div class="col-sm-9">--%>
-            <%--<select class="form-control" ng-model="request.streetId">--%>
-            <%--<option ng-repeat="s in streets"--%>
-            <%--ng-selected="s.id === request.streetId"--%>
-            <%--ng-value="s.id">{{s.name}}--%>
-            <%--</option>--%>
-            <%--</select>--%>
-            <%--</div>--%>
-            <%--</div>--%>
+            <div class="form-group col-sm-10 ">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-3">
+                <input type="text" placeholder="აბონენტის N" ng-model="abonent.abonentNumber"
+                       class="form-control input-sm"/>
+              </div>
+              <div class="col-sm-1">ან</div>
+              <div class="col-sm-3">
+                <input type="text" placeholder="პირადი N" ng-model="abonent.personalNumber"
+                       class="form-control input-sm"/>
+              </div>
+              <div class="col-sm-3">
+                <a class="btn btn-default" ng-click="loadAbonent()">
+                  <i class="fa fa-search"></i> ძებნა
+                </a>
+              </div>
+            </div>
+            <table class="table table-striped">
+              <tr>
+                <th class="col-md-2 text-right">აბონენტის ID</th>
+                <td>{{founded.id}}</td>
+              </tr>
+              <tr>
+                <th class="text-right">აბონენტი</th>
+                <td>{{founded.name}} &nbsp; {{founded.lastname}}</td>
+              </tr>
+              <tr>
+                <th class="text-right">აბონენტის N</th>
+                <td>{{founded.abonentNumber}}</td>
+              </tr>
+              <tr>
+                <th class="text-right">პირადი N</th>
+                <td>{{founded.personalNumber}}</td>
+              </tr>
+              <tr>
+                <th class="text-right">ბალანსი</th>
+                <td>{{founded.balance}}</td>
+              </tr>
+            </table>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">თანხა</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.amount" name="name" ng-disabled="founded.id === undefined"
+                       class="form-control input-sm"/>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">ჩეკის N</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.checkNumber" ng-disabled="founded.id === undefined"
+                       class="form-control input-sm"/>
+              </div>
+            </div>
             <div class="form-group col-sm-10"></div>
             <div class="form-group col-sm-10"></div>
             <div class="form-group col-sm-12 text-center">
-              <a class="btn btn-app" ng-click="save()">
+              <a class="btn btn-app" ng-click="save()" ng-disabled="founded.id === undefined">
                 <i class="fa fa-save"></i> შენახვა
               </a>
             </div>
@@ -248,14 +300,14 @@
           <div id="filter-panel" class="filter-panel">
             <div class="panel panel-default">
               <div class="panel-body">
-                <div class="form-group col-md-1">
+                <div class="form-group col-md-3">
                   <input type="text" class="form-control srch" ng-model="srchCase.id"
                          placeholder="ID">
                 </div>
-                <div class="form-group col-md-2">
-                  <input type="text" class="form-control srch" ng-model="srchCase.abonent.id"
-                         placeholder="აბონენტის ID">
-                </div>
+                <%--<div class="form-group col-md-2">--%>
+                <%--<input type="text" class="form-control srch" ng-model="srchCase.abonent.id"--%>
+                <%--placeholder="აბონენტის ID">--%>
+                <%--</div>--%>
                 <div class="form-group col-md-3">
                   <input type="text" class="form-control srch" ng-model="srchCase.abonent.abonentNumber"
                          placeholder="აბონენტის N">
@@ -324,10 +376,10 @@
                   <i class="fa fa-sticky-note-o"></i>&nbsp; დეტალები
                 </a>&nbsp;&nbsp;
                 <%--<c:if test="<%= isAdmin %>">--%>
-                <a ng-click="edit(r.id)" data-toggle="modal" data-target="#editModal"
-                   class="btn btn-xs">
-                  <i class="fa fa-pencil"></i>&nbsp;რედაქტირება
-                </a>&nbsp;&nbsp;
+                <%--<a ng-click="edit(r.id)" data-toggle="modal" data-target="#editModal"--%>
+                <%--class="btn btn-xs">--%>
+                <%--<i class="fa fa-pencil"></i>&nbsp;რედაქტირება--%>
+                <%--</a>&nbsp;&nbsp;--%>
                 <%--<a ng-click="remove(r.id)" class="btn btn-xs">--%>
                 <%--<i class="fa fa-trash-o"></i>&nbsp;წაშლა--%>
                 <%--</a>--%>

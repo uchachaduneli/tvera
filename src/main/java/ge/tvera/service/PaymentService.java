@@ -5,6 +5,7 @@ import ge.tvera.dao.PaymentDAO;
 import ge.tvera.dto.PaymentDTO;
 import ge.tvera.model.Abonent;
 import ge.tvera.model.Payment;
+import ge.tvera.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ public class PaymentService {
         Payment obj = new Payment();
         obj.setAmount(request.getAmount());
         obj.setCheckNumber(request.getCheckNumber());
+        obj.setUser((Users) paymentDAO.find(Users.class, request.getUserId()));
         obj.setAbonent((Abonent) paymentDAO.find(Abonent.class, request.getAbonentId()));
 
         if (request.getId() != null) {
@@ -37,6 +39,13 @@ public class PaymentService {
             obj = (Payment) paymentDAO.update(obj);
         } else {
             obj = (Payment) paymentDAO.create(obj);
+            if (obj != null) {
+                Abonent abonent = (Abonent) paymentDAO.find(Abonent.class, request.getAbonentId());
+                if (abonent != null) {
+                    abonent.setBalance(abonent.getBalance() - request.getAmount());
+                    abonent = (Abonent) paymentDAO.update(abonent);
+                }
+            }
         }
         return obj;
     }

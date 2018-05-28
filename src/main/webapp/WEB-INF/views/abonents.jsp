@@ -18,8 +18,10 @@
 //        $scope.request.docs = [];
 
     $scope.loadMainData = function () {
+      $('#loadingModal').modal('show');
       function getMainData(res) {
         $scope.list = res.data;
+        $('#loadingModal').modal('hide');
       }
 
       if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {

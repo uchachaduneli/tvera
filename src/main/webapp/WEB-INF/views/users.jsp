@@ -20,8 +20,10 @@
     $scope.userStatuses = [];
 
     $scope.loadMainData = function () {
+      $('#loadingModal').modal('show');
       function getUsers(res) {
         $scope.users = res.data;
+        $('#loadingModal').modal('hide');
       }
 
       ajaxCall($http, "users/get-users", null, getUsers);

@@ -219,4 +219,9 @@
     </section>
     <section class="content">
 
-
+      <div class="modal fade bs-example-modal-lg not-printable" id="loadingModal"
+           role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="height: 80%; width: 120px;">
+          <div class="loader" style="margin-top: 80%"></div>
+        </div>
+      </div>

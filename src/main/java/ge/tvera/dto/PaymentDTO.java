@@ -23,6 +23,8 @@ public class PaymentDTO {
     private String lastname;
     private String personalNumber;
     private String deviceNumber;
+    private UsersDTO user;
+    private Integer userId;
 
     public static PaymentDTO parse(Payment record) {
         if (record != null) {
@@ -35,6 +37,7 @@ public class PaymentDTO {
             dto.setAbonentId(record.getAbonent().getId());
             dto.setCreateDate(record.getCreateDate());
             dto.setCheckNumber(record.getCheckNumber());
+            dto.setUser(UsersDTO.parse(record.getUser()));
             return dto;
         } else return null;
     }
@@ -45,6 +48,22 @@ public class PaymentDTO {
             list.add(PaymentDTO.parse(record));
         }
         return list;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public UsersDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UsersDTO user) {
+        this.user = user;
     }
 
     public String getName() {

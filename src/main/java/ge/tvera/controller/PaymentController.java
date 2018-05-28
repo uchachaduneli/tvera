@@ -27,12 +27,14 @@ public class PaymentController {
     @ResponseBody
     private Response getPayments(@RequestParam("start") int start, @RequestParam("limit") int limit,
                                  @RequestBody PaymentDTO request, HttpServletRequest servletRequest) throws Exception {
+
         return Response.withSuccess(paymentService.getPayments(start, limit, request));
     }
 
     @RequestMapping({"/save-payment"})
     @ResponseBody
-    public Response savePayment(@RequestBody PaymentDTO request) throws Exception {
+    public Response savePayment(@RequestBody PaymentDTO request, HttpServletRequest servletRequest) throws Exception {
+        request.setUserId((Integer) servletRequest.getSession().getAttribute("userId"));
         return Response.withSuccess(PaymentDTO.parse(paymentService.savePayment(request)));
     }
 

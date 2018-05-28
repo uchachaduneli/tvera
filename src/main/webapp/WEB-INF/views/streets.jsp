@@ -18,8 +18,10 @@
 //        $scope.request.docs = [];
 
     $scope.loadMainData = function () {
+      $('#loadingModal').modal('show');
       function getMainData(res) {
         $scope.list = res.data;
+        $('#loadingModal').modal('hide');
       }
 
       ajaxCall($http, "street/get-streets?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
