@@ -9,6 +9,24 @@
 <%@include file="header.jsp" %>
 <script>
 
+
+  $(document).ready(function () {
+
+    $('.dateInput').datepicker({
+      format: "dd/mm/yyyy",
+      autoclose: true,
+    })
+
+    $('.srch').keypress(function (e) {
+      var key = e.which;
+      if (key == 13) {
+        $('#srchBtnId').click();
+        return false;
+      }
+    });
+
+  });
+
   app.controller("angController", function ($scope, $http, $filter) {
     $scope.start = 0;
     $scope.page = 1;
@@ -80,6 +98,10 @@
         }
       }
 
+      if ($scope.request.billDate != undefined && $scope.request.billDate.includes('/')) {
+        $scope.request.billDate = $scope.request.billDate.split(/\//).reverse().join('-')
+      }
+
       $scope.req = {};
 
       $scope.req.id = $scope.request.id;
@@ -89,6 +111,7 @@
       $scope.req.personalNumber = $scope.request.personalNumber;
       $scope.req.deviceNumber = $scope.request.deviceNumber;
       $scope.req.comment = $scope.request.comment;
+      $scope.req.billDate = $scope.request.billDate;
       $scope.req.streetId = $scope.request.streetId;
 
       console.log(angular.toJson($scope.req));
@@ -268,6 +291,13 @@
               </div>
             </div>
             <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">გადახდის თარიღი</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.billDate" required
+                       class="form-control input-sm dateInput">
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
               <label class="control-label col-sm-3">შენიშვნა</label>
               <div class="col-sm-9">
                 <textarea cols="5" rows="5" type="text" ng-model="request.comment" required
@@ -369,6 +399,19 @@
                             value="{{v.id}}">{{v.name}}
                     </option>
                   </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <div class="input-group">
+                    <div class="input-append">
+                      <input type="text" class="form-control srch dateInput"
+                             placeholder="დან" ng-model="srchCase.billDate">
+                    </div>
+                    <span class="input-group-addon">გადახდის თარიღი</span>
+                    <div class="input-append">
+                      <input type="text" class="form-control srch dateInput"
+                             placeholder="მდე" ng-model="srchCase.billDateTo">
+                    </div>
+                  </div>
                 </div>
                 <div class="form-group col-md-2">
                   <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">

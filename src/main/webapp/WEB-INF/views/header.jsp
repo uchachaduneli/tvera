@@ -176,7 +176,7 @@
           </li>
           <li>
             <a href="districts">
-              <i class="fa fa-building"></i>
+              <i class="fa fa-map-signs"></i>
               <span>უბანი</span>
             </a>
           </li>
