@@ -27,6 +27,7 @@ public class AbonentDTO {
     private String comment;
     @JsonSerialize(using = JsonDateSerializeSupport.class)
     private Date billDate;
+    private Date billDateTo;
 
     public static AbonentDTO parse(Abonent record) {
         if (record != null) {
@@ -174,5 +175,13 @@ public class AbonentDTO {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public Date getBillDateTo() {
+        return billDateTo;
+    }
+
+    public void setBillDateTo(Date billDateTo) {
+        this.billDateTo = billDateTo;
     }
 }

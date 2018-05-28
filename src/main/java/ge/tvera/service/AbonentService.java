@@ -23,8 +23,8 @@ public class AbonentService {
     @Autowired
     private AbonentDAO abonentDAO;
 
-    public List<AbonentDTO> getAbonents() {
-        return AbonentDTO.parseToList(abonentDAO.getAll(Abonent.class));
+    public List<AbonentDTO> getAbonents(int start, int limit, AbonentDTO srchRequest) {
+        return AbonentDTO.parseToList(abonentDAO.getAbonents(start, limit, srchRequest));
     }
 
     @Transactional(rollbackFor = Throwable.class)

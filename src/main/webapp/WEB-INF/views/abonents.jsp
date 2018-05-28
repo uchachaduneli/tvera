@@ -40,6 +40,13 @@
         $scope.list = res.data;
       }
 
+      if ($scope.srchCase.billDate != undefined && $scope.srchCase.billDate.includes('/')) {
+        $scope.srchCase.billDate = $scope.srchCase.billDate.split(/\//).reverse().join('-')
+      }
+      if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
+        $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
+      }
+
       ajaxCall($http, "abonent/get-abonents?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
     }
 
@@ -354,15 +361,15 @@
                          placeholder="ID">
                 </div>
                 <div class="form-group col-md-2">
-                  <input type="text" class="form-control srch" ng-model="srchCase.name"
+                  <input type="text" class="form-control srch" ng-model="srchCase.abonentNumber"
                          placeholder="აბონენტის N">
                 </div>
                 <div class="form-group col-md-2">
-                  <input type="text" class="form-control srch" ng-model="srchCase.name"
+                  <input type="text" class="form-control srch" ng-model="srchCase.personalNumber"
                          placeholder="პირადი N">
                 </div>
                 <div class="form-group col-md-2">
-                  <input type="text" class="form-control srch" ng-model="srchCase.name"
+                  <input type="text" class="form-control srch" ng-model="srchCase.deviceNumber"
                          placeholder="მოწყობილობის N">
                 </div>
                 <div class="form-group col-md-2">

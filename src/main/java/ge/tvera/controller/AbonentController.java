@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * @author ucha
@@ -23,8 +25,9 @@ public class AbonentController {
 
     @RequestMapping("/get-abonents")
     @ResponseBody
-    private Response getAbonents() throws Exception {
-        return Response.withSuccess(abonentService.getAbonents());
+    private Response getAbonents(@RequestParam("start") int start, @RequestParam("limit") int limit,
+                                 @RequestBody AbonentDTO request, HttpServletRequest servletRequest) throws Exception {
+        return Response.withSuccess(abonentService.getAbonents(start, limit, request));
     }
 
     @RequestMapping({"/save-abonent"})
