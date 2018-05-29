@@ -18,6 +18,7 @@ public class Abonent {
     private String deviceNumber;
     private String comment;
     private Date billDate;
+    private Status status;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -138,6 +139,16 @@ public class Abonent {
 
     public void setBillDate(Date billDate) {
         this.billDate = billDate;
+    }
+
+    @JoinColumn(name = "status_id")
+    @OneToOne
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
 }

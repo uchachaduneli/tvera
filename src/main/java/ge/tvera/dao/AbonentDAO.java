@@ -3,6 +3,7 @@ package ge.tvera.dao;
 
 import ge.tvera.dto.AbonentDTO;
 import ge.tvera.model.Abonent;
+import ge.tvera.model.StatusHistory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -62,5 +63,12 @@ public class AbonentDAO extends AbstractDAO {
 
         TypedQuery<Abonent> query = entityManager.createQuery(q.toString(), Abonent.class);
         return query.setFirstResult(start).setMaxResults(limit).getResultList();
+    }
+
+    public List<StatusHistory> getStatusHistory(int id) {
+        StringBuilder q = new StringBuilder();
+        q.append("Select e From ").append(StatusHistory.class.getSimpleName()).append(" e Where abonent.id='").append(id).append("'");
+        TypedQuery<StatusHistory> query = entityManager.createQuery(q.toString(), StatusHistory.class);
+        return query.getResultList();
     }
 }

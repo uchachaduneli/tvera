@@ -29,6 +29,9 @@ public class AbonentDTO {
     private Date billDate;
     private Date billDateFrom;
     private Date billDateTo;
+    private StatusDTO status;
+    private Integer statusId;
+    private List<Integer> packages;
 
     public static AbonentDTO parse(Abonent record) {
         if (record != null) {
@@ -46,6 +49,8 @@ public class AbonentDTO {
             dto.setPersonalNumber(record.getPersonalNumber());
             dto.setComment(record.getComment());
             dto.setBillDate(record.getBillDate());
+            dto.setStatus(StatusDTO.parse(record.getStatus()));
+            dto.setStatusId(record.getStatus().getId());
             return dto;
         } else return null;
     }
@@ -56,6 +61,30 @@ public class AbonentDTO {
             list.add(AbonentDTO.parse(record));
         }
         return list;
+    }
+
+    public List<Integer> getPackages() {
+        return packages;
+    }
+
+    public void setPackages(List<Integer> packages) {
+        this.packages = packages;
+    }
+
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
+    }
+
+    public StatusDTO getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusDTO status) {
+        this.status = status;
     }
 
     public Date getBillDateFrom() {

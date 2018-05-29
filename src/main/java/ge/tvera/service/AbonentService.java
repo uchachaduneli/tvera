@@ -4,6 +4,7 @@ package ge.tvera.service;
 import ge.tvera.dao.AbonentDAO;
 import ge.tvera.dto.AbonentDTO;
 import ge.tvera.dto.AbonentPackageDTO;
+import ge.tvera.dto.StatusHistoryDTO;
 import ge.tvera.model.Abonent;
 import ge.tvera.model.AbonentPackages;
 import ge.tvera.model.Package;
@@ -75,5 +76,12 @@ public class AbonentService {
         if (obj != null) {
             abonentDAO.delete(obj);
         }
+    }
+
+    public List<StatusHistoryDTO> getStatusHistory(int id) {
+//        List<ParamValuePair> paramValues = new ArrayList<>();
+//        paramValues.add(new ParamValuePair("abonent.id", id));
+//        return StatusHistoryDTO.parseToList(abonentDAO.getAllByParamValue(StatusHistory.class, paramValues, null));
+        return StatusHistoryDTO.parseToList(abonentDAO.getStatusHistory(id));
     }
 }

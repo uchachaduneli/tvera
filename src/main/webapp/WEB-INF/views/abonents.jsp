@@ -19,6 +19,7 @@
 
     $scope.loadMainData = function () {
       $('#loadingModal').modal('show');
+
       function getMainData(res) {
         $scope.list = res.data;
         $('#loadingModal').modal('hide');
@@ -65,8 +66,17 @@
         var selected = $filter('filter')($scope.list, {id: id}, true);
         $scope.slcted = selected[0];
         console.log($scope.slcted);
+        $scope.loadObjectDetails($scope.slcted.id);
       }
     };
+
+    $scope.loadObjectDetails = function (id) {
+      function getStatuHistory(res) {
+        $scope.slcted.statusHistory = res.data;
+      }
+
+      ajaxCall($http, "abonent/get-status-history?id=" + id, null, getStatuHistory);
+    }
 
     $scope.handleDoubleClick = function (id) {
       $scope.showDetails(id);
@@ -213,6 +223,16 @@
             <tr>
               <th class="text-right">შენიშვნა</th>
               <td>{{slcted.comment}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">სტატუსი</th>
+              <td>
+                <ul>
+                  <li ng-repeat="k in slcted.statusHistory">
+                    {{k.status.name}} - {{k.createDate}}
+                  </li>
+                </ul>
+              </td>
             </tr>
           </table>
           <div class="form-group"><br/></div>

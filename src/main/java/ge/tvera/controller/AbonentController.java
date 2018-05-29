@@ -42,4 +42,10 @@ public class AbonentController {
         abonentService.deleteAbonent(id);
         return Response.withSuccess(true);
     }
+
+    @RequestMapping({"/get-status-history"})
+    @ResponseBody
+    public Response getStatusHistory(@RequestParam int id) {
+        return Response.withSuccess(abonentService.getStatusHistory(id));
+    }
 }
