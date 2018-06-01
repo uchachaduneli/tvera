@@ -19,6 +19,9 @@ public class Abonent {
     private String comment;
     private Date billDate;
     private Status status;
+    private Integer juridicalOrPhisical;
+    private Integer servicePointsNumber;
+    private PackageType packageType;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -151,4 +154,33 @@ public class Abonent {
         this.status = status;
     }
 
+    @Basic
+    @Column(name = "juridical_or_phisical", nullable = false)
+    public Integer getJuridicalOrPhisical() {
+        return juridicalOrPhisical;
+    }
+
+    public void setJuridicalOrPhisical(Integer juridicalOrPhisical) {
+        this.juridicalOrPhisical = juridicalOrPhisical;
+    }
+
+    @Basic
+    @Column(name = "service_points_number", nullable = true)
+    public Integer getServicePointsNumber() {
+        return servicePointsNumber;
+    }
+
+    public void setServicePointsNumber(Integer servicePointsNumber) {
+        this.servicePointsNumber = servicePointsNumber;
+    }
+
+    @JoinColumn(name = "package_type_id", nullable = true)
+    @OneToOne
+    public PackageType getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(PackageType packageType) {
+        this.packageType = packageType;
+    }
 }

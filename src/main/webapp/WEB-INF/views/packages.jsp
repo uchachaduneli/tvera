@@ -220,8 +220,8 @@
             <div class="form-group col-sm-10">
               <label class="control-label col-sm-3">მეთოდი</label>
               <div class="col-xs-9 btn-group">
-                <div class="radio col-xs-6">
-                  <label ng-repeat="s in groups">
+                <div class="radio col-xs-12">
+                  <label ng-repeat="s in groups" class="col-xs-6">
                     <input type="radio" ng-model="request.groupId" ng-value="s.id"
                            class="input-sm">{{s.name}}&nbsp;&nbsp;
                   </label>

@@ -31,7 +31,14 @@ public class AbonentDTO {
     private Date billDateTo;
     private StatusDTO status;
     private Integer statusId;
-    private List<Integer> packages;
+    private Integer juridicalOrPhisical;
+    private Integer servicePointsNumber;
+    private PackageTypeDTO packageType;
+    private Integer packageTypeId;
+
+    public static Integer JURIDICAL = 2;
+    public static Integer PHISICAL = 1;
+
 
     public static AbonentDTO parse(Abonent record) {
         if (record != null) {
@@ -51,6 +58,12 @@ public class AbonentDTO {
             dto.setBillDate(record.getBillDate());
             dto.setStatus(StatusDTO.parse(record.getStatus()));
             dto.setStatusId(record.getStatus().getId());
+            dto.setJuridicalOrPhisical(record.getJuridicalOrPhisical());
+            dto.setServicePointsNumber(record.getServicePointsNumber());
+            if (record.getPackageType() != null) {
+                dto.setPackageType(PackageTypeDTO.parse(record.getPackageType()));
+                dto.setPackageTypeId(record.getPackageType().getId());
+            }
             return dto;
         } else return null;
     }
@@ -61,126 +74,6 @@ public class AbonentDTO {
             list.add(AbonentDTO.parse(record));
         }
         return list;
-    }
-
-    public List<Integer> getPackages() {
-        return packages;
-    }
-
-    public void setPackages(List<Integer> packages) {
-        this.packages = packages;
-    }
-
-    public Integer getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Integer statusId) {
-        this.statusId = statusId;
-    }
-
-    public StatusDTO getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusDTO status) {
-        this.status = status;
-    }
-
-    public Date getBillDateFrom() {
-        return billDateFrom;
-    }
-
-    public void setBillDateFrom(Date billDateFrom) {
-        this.billDateFrom = billDateFrom;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Date getBillDate() {
-        return billDate;
-    }
-
-    public void setBillDate(Date billDate) {
-        this.billDate = billDate;
-    }
-
-    public Integer getIncasatorId() {
-        return incasatorId;
-    }
-
-    public void setIncasatorId(Integer incasatorId) {
-        this.incasatorId = incasatorId;
-    }
-
-    public Integer getDistrictId() {
-        return districtId;
-    }
-
-    public void setDistrictId(Integer districtId) {
-        this.districtId = districtId;
-    }
-
-    public String getAbonentNumber() {
-        return abonentNumber;
-    }
-
-    public void setAbonentNumber(String abonentNumber) {
-        this.abonentNumber = abonentNumber;
-    }
-
-    public String getPersonalNumber() {
-        return personalNumber;
-    }
-
-    public void setPersonalNumber(String personalNumber) {
-        this.personalNumber = personalNumber;
-    }
-
-    public String getDeviceNumber() {
-        return deviceNumber;
-    }
-
-    public void setDeviceNumber(String deviceNumber) {
-        this.deviceNumber = deviceNumber;
-    }
-
-    public Double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
-
-    public Integer getStreetId() {
-        return streetId;
-    }
-
-    public void setStreetId(Integer streetId) {
-        this.streetId = streetId;
-    }
-
-    public StreetDTO getStreet() {
-        return street;
-    }
-
-    public void setStreet(StreetDTO street) {
-        this.street = street;
-    }
-
-    public Double getBill() {
-        return bill;
-    }
-
-    public void setBill(Double bill) {
-        this.bill = bill;
     }
 
     public Integer getId() {
@@ -215,11 +108,171 @@ public class AbonentDTO {
         this.createDate = createDate;
     }
 
+    public Double getBill() {
+        return bill;
+    }
+
+    public void setBill(Double bill) {
+        this.bill = bill;
+    }
+
+    public StreetDTO getStreet() {
+        return street;
+    }
+
+    public void setStreet(StreetDTO street) {
+        this.street = street;
+    }
+
+    public Integer getStreetId() {
+        return streetId;
+    }
+
+    public void setStreetId(Integer streetId) {
+        this.streetId = streetId;
+    }
+
+    public Integer getIncasatorId() {
+        return incasatorId;
+    }
+
+    public void setIncasatorId(Integer incasatorId) {
+        this.incasatorId = incasatorId;
+    }
+
+    public Integer getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Integer districtId) {
+        this.districtId = districtId;
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    public String getAbonentNumber() {
+        return abonentNumber;
+    }
+
+    public void setAbonentNumber(String abonentNumber) {
+        this.abonentNumber = abonentNumber;
+    }
+
+    public String getPersonalNumber() {
+        return personalNumber;
+    }
+
+    public void setPersonalNumber(String personalNumber) {
+        this.personalNumber = personalNumber;
+    }
+
+    public String getDeviceNumber() {
+        return deviceNumber;
+    }
+
+    public void setDeviceNumber(String deviceNumber) {
+        this.deviceNumber = deviceNumber;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Date getBillDate() {
+        return billDate;
+    }
+
+    public void setBillDate(Date billDate) {
+        this.billDate = billDate;
+    }
+
+    public Date getBillDateFrom() {
+        return billDateFrom;
+    }
+
+    public void setBillDateFrom(Date billDateFrom) {
+        this.billDateFrom = billDateFrom;
+    }
+
     public Date getBillDateTo() {
         return billDateTo;
     }
 
     public void setBillDateTo(Date billDateTo) {
         this.billDateTo = billDateTo;
+    }
+
+    public StatusDTO getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusDTO status) {
+        this.status = status;
+    }
+
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
+    }
+
+    public Integer getJuridicalOrPhisical() {
+        return juridicalOrPhisical;
+    }
+
+    public void setJuridicalOrPhisical(Integer juridicalOrPhisical) {
+        this.juridicalOrPhisical = juridicalOrPhisical;
+    }
+
+    public Integer getServicePointsNumber() {
+        return servicePointsNumber;
+    }
+
+    public void setServicePointsNumber(Integer servicePointsNumber) {
+        this.servicePointsNumber = servicePointsNumber;
+    }
+
+    public PackageTypeDTO getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(PackageTypeDTO packageType) {
+        this.packageType = packageType;
+    }
+
+    public Integer getPackageTypeId() {
+        return packageTypeId;
+    }
+
+    public void setPackageTypeId(Integer packageTypeId) {
+        this.packageTypeId = packageTypeId;
+    }
+
+    public static Integer getJURIDICAL() {
+        return JURIDICAL;
+    }
+
+    public static void setJURIDICAL(Integer JURIDICAL) {
+        AbonentDTO.JURIDICAL = JURIDICAL;
+    }
+
+    public static Integer getPHISICAL() {
+        return PHISICAL;
+    }
+
+    public static void setPHISICAL(Integer PHISICAL) {
+        AbonentDTO.PHISICAL = PHISICAL;
     }
 }

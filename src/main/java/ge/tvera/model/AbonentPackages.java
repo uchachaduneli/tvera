@@ -9,8 +9,21 @@ public class AbonentPackages {
     private Integer id;
     private Abonent abonent;
     private Package packages;
-    private Integer pointsCount;
     private Timestamp createDate;
+    private Double juridicalPrice;
+    private Double phisicalPrice;
+    private Users user;
+
+    public AbonentPackages(Abonent abonent, Package packages, Double juridicalPrice, Double phisicalPrice, Users user) {
+        this.abonent = abonent;
+        this.packages = packages;
+        this.juridicalPrice = juridicalPrice;
+        this.phisicalPrice = phisicalPrice;
+        this.user = user;
+    }
+
+    public AbonentPackages() {
+    }
 
     @Id
     @Column(name = "id", nullable = false)
@@ -44,16 +57,6 @@ public class AbonentPackages {
     }
 
     @Basic
-    @Column(name = "points_count", nullable = false)
-    public Integer getPointsCount() {
-        return pointsCount;
-    }
-
-    public void setPointsCount(Integer pointsCount) {
-        this.pointsCount = pointsCount;
-    }
-
-    @Basic
     @Column(name = "create_date", nullable = false, updatable = false, insertable = false)
     public Timestamp getCreateDate() {
         return createDate;
@@ -61,5 +64,35 @@ public class AbonentPackages {
 
     public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
+    }
+
+    @Basic
+    @Column(name = "juridical_price", nullable = true, precision = 0)
+    public Double getJuridicalPrice() {
+        return juridicalPrice;
+    }
+
+    public void setJuridicalPrice(Double juridicalPrice) {
+        this.juridicalPrice = juridicalPrice;
+    }
+
+    @Basic
+    @Column(name = "phisical_price", nullable = true, precision = 0)
+    public Double getPhisicalPrice() {
+        return phisicalPrice;
+    }
+
+    public void setPhisicalPrice(Double phisicalPrice) {
+        this.phisicalPrice = phisicalPrice;
+    }
+
+    @JoinColumn(name = "user_id")
+    @OneToOne
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
     }
 }

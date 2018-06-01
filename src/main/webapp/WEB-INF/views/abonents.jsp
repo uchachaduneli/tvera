@@ -9,13 +9,14 @@
 <%@include file="header.jsp" %>
 <script>
 
-  app.controller("angController", function ($scope, $http, $filter) {
+  app.controller("angController", function ($scope, $http, $filter, $window) {
     $scope.start = 0;
     $scope.page = 1;
     $scope.limit = "10";
     $scope.request = {};
     $scope.srchCase = {};
-//        $scope.request.docs = [];
+    $scope.packages = [];
+    $scope.package = {};
 
     $scope.loadMainData = function () {
       $('#loadingModal').modal('show');
@@ -36,6 +37,22 @@
     }
 
     $scope.loadMainData();
+
+    $scope.downloadExcell = function () {
+
+      if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
+        $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
+      }
+      if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
+        $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
+      }
+
+      function redirectToFile() {
+        $window.open("resources/excell/excel.xls", "_blank");
+      }
+
+      ajaxCall($http, "abonent/download-excell", angular.toJson($scope.srchCase), redirectToFile);
+    }
 
     $scope.remove = function (id) {
       if (confirm("Pleace confirm operation?")) {
@@ -114,6 +131,7 @@
       $scope.req.comment = $scope.request.comment;
       $scope.req.billDate = $scope.request.billDate;
       $scope.req.streetId = $scope.request.streetId;
+      $scope.req.juridicalOrPhisical = $scope.request.juridicalOrPhisical;
 
       console.log(angular.toJson($scope.req));
       ajaxCall($http, "abonent/save-abonent", angular.toJson($scope.req), resFunc);
@@ -153,8 +171,109 @@
     }
 
     ajaxCall($http, "misc/get-districts", null, getDistricts);
+
+    function getPackages(res) {
+      $scope.packages = res.data;
+      angular.forEach($scope.packages, function (v, k) {
+        if (v.groupId != 1) {
+          $scope.packages.splice(k, 1);
+        }
+      });
+    }
+
+    ajaxCall($http, "package/get-packages", null, getPackages);
+
+
+    $scope.saveAbonentPackages = function () {
+
+      function resFunc(res) {
+        if (res.errorCode == 0) {
+          successMsg('Operation Successfull');
+          $scope.loadMainData();
+          closeModal('packages');
+        } else {
+          errorMsg('Operation Failed');
+        }
+      }
+
+      $scope.req = {};
+
+      $scope.req.packageTypeId = $scope.package.packageTypeId;
+      $scope.req.servicePointsNumber = $scope.package.servicePointsNumber;
+      $scope.req.abonendId = $scope.request.id;
+
+      console.log(angular.toJson($scope.req));
+      ajaxCall($http, "abonent/save-abonent-packages", angular.toJson($scope.req), resFunc);
+    }
+
+    $scope.loadAbonentPackages = function (id) {
+      if (id != undefined) {
+
+        var selected = $filter('filter')($scope.list, {id: id}, true);
+        $scope.request = selected[0];
+        $scope.package.packageTypeId = $scope.request.packageTypeId;
+        $scope.package.servicePointsNumber = $scope.request.servicePointsNumber;
+
+        function getTypes(res) {
+          $scope.packagetypes = res.data;
+        }
+
+        ajaxCall($http, "misc/get-package-types", null, getTypes);
+      }
+    };
   });
 </script>
+
+<div class="modal fade bs-example-modal-lg not-printable" id="packages" role="dialog"
+     aria-labelledby="packagesModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">აბონენტის პაკეტების მენეჯმენტი</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <form class="form-horizontal">
+            <div class="form-group col-sm-12 ">
+
+              <div class="form-group col-sm-10 ">
+                <label class="control-label col-sm-3">პაკეტი</label>
+                <div class="col-sm-9">
+                  <label ng-repeat="s in packagetypes" class="col-xs-6">
+                    <input type="radio" ng-model="package.packageTypeId" ng-value="s.id"
+                           class="input-sm">&nbsp; {{s.name}}&nbsp;&nbsp;
+                  </label>
+                </div>
+              </div>
+              <div class="form-group col-sm-10 ">
+                <label class="control-label col-sm-3">წერტილების რაოდენობა</label>
+                <div class="col-sm-9">
+                  <input type="number" ng-model="package.servicePointsNumber"
+                         class="form-control input-sm "/>
+                </div>
+              </div>
+
+              <hr class="col-sm-12" style="margin: 0 0 !important;">
+            </div>
+            <div class="form-group col-sm-12 ">
+              <hr class="col-sm-12" style="margin: 0 0 !important;">
+            </div>
+            <div class="form-group col-sm-10"></div>
+            <div class="form-group col-sm-10"></div>
+            <div class="form-group col-sm-12 text-center">
+              <a class="btn btn-app" ng-click="saveAbonentPackages()" ng-disabled="request.packageTypeId > 0">
+                <i class="fa fa-save"></i> შენახვა
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade bs-example-modal-lg" id="detailModal" tabindex="-1" role="dialog"
      aria-labelledby="editModalLabel" aria-hidden="true">
@@ -187,6 +306,10 @@
             <tr>
               <th class="text-right">პირადი N</th>
               <td>{{slcted.personalNumber}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">იურიდიული ფორმა</th>
+              <td>{{slcted.juridicalOrPhisical == 1 ? 'ფიზიკური პირი': 'იურიდიული პირი'}}</td>
             </tr>
             <tr>
               <th class="text-right">მოწყობილობის N</th>
@@ -284,6 +407,17 @@
                        class="form-control input-sm"/>
               </div>
             </div>
+            <div class="form-group col-sm-10">
+              <label class="control-label col-sm-3">იურიდიული ფორმა</label>
+              <div class="col-xs-9 btn-group">
+                <div class="radio col-xs-6">
+                  <label><input type="radio" ng-model="request.juridicalOrPhisical" value="1"
+                                class="input-sm">ფიზიკური პირი</label>&nbsp;
+                  <label><input type="radio" ng-model="request.juridicalOrPhisical" value="2"
+                                class="input-sm">იურიდიული პირი</label>
+                </div>
+              </div>
+            </div>
             <div class="form-group col-sm-10 ">
               <label class="control-label col-sm-3">მოწყობილობის N</label>
               <div class="col-sm-9">
@@ -330,6 +464,7 @@
   </div>
 </div>
 
+
 <div class="row not-printable">
   <div class="col-xs-12">
     <div class="box">
@@ -343,7 +478,12 @@
           </button>
           <%--</c:if>--%>
         </div>
-        <div class="col-md-2 col-xs-offset-8">
+        <div class="col-md-2 col-xs-offset-6">
+          <a ng-click="downloadExcell()" title="ექსელში ექსპორტი" class="btn btn-default pull-right">
+            <i class="fa fa-file-excel-o"></i>
+          </a>
+        </div>
+        <div class="col-md-2">
           <select ng-change="rowNumbersChange()" class="pull-right form-control" ng-model="limit"
                   id="rowCountSelectId">
             <option value="10" selected>მაჩვენე 10</option>
@@ -460,17 +600,21 @@
               <td>{{r.street.incasator.name}}</td>
               <td>{{r.balance}}</td>
               <td class="text-center">
-                <a ng-click="showDetails(r.id)" data-toggle="modal" title="Details"
+                <a ng-click="showDetails(r.id)" data-toggle="modal" title="დეტალები"
                    data-target="#detailModal" class="btn btn-xs">
-                  <i class="fa fa-sticky-note-o"></i>&nbsp; დეტალები
+                  <i class="fa fa-sticky-note-o"></i>
                 </a>&nbsp;&nbsp;
                 <%--<c:if test="<%= isAdmin %>">--%>
-                <a ng-click="edit(r.id)" data-toggle="modal" data-target="#editModal"
+                <a ng-click="edit(r.id)" data-toggle="modal" title="რედაქტირება" data-target="#editModal"
                    class="btn btn-xs">
-                  <i class="fa fa-pencil"></i>&nbsp;რედაქტ.
+                  <i class="fa fa-pencil"></i>
                 </a>&nbsp;&nbsp;
-                <a ng-click="remove(r.id)" class="btn btn-xs">
-                  <i class="fa fa-trash-o"></i>&nbsp;წაშლა
+                <a ng-click="loadAbonentPackages(r.id)" title="პაკეტები" data-toggle="modal"
+                   data-target="#packages" class="btn btn-xs">
+                  <i class="fa fa-tasks"></i>
+                </a>&nbsp;&nbsp;
+                <a ng-click="remove(r.id)" title="წაშლა" class="btn btn-xs">
+                  <i class="fa fa-trash-o"></i>
                 </a>
                 <%--</c:if>--%>
               </td>

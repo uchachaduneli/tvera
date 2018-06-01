@@ -15,6 +15,12 @@ public class PackageDTO {
     private Integer groupId;
     private Integer typeId;
 
+    public static int DISTRIBUTION = 1;
+    public static int EXTERNAL_POINT = 2;
+    public static int INSTALLATION = 3;
+    public static int RESTORATION = 4;
+    public static int FINE = 5;
+
     public static PackageDTO parse(ge.tvera.model.Package record) {
         if (record != null) {
             PackageDTO dto = new PackageDTO();

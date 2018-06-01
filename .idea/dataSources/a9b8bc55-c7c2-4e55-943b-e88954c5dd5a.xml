@@ -107,381 +107,405 @@ scheduler - დასვი 1 ზე ინსერტის დროს თ�
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;1&apos;</DefaultExpression>
     </column>
-    <column id="54" parent="29" name="create_date">
+    <column id="54" parent="29" name="juridical_or_phisical">
       <Position>13</Position>
+      <Comment>1 ფიზიკური / 2 იურიდიული</Comment>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;1&apos;</DefaultExpression>
+    </column>
+    <column id="55" parent="29" name="service_points_number">
+      <Position>14</Position>
+      <Comment>ჩართული წერტილების რაოდენობა</Comment>
+      <DataType>int(11)|0</DataType>
+      <DefaultExpression>&apos;1&apos;</DefaultExpression>
+    </column>
+    <column id="56" parent="29" name="package_type_id">
+      <Position>15</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="57" parent="29" name="create_date">
+      <Position>16</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <key id="55" parent="29" name="PRIMARY">
+    <key id="58" parent="29" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="56" parent="30" name="id">
+    <column id="59" parent="30" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="57" parent="30" name="abonent_id">
+    <column id="60" parent="30" name="abonent_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="58" parent="30" name="package_id">
+    <column id="61" parent="30" name="package_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="59" parent="30" name="points_count">
+    <column id="62" parent="30" name="juridical_price">
       <Position>4</Position>
-      <Comment>დამატებითი წერტილების რაოდენობა(ტელელვიზორის რესივერის ან ეგეთების) </Comment>
+      <DataType>double|0</DataType>
+    </column>
+    <column id="63" parent="30" name="phisical_price">
+      <Position>5</Position>
+      <DataType>double|0</DataType>
+    </column>
+    <column id="64" parent="30" name="user_id">
+      <Position>6</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="60" parent="30" name="create_date">
-      <Position>5</Position>
+    <column id="65" parent="30" name="create_date">
+      <Position>7</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <key id="61" parent="30" name="PRIMARY">
+    <key id="66" parent="30" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="62" parent="31" name="id">
+    <column id="67" parent="31" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="63" parent="31" name="name">
+    <column id="68" parent="31" name="name">
       <Position>2</Position>
       <DataType>varchar(500)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="64" parent="31" name="PRIMARY">
+    <key id="69" parent="31" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="65" parent="32" name="id">
+    <column id="70" parent="32" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="66" parent="32" name="name">
+    <column id="71" parent="32" name="name">
       <Position>2</Position>
       <DataType>varchar(50)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="67" parent="32" name="lastname">
+    <column id="72" parent="32" name="lastname">
       <Position>3</Position>
       <DataType>varchar(50)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="68" parent="32" name="PRIMARY">
+    <key id="73" parent="32" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="69" parent="33" name="id">
+    <column id="74" parent="33" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="70" parent="33" name="name">
+    <column id="75" parent="33" name="name">
       <Position>2</Position>
       <DataType>varchar(300)|0</DataType>
     </column>
-    <column id="71" parent="33" name="personal_price">
+    <column id="76" parent="33" name="personal_price">
       <Position>3</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="72" parent="33" name="juridical_price">
+    <column id="77" parent="33" name="juridical_price">
       <Position>4</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="73" parent="33" name="type_id">
+    <column id="78" parent="33" name="type_id">
       <Position>5</Position>
       <Comment>1 analog TV / 2digital TV / 3 internet</Comment>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="74" parent="33" name="scheduler">
+    <column id="79" parent="33" name="scheduler">
       <Position>6</Position>
       <Comment>1 ki / 2 ara</Comment>
       <DataType>int(11)|0</DataType>
       <DefaultExpression>&apos;2&apos;</DefaultExpression>
     </column>
-    <column id="75" parent="33" name="group_id">
+    <column id="80" parent="33" name="group_id">
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="76" parent="33" name="FK_package_package_group">
+    <index id="81" parent="33" name="FK_package_package_group">
       <ColNames>group_id</ColNames>
     </index>
-    <index id="77" parent="33" name="FK_package_package_type">
+    <index id="82" parent="33" name="FK_package_package_type">
       <ColNames>type_id</ColNames>
     </index>
-    <key id="78" parent="33" name="PRIMARY">
+    <key id="83" parent="33" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="79" parent="33" name="FK_package_package_type">
+    <foreign-key id="84" parent="33" name="FK_package_package_type">
       <ColNames>type_id</ColNames>
       <RefSchemaName>tvera</RefSchemaName>
       <RefTableName>package_type</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="80" parent="33" name="FK_package_package_group">
+    <foreign-key id="85" parent="33" name="FK_package_package_group">
       <ColNames>group_id</ColNames>
       <RefSchemaName>tvera</RefSchemaName>
       <RefTableName>package_group</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="81" parent="34" name="id">
+    <column id="86" parent="34" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="82" parent="34" name="name">
+    <column id="87" parent="34" name="name">
       <Position>2</Position>
       <DataType>varchar(50)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="83" parent="34" name="PRIMARY">
+    <key id="88" parent="34" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="84" parent="35" name="id">
+    <column id="89" parent="35" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="85" parent="35" name="name">
+    <column id="90" parent="35" name="name">
       <Position>2</Position>
       <DataType>varchar(200)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="86" parent="35" name="PRIMARY">
+    <key id="91" parent="35" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="87" parent="36" name="id">
+    <column id="92" parent="36" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="88" parent="36" name="abonent_id">
+    <column id="93" parent="36" name="abonent_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="89" parent="36" name="amount">
+    <column id="94" parent="36" name="amount">
       <Position>3</Position>
       <DataType>double|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="90" parent="36" name="check_number">
+    <column id="95" parent="36" name="check_number">
       <Position>4</Position>
       <Comment>ქვითრის ნომერი</Comment>
       <DataType>varchar(50)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="91" parent="36" name="user_id">
+    <column id="96" parent="36" name="user_id">
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="92" parent="36" name="create_date">
+    <column id="97" parent="36" name="create_date">
       <Position>6</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <index id="93" parent="36" name="FK_payment_users">
+    <index id="98" parent="36" name="FK_payment_users">
       <ColNames>user_id</ColNames>
     </index>
-    <key id="94" parent="36" name="PRIMARY">
+    <key id="99" parent="36" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="95" parent="36" name="FK_payment_users">
+    <foreign-key id="100" parent="36" name="FK_payment_users">
       <ColNames>user_id</ColNames>
       <RefSchemaName>tvera</RefSchemaName>
       <RefTableName>users</RefTableName>
       <RefColNames>user_id</RefColNames>
     </foreign-key>
-    <column id="96" parent="37" name="id">
+    <column id="101" parent="37" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="97" parent="37" name="name">
+    <column id="102" parent="37" name="name">
       <Position>2</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <key id="98" parent="37" name="PRIMARY">
+    <key id="103" parent="37" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="99" parent="38" name="id">
+    <column id="104" parent="38" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="100" parent="38" name="status_id">
+    <column id="105" parent="38" name="status_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="101" parent="38" name="abonent_id">
+    <column id="106" parent="38" name="abonent_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="102" parent="38" name="create_date">
+    <column id="107" parent="38" name="create_date">
       <Position>4</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <key id="103" parent="38" name="PRIMARY">
+    <key id="108" parent="38" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="104" parent="39" name="id">
+    <column id="109" parent="39" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="105" parent="39" name="name">
+    <column id="110" parent="39" name="name">
       <Position>2</Position>
       <DataType>varchar(200)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="106" parent="39" name="incasator_id">
+    <column id="111" parent="39" name="incasator_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="107" parent="39" name="district_id">
+    <column id="112" parent="39" name="district_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="108" parent="39" name="FK_street_incasator">
+    <index id="113" parent="39" name="FK_street_incasator">
       <ColNames>incasator_id</ColNames>
     </index>
-    <index id="109" parent="39" name="FK_street_district">
+    <index id="114" parent="39" name="FK_street_district">
       <ColNames>district_id</ColNames>
     </index>
-    <key id="110" parent="39" name="PRIMARY">
+    <key id="115" parent="39" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="111" parent="39" name="FK_street_incasator">
+    <foreign-key id="116" parent="39" name="FK_street_incasator">
       <ColNames>incasator_id</ColNames>
       <RefSchemaName>tvera</RefSchemaName>
       <RefTableName>incasator</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="112" parent="39" name="FK_street_district">
+    <foreign-key id="117" parent="39" name="FK_street_district">
       <ColNames>district_id</ColNames>
       <RefSchemaName>tvera</RefSchemaName>
       <RefTableName>district</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="113" parent="40" name="user_type_id">
+    <column id="118" parent="40" name="user_type_id">
       <Position>1</Position>
       <DataType>int(5)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="114" parent="40" name="user_type_name">
+    <column id="119" parent="40" name="user_type_name">
       <Position>2</Position>
       <DataType>varchar(200)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="115" parent="40" name="PRIMARY">
+    <key id="120" parent="40" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_type_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="116" parent="41" name="user_id">
+    <column id="121" parent="41" name="user_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="117" parent="41" name="user_desc">
+    <column id="122" parent="41" name="user_desc">
       <Position>2</Position>
       <DataType>varchar(50)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="118" parent="41" name="user_name">
+    <column id="123" parent="41" name="user_name">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="119" parent="41" name="user_password">
+    <column id="124" parent="41" name="user_password">
       <Position>4</Position>
       <DataType>varchar(200)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="120" parent="41" name="type_id">
+    <column id="125" parent="41" name="type_id">
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="121" parent="41" name="deleted">
+    <column id="126" parent="41" name="deleted">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
     </column>
-    <column id="122" parent="41" name="create_date">
+    <column id="127" parent="41" name="create_date">
       <Position>7</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <index id="123" parent="41" name="FK_users_config">
+    <index id="128" parent="41" name="FK_users_config">
       <ColNames>type_id</ColNames>
     </index>
-    <index id="124" parent="41" name="user_name">
+    <index id="129" parent="41" name="user_name">
       <ColNames>user_name</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="125" parent="41" name="PRIMARY">
+    <key id="130" parent="41" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="126" parent="41" name="user_name">
+    <key id="131" parent="41" name="user_name">
       <ColNames>user_name</ColNames>
       <UnderlyingIndexName>user_name</UnderlyingIndexName>
     </key>
-    <foreign-key id="127" parent="41" name="FK_users_config">
+    <foreign-key id="132" parent="41" name="FK_users_config">
       <ColNames>type_id</ColNames>
       <RefSchemaName>tvera</RefSchemaName>
       <RefTableName>user_types</RefTableName>

@@ -19,6 +19,14 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.8-beta5</version>
+            <type>jar</type>
+        </dependency>
+
         <!-- log4j -->
         <dependency>
             <groupId>log4j</groupId>

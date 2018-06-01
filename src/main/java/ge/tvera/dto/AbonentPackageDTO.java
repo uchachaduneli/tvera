@@ -14,18 +14,22 @@ public class AbonentPackageDTO {
     private AbonentDTO abonent;
     private PackageDTO packages;
     private Integer packageId;
-    private Integer pointsCount;
     @JsonSerialize(using = JsonDateTimeSerializeSupport.class)
     private Date createDate;
+    private Double juridicalPrice;
+    private Double phisicalPrice;
 
     public static AbonentPackageDTO parse(AbonentPackages record) {
         if (record != null) {
             AbonentPackageDTO dto = new AbonentPackageDTO();
             dto.setId(record.getId());
-            dto.setPointsCount(record.getPointsCount());
             dto.setCreateDate(record.getCreateDate());
             dto.setAbonent(AbonentDTO.parse(record.getAbonent()));
             dto.setPackages(PackageDTO.parse(record.getPackages()));
+            dto.setAbonentId(record.getAbonent().getId());
+            dto.setPackageId(record.getPackages().getId());
+            dto.setJuridicalPrice(record.getJuridicalPrice());
+            dto.setPhisicalPrice(record.getPhisicalPrice());
             return dto;
         } else return null;
     }
@@ -36,6 +40,22 @@ public class AbonentPackageDTO {
             list.add(AbonentPackageDTO.parse(record));
         }
         return list;
+    }
+
+    public Double getJuridicalPrice() {
+        return juridicalPrice;
+    }
+
+    public void setJuridicalPrice(Double juridicalPrice) {
+        this.juridicalPrice = juridicalPrice;
+    }
+
+    public Double getPhisicalPrice() {
+        return phisicalPrice;
+    }
+
+    public void setPhisicalPrice(Double phisicalPrice) {
+        this.phisicalPrice = phisicalPrice;
     }
 
     public Integer getId() {
@@ -76,14 +96,6 @@ public class AbonentPackageDTO {
 
     public void setPackageId(Integer packageId) {
         this.packageId = packageId;
-    }
-
-    public Integer getPointsCount() {
-        return pointsCount;
-    }
-
-    public void setPointsCount(Integer pointsCount) {
-        this.pointsCount = pointsCount;
     }
 
     public Date getCreateDate() {
