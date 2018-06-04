@@ -24,7 +24,7 @@ public class PackageController {
     @RequestMapping("/get-packages")
     @ResponseBody
     private Response getPackages() throws Exception {
-        return Response.withSuccess(packageService.getPackages());
+        return Response.withSuccess(PackageDTO.parseToList(packageService.getPackages()));
     }
 
     @RequestMapping({"/save-package"})

@@ -21,8 +21,8 @@ public class PackageService {
     @Autowired
     private PackageDAO packageDAO;
 
-    public List<PackageDTO> getPackages() {
-        return PackageDTO.parseToList(packageDAO.getAll(Package.class));
+    public List<Package> getPackages() {
+        return packageDAO.getAll(Package.class);
     }
 
     @Transactional(rollbackFor = Throwable.class)

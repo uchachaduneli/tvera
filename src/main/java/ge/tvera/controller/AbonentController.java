@@ -1,9 +1,12 @@
 package ge.tvera.controller;
 
 import ge.tvera.dto.AbonentDTO;
+import ge.tvera.dto.PackageDTO;
 import ge.tvera.misc.Response;
+import ge.tvera.model.Package;
 import ge.tvera.request.AbonentPackagesRequest;
 import ge.tvera.service.AbonentService;
+import ge.tvera.service.PackageService;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ public class AbonentController {
 
     @Autowired
     private AbonentService abonentService;
+
+    @Autowired
+    private PackageService packageService;
 
     @RequestMapping("/get-abonents")
     @ResponseBody
@@ -59,7 +65,7 @@ public class AbonentController {
     @RequestMapping({"/get-abonent-packages"})
     @ResponseBody
     public Response getAbonentPackages(@RequestParam int id) {
-        return Response.withSuccess(abonentService.getAbonentPackages(id));
+        return Response.withSuccess(PackageDTO.parseToList(abonentService.getAbonentPackages(id)));
     }
 
     @RequestMapping({"/save-abonent-packages"})

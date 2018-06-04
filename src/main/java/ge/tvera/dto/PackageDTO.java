@@ -14,12 +14,19 @@ public class PackageDTO {
     private PackageTypeDTO type;
     private Integer groupId;
     private Integer typeId;
+    private Integer externalPointCount;
 
-    public static int DISTRIBUTION = 1;
-    public static int EXTERNAL_POINT = 2;
-    public static int INSTALLATION = 3;
-    public static int RESTORATION = 4;
-    public static int FINE = 5;
+    public static final int DISTRIBUTION = 1;
+    public static final int INSTALLATION = 3;
+    public static final int RESTORATION = 4;
+    public static final int FINE = 5;
+    public static final int DISTRIBUTION_ON_EXTRA_POINT = 6;
+    public static final int EXTRA_POINT_INSTALLATION = 7;
+    public static final int PORTIREBA = 8;
+
+
+    public static int SCHEDULED = 1;
+    public static int NOTSCHEDULED = 2;
 
     public static PackageDTO parse(ge.tvera.model.Package record) {
         if (record != null) {
@@ -115,5 +122,57 @@ public class PackageDTO {
 
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
+    }
+
+    public Integer getExternalPointCount() {
+        return externalPointCount;
+    }
+
+    public void setExternalPointCount(Integer externalPointCount) {
+        this.externalPointCount = externalPointCount;
+    }
+
+    public static int getDISTRIBUTION() {
+        return DISTRIBUTION;
+    }
+
+    public static int getINSTALLATION() {
+        return INSTALLATION;
+    }
+
+    public static int getRESTORATION() {
+        return RESTORATION;
+    }
+
+    public static int getFINE() {
+        return FINE;
+    }
+
+    public static int getDistributionOnExtraPoint() {
+        return DISTRIBUTION_ON_EXTRA_POINT;
+    }
+
+    public static int getExtraPointInstallation() {
+        return EXTRA_POINT_INSTALLATION;
+    }
+
+    public static int getPORTIREBA() {
+        return PORTIREBA;
+    }
+
+    public static int getSCHEDULED() {
+        return SCHEDULED;
+    }
+
+    public static void setSCHEDULED(int SCHEDULED) {
+        PackageDTO.SCHEDULED = SCHEDULED;
+    }
+
+    public static int getNOTSCHEDULED() {
+        return NOTSCHEDULED;
+    }
+
+    public static void setNOTSCHEDULED(int NOTSCHEDULED) {
+        PackageDTO.NOTSCHEDULED = NOTSCHEDULED;
     }
 }

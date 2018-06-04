@@ -16,6 +16,8 @@
     $scope.request = {};
     $scope.srchCase = {};
     $scope.packages = [];
+    $scope.abonentPackages = [];
+    $scope.abonentPackagesBeforeSave = [];
     $scope.package = {};
 
     $scope.loadMainData = function () {
@@ -24,6 +26,7 @@
       function getMainData(res) {
         $scope.list = res.data;
         $('#loadingModal').modal('hide');
+        console.log($scope.list);
       }
 
       if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
@@ -172,17 +175,15 @@
 
     ajaxCall($http, "misc/get-districts", null, getDistricts);
 
-    function getPackages(res) {
-      $scope.packages = res.data;
-      angular.forEach($scope.packages, function (v, k) {
-        if (v.groupId != 1) {
-          $scope.packages.splice(k, 1);
-        }
-      });
+    $scope.getPackages = function () {
+      function setPackages(res) {
+        $scope.packages = res.data;
+      }
+
+      ajaxCall($http, "package/get-packages", null, setPackages);
     }
 
-    ajaxCall($http, "package/get-packages", null, getPackages);
-
+    $scope.getPackages();
 
     $scope.saveAbonentPackages = function () {
 
@@ -198,27 +199,45 @@
 
       $scope.req = {};
 
-      $scope.req.packageTypeId = $scope.package.packageTypeId;
-      $scope.req.servicePointsNumber = $scope.package.servicePointsNumber;
+      $scope.req.packageTypeId = $scope.request.packageTypeId;
       $scope.req.abonendId = $scope.request.id;
+      $scope.req.abonentPackages = $scope.abonentPackages;
 
       console.log(angular.toJson($scope.req));
       ajaxCall($http, "abonent/save-abonent-packages", angular.toJson($scope.req), resFunc);
     }
 
     $scope.loadAbonentPackages = function (id) {
+//      $scope.getPackages();
+      $scope.abonentPackages = [];
       if (id != undefined) {
 
         var selected = $filter('filter')($scope.list, {id: id}, true);
         $scope.request = selected[0];
         $scope.package.packageTypeId = $scope.request.packageTypeId;
-        $scope.package.servicePointsNumber = $scope.request.servicePointsNumber;
 
-        function getTypes(res) {
-          $scope.packagetypes = res.data;
+        function getAbonentPackages(res) {
+          $scope.abonentPackages = res.data;
+          $scope.abonentPackagesBeforeSave = angular.copy($scope.abonentPackages);
+          console.log($scope.abonentPackages);
+          angular.forEach($scope.abonentPackages, function (v) {
+            if (v.group.id == 6 || v.group.id == 7) {
+              v.externalPointCount = $scope.request.servicePointsNumber;
+              $filter('filter')($scope.packages, {id: v.id}, true)[0].externalPointCount = $scope.request.servicePointsNumber;
+            }
+          });
         }
 
-        ajaxCall($http, "misc/get-package-types", null, getTypes);
+        ajaxCall($http, "abonent/get-abonent-packages?id=" + $scope.request.id, null, getAbonentPackages);
+      }
+    };
+
+    $scope.isChecked = function (value) {
+      var idx = $filter('filter')($scope.abonentPackagesBeforeSave, {id: value.id}, true);
+      if (idx[0] != undefined) {
+        return true;
+      } else {
+        return false;
       }
     };
   });
@@ -227,7 +246,7 @@
 <div class="modal fade bs-example-modal-lg not-printable" id="packages" role="dialog"
      aria-labelledby="packagesModalLabel"
      aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -239,27 +258,36 @@
           <form class="form-horizontal">
             <div class="form-group col-sm-12 ">
 
-              <div class="form-group col-sm-10 ">
-                <label class="control-label col-sm-3">პაკეტი</label>
-                <div class="col-sm-9">
-                  <label ng-repeat="s in packagetypes" class="col-xs-6">
-                    <input type="radio" ng-model="package.packageTypeId" ng-value="s.id"
-                           class="input-sm">&nbsp; {{s.name}}&nbsp;&nbsp;
-                  </label>
-                </div>
-              </div>
-              <div class="form-group col-sm-10 ">
-                <label class="control-label col-sm-3">წერტილების რაოდენობა</label>
-                <div class="col-sm-9">
-                  <input type="number" ng-model="package.servicePointsNumber"
-                         class="form-control input-sm "/>
-                </div>
+              <label class="control-label col-sm-1"></label>
+              <div class="col-sm-11 list-group">
+                <label ng-repeat="t in packages" class="col-sm-12 list-group-item">
+                  <input type="checkbox" id="typechecks{{t.id}}" ng-disabled="isChecked(t)"
+                         checklist-model="abonentPackages" checklist-value="t">&nbsp; {{t.type.name}} -
+                  {{t.name}}&nbsp;(იურ:{{t.juridicalPrice}}ლ. / ფიზ:{{t.personalPrice}}ლ.)
+                  <input type="number" ng-model="t.externalPointCount" class="pull-right text-center"
+                         placeholder="რაოდენობა"
+                         ng-show="t.group.id == 7 || t.group.id == 6">
+                </label>
+                <hr class="col-sm-11" style="margin: 0 0 !important;">
               </div>
 
-              <hr class="col-sm-12" style="margin: 0 0 !important;">
-            </div>
-            <div class="form-group col-sm-12 ">
-              <hr class="col-sm-12" style="margin: 0 0 !important;">
+              <%--<div class="form-group col-sm-10 ">--%>
+              <%--<label class="control-label col-sm-3">პაკეტი</label>--%>
+              <%--<div class="col-sm-9">--%>
+              <%--<label ng-repeat="s in packagetypes" class="col-xs-6">--%>
+              <%--<input type="radio" ng-model="package.packageTypeId" ng-value="s.id"--%>
+              <%--class="input-sm">&nbsp; {{s.name}}&nbsp;&nbsp;--%>
+              <%--</label>--%>
+              <%--</div>--%>
+              <%--</div>--%>
+              <%--<div class="form-group col-sm-10 ">--%>
+              <%--<label class="control-label col-sm-3">წერტილების რაოდენობა</label>--%>
+              <%--<div class="col-sm-9">--%>
+              <%--<input type="number" ng-model="package.servicePointsNumber"--%>
+              <%--class="form-control input-sm "/>--%>
+              <%--</div>--%>
+              <%--</div>--%>
+
             </div>
             <div class="form-group col-sm-10"></div>
             <div class="form-group col-sm-10"></div>

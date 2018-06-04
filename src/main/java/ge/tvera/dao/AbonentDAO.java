@@ -4,12 +4,14 @@ package ge.tvera.dao;
 import ge.tvera.dto.AbonentDTO;
 import ge.tvera.model.Abonent;
 import ge.tvera.model.AbonentPackages;
+import ge.tvera.model.Package;
 import ge.tvera.model.StatusHistory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,11 +75,16 @@ public class AbonentDAO extends AbstractDAO {
         return query.getResultList();
     }
 
-    public List<AbonentPackages> getAbonentPackages(int id) {
+    public List<Package> getAbonentPackages(int id) {
         StringBuilder q = new StringBuilder();
         q.append("Select e From ").append(AbonentPackages.class.getSimpleName()).append(" e Where abonent.id='").append(id).append("'");
         TypedQuery<AbonentPackages> query = entityManager.createQuery(q.toString(), AbonentPackages.class);
-        return query.getResultList();
+
+        List<Package> packages = new ArrayList<>();
+        for (AbonentPackages abPacks : query.getResultList()) {
+            packages.add(abPacks.getPackages());
+        }
+        return packages;
     }
 
 }

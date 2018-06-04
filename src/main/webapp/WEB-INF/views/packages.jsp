@@ -228,6 +228,21 @@
                 </div>
               </div>
             </div>
+            <div class="form-group col-sm-10">
+              <label class="control-label col-sm-3">გადახდის მეთოდი</label>
+              <div class="col-xs-9 btn-group">
+                <div class="radio col-xs-12">
+                  <label class="col-xs-6">
+                    <input type="radio" ng-model="request.scheduler" ng-value="1"
+                           class="input-sm">სისტემატიური&nbsp;&nbsp;
+                  </label>
+                  <label class="col-xs-6">
+                    <input type="radio" ng-model="request.scheduler" ng-value="2"
+                           class="input-sm">ერთჯერადი&nbsp;&nbsp;
+                  </label>
+                </div>
+              </div>
+            </div>
             <div class="form-group col-sm-10"></div>
             <div class="form-group col-sm-10"></div>
             <div class="form-group col-sm-12 text-center">

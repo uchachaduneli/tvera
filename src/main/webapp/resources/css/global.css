@@ -47,3 +47,10 @@ input[type="radio"] {
         transform: rotate(360deg);
     }
 }
+
+@media (min-width: 900px) {
+    .modal-xl {
+        width: 90%;
+        max-width: 1200px;
+    }
+}

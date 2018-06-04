@@ -1,10 +1,23 @@
 package ge.tvera.request;
 
+import ge.tvera.dto.PackageDTO;
+
+import java.util.List;
+
 public class AbonentPackagesRequest {
+    private List<PackageDTO> abonentPackages;
     private Integer packageTypeId;
     private Integer servicePointsNumber;
     private Integer abonendId;
     private Integer UserId;//author of package Actions
+
+    public List<PackageDTO> getAbonentPackages() {
+        return abonentPackages;
+    }
+
+    public void setAbonentPackages(List<PackageDTO> abonentPackages) {
+        this.abonentPackages = abonentPackages;
+    }
 
     public Integer getPackageTypeId() {
         return packageTypeId;
