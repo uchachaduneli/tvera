@@ -528,7 +528,13 @@
           <div id="filter-panel" class="filter-panel">
             <div class="panel panel-default">
               <div class="panel-body">
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-1">
+                  <label class="col-sm-12" title="დავალიანების მქონე აბონენტები">
+                    <input type="checkbox" class="srch" ng-true-value="-1" ng-change="loadMainData()"
+                           ng-false-value="0" ng-init="0" ng-model="srchCase.hasBill" >&nbsp; დავ.
+                  </label>
+                </div>
+                <div class="form-group col-md-1">
                   <input type="text" class="form-control srch" ng-model="srchCase.id"
                          placeholder="ID">
                 </div>
@@ -579,7 +585,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                   <div class="input-group">
                     <div class="input-append">
                       <input type="text" class="form-control srch dateInput"
@@ -592,9 +598,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-1">
                   <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
-                    <span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;
+                    <span class="fa fa-search"></span> &nbsp; ძებნა
                   </button>
                 </div>
               </div>

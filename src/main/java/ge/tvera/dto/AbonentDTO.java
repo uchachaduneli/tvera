@@ -35,6 +35,7 @@ public class AbonentDTO {
     private Integer servicePointsNumber;
     private PackageTypeDTO packageType;
     private Integer packageTypeId;
+    private Integer hasBill; // -1 დავალიანების მქონე აბონენტები; 0 ყველა
 
     public static Integer JURIDICAL = 2;
     public static Integer PHISICAL = 1;
@@ -274,5 +275,13 @@ public class AbonentDTO {
 
     public static void setPHISICAL(Integer PHISICAL) {
         AbonentDTO.PHISICAL = PHISICAL;
+    }
+
+    public Integer getHasBill() {
+        return hasBill;
+    }
+
+    public void setHasBill(Integer hasBill) {
+        this.hasBill = hasBill;
     }
 }

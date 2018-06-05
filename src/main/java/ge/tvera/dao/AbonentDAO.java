@@ -60,6 +60,9 @@ public class AbonentDAO extends AbstractDAO {
         if (srchRequest.getIncasatorId() != null) {
             q.append(" and e.street.incasator.id ='").append(srchRequest.getIncasatorId()).append("'");
         }
+        if (srchRequest.getHasBill() != null && srchRequest.getHasBill() == -1) {
+            q.append(" and e.balance > 0");
+        }
         if (srchRequest.getBillDate() != null && srchRequest.getBillDateTo() != null) {
             q.append(" and e.billDate between '").append(srchRequest.getBillDate()).append("' and '").append(srchRequest.getBillDateTo()).append("'");
         }
