@@ -292,7 +292,7 @@
             <div class="form-group col-sm-10"></div>
             <div class="form-group col-sm-10"></div>
             <div class="form-group col-sm-12 text-center">
-              <a class="btn btn-app" ng-click="saveAbonentPackages()" ng-disabled="request.packageTypeId > 0">
+              <a class="btn btn-app" ng-click="saveAbonentPackages()">
                 <i class="fa fa-save"></i> შენახვა
               </a>
             </div>
