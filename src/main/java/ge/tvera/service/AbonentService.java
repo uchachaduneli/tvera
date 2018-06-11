@@ -113,38 +113,35 @@ public class AbonentService {
                                     billSum -= pack.getPersonalPrice() * (abonent.getServicePointsNumber() - pack.getExternalPointCount());
                                     balance -= pack.getPersonalPrice() * (abonent.getServicePointsNumber() - pack.getExternalPointCount());
                                 }
+                                servicePointsNumber = pack.getExternalPointCount();
                             } else { // თუ წერტილების რაოდენობა გაიზარდა
-                                if (abonent.getServicePointsNumber() < pack.getExternalPointCount()) {
-                                    if (isJuridical) {
-                                        billSum += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
-                                        balance += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
-                                    } else {
-                                        billSum += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
-                                        balance += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
-                                    }
+                                if (isJuridical) {
+                                    billSum += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                    balance += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                } else {
+                                    billSum += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                    balance += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
                                 }
+                                servicePointsNumber = pack.getExternalPointCount();
                             }
                         }
                         break;
                     case PackageDTO.EXTRA_POINT_INSTALLATION:
                         if (abonent.getServicePointsNumber() != pack.getExternalPointCount() && pack.getExternalPointCount() != null) {
-
                             if (abonent.getServicePointsNumber() > pack.getExternalPointCount()) {// თუ წერტილების რაოდენობა შემცირდა
                                 if (isJuridical) {
                                     balance -= pack.getJuridicalPrice() * (abonent.getServicePointsNumber() - pack.getExternalPointCount());
                                 } else {
                                     balance -= pack.getPersonalPrice() * (abonent.getServicePointsNumber() - pack.getExternalPointCount());
                                 }
-                                servicePointsNumber = (abonent.getServicePointsNumber() - pack.getExternalPointCount());
+                                servicePointsNumber = pack.getExternalPointCount();
                             } else { // თუ წერტილების რაოდენობა გაიზარდა
-                                if (abonent.getServicePointsNumber() < pack.getExternalPointCount()) {
-                                    if (isJuridical) {
-                                        balance += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
-                                    } else {
-                                        balance += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
-                                    }
-                                    servicePointsNumber = (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                if (isJuridical) {
+                                    balance += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                } else {
+                                    balance += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
                                 }
+                                servicePointsNumber = pack.getExternalPointCount();
                             }
 
                         }
