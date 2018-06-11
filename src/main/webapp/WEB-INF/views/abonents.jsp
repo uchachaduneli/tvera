@@ -246,7 +246,7 @@
 <div class="modal fade bs-example-modal-lg not-printable" id="packages" role="dialog"
      aria-labelledby="packagesModalLabel"
      aria-hidden="true">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
