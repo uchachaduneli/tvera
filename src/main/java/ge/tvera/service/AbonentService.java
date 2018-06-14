@@ -195,6 +195,7 @@ public class AbonentService {
             obj.setServicePointsNumber(tmp.getServicePointsNumber());
             obj = (Abonent) abonentDAO.update(obj);
         } else {
+            obj.setBalance(0.0);
             obj = (Abonent) abonentDAO.create(obj);
         }
         return obj;
