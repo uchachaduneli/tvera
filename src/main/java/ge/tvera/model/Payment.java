@@ -54,7 +54,7 @@ public class Payment {
     }
 
     @Basic
-    @Column(name = "check_number", nullable = false, length = 50)
+    @Column(name = "check_number", length = 50)
     public String getCheckNumber() {
         return checkNumber;
     }
