@@ -3,10 +3,7 @@ package ge.tvera.service;
 
 import ge.tvera.dao.AbonentDAO;
 import ge.tvera.dao.PackageDAO;
-import ge.tvera.dto.AbonentDTO;
-import ge.tvera.dto.AbonentPackageDTO;
-import ge.tvera.dto.PackageDTO;
-import ge.tvera.dto.StatusHistoryDTO;
+import ge.tvera.dto.*;
 import ge.tvera.model.*;
 import ge.tvera.model.Package;
 import ge.tvera.request.AbonentPackagesRequest;
@@ -196,6 +193,7 @@ public class AbonentService {
             obj = (Abonent) abonentDAO.update(obj);
         } else {
             obj.setBalance(0.0);
+            obj.setStatus((Status) abonentDAO.find(Status.class, StatusDTO.STATUS_ACTIVE));
             obj = (Abonent) abonentDAO.create(obj);
         }
         return obj;
