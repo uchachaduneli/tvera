@@ -10,6 +10,9 @@ public class StatusDTO {
     private Integer id;
     private String name;
 
+    public static int STATUS_ACTIVE = 1;
+    public static int STATUS_DISABLED = 2;
+
 
     public static StatusDTO parse(Status record) {
         StatusDTO dto = new StatusDTO();
