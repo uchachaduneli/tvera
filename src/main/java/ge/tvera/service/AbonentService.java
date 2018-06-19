@@ -36,8 +36,8 @@ public class AbonentService {
 
         boolean isJuridical = abonent.getJuridicalOrPhisical() == AbonentDTO.JURIDICAL;
 
-        Double billSum = abonent == null ? 0.0 : abonent.getBill();
-        Double balance = abonent == null ? 0.0 : abonent.getBalance();
+        Double billSum = abonent == null || abonent.getBill() == null ? 0.0 : abonent.getBill();
+        Double balance = abonent == null || abonent.getBalance() == null ? 0.0 : abonent.getBalance();
 
         Integer servicePointsNumber = request.getAbonentPackages().isEmpty() ? 0 : 1;
 
