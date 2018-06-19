@@ -241,6 +241,15 @@
       }
     };
   });
+
+  $(document).ready(function () {
+
+    $('#packages').on('hidden.bs.modal', function(){
+      // $(this).find('form')[0].reset();
+      window.location.reload();
+      // angular.$scope.$apply();
+    });
+  });
 </script>
 
 <div class="modal fade bs-example-modal-lg not-printable" id="packages" role="dialog"
