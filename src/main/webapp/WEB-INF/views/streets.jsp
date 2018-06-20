@@ -86,6 +86,7 @@
       $scope.req.id = $scope.request.id;
       $scope.req.name = $scope.request.name;
       $scope.req.incasatorId = $scope.request.incasatorId;
+      $scope.req.districtId = $scope.request.districtId;
 
       console.log(angular.toJson($scope.req));
       ajaxCall($http, "street/save-street", angular.toJson($scope.req), resFunc);
@@ -113,6 +114,12 @@
     }
 
     ajaxCall($http, "misc/get-incasators", null, getIncasators);
+
+    function getDistricts(res) {
+      $scope.districts = res.data;
+    }
+
+    ajaxCall($http, "misc/get-districts?start=0&limit=99999", null, getDistricts);
   });
 </script>
 
@@ -139,6 +146,10 @@
             <tr>
               <th class="text-right">ინკასატორი</th>
               <td>{{slcted.incasator.name}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">უბანი</th>
+              <td>{{slcted.district.name}}</td>
             </tr>
           </table>
           <div class="form-group"><br/></div>
@@ -167,6 +178,17 @@
               <div class="col-sm-9">
                 <input type="text" ng-model="request.name" name="name" required
                        class="form-control input-sm"/>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">უბანი</label>
+              <div class="col-sm-9">
+                <select class="form-control" ng-model="request.districtId">
+                  <option ng-repeat="s in districts"
+                          ng-selected="s.id === request.districtId"
+                          ng-value="s.id">{{s.name}}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="form-group col-sm-10 ">
