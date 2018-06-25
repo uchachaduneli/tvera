@@ -6,8 +6,7 @@ import javax.persistence.*;
 public class Street {
     private Integer id;
     private String name;
-    private Incasator incasator;
-    private District district;
+
 
     @Id
     @Column(name = "id", nullable = false)
@@ -30,23 +29,4 @@ public class Street {
         this.name = name;
     }
 
-    @JoinColumn(name = "incasator_id")
-    @OneToOne
-    public Incasator getIncasator() {
-        return incasator;
-    }
-
-    public void setIncasator(Incasator incasator) {
-        this.incasator = incasator;
-    }
-
-    @JoinColumn(name = "district_id")
-    @OneToOne
-    public District getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(District district) {
-        this.district = district;
-    }
 }

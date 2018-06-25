@@ -6,6 +6,8 @@ import javax.persistence.*;
 public class District {
     private Integer id;
     private String name;
+    private Incasator incasator;
+    private Street street;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -28,23 +30,23 @@ public class District {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        District district = (District) o;
-
-        if (id != null ? !id.equals(district.id) : district.id != null) return false;
-        if (name != null ? !name.equals(district.name) : district.name != null) return false;
-
-        return true;
+    @JoinColumn(name = "incasator_id")
+    @OneToOne
+    public Incasator getIncasator() {
+        return incasator;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+    public void setIncasator(Incasator incasator) {
+        this.incasator = incasator;
+    }
+
+    @JoinColumn(name = "street_id")
+    @OneToOne
+    public Street getStreet() {
+        return street;
+    }
+
+    public void setStreet(Street street) {
+        this.street = street;
     }
 }

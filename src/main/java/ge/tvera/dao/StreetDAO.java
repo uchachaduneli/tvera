@@ -32,9 +32,7 @@ public class StreetDAO extends AbstractDAO {
         if (srchRequest.getId() != null && srchRequest.getId() > 0) {
             q.append(" and e.id ='").append(srchRequest.getId()).append("'");
         }
-        if (srchRequest.getIncasatorId() != null && srchRequest.getIncasatorId() > 0) {
-            q.append(" and e.incasator.id ='").append(srchRequest.getIncasatorId()).append("'");
-        }
+
         if (srchRequest.getName() != null) {
             q.append(" and e.name like '%").append(srchRequest.getName()).append("%'");
         }

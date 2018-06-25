@@ -24,7 +24,7 @@
         $('#loadingModal').modal('hide');
       }
 
-      ajaxCall($http, "misc/get-districts?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
+      ajaxCall($http, "misc/get-districts", null, getMainData);
     }
 
     $scope.loadMainData();
@@ -84,6 +84,8 @@
 
       $scope.req.id = $scope.request.id;
       $scope.req.name = $scope.request.name;
+      $scope.req.incasatorId = $scope.request.incasatorId;
+      $scope.req.streetId = $scope.request.streetId;
 
       console.log(angular.toJson($scope.req));
       ajaxCall($http, "misc/save-district", angular.toJson($scope.req), resFunc);
@@ -105,6 +107,18 @@
       }
       $scope.loadMainData();
     }
+
+    function getIncasators(res) {
+      $scope.incasators = res.data;
+    }
+
+    ajaxCall($http, "misc/get-incasators", null, getIncasators);
+
+    function getStreets(res) {
+      $scope.streets = res.data;
+    }
+
+    ajaxCall($http, "street/get-streets?start=0&limit=99999", angular.toJson({}), getStreets);
   });
 </script>
 
@@ -127,6 +141,14 @@
             <tr>
               <th class="text-right">დასახელება</th>
               <td>{{slcted.name}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">ინკასატორი</th>
+              <td>{{slcted.incasator.name}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">ქუჩა</th>
+              <td>{{slcted.street.name}}</td>
             </tr>
           </table>
           <div class="form-group"><br/></div>
@@ -153,8 +175,30 @@
             <div class="form-group col-sm-10 ">
               <label class="control-label col-sm-3">დასახელება</label>
               <div class="col-sm-9">
-                <textarea cols="5" rows="5" type="text" ng-model="request.name" name="name" required
-                          class="form-control input-sm"></textarea>
+                <input type="text" ng-model="request.name" name="name" required
+                       class="form-control input-sm">
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">ქუჩა</label>
+              <div class="col-sm-9">
+                <select class="form-control" ng-model="request.streetId">
+                  <option ng-repeat="s in streets"
+                          ng-selected="s.id === request.streetId"
+                          ng-value="s.id">{{s.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">ინკასატორი</label>
+              <div class="col-sm-9">
+                <select class="form-control" ng-model="request.incasatorId">
+                  <option ng-repeat="s in incasators"
+                          ng-selected="s.id === request.incasatorId"
+                          ng-value="s.id">{{s.name}}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="form-group col-sm-10"></div>
@@ -226,6 +270,8 @@
             <tr>
               <th>ID</th>
               <th>დასახელება</th>
+              <th>ინკასატორი</th>
+              <th>ქუჩა</th>
               <th class="col-md-4 text-center">Action</th>
             </tr>
             </thead>
@@ -233,6 +279,8 @@
             <tr ng-repeat="r in list" ng-dblclick="handleDoubleClick(r.id)">
               <td>{{r.id}}</td>
               <td>{{r.name}}</td>
+              <td>{{r.incasator.name}}</td>
+              <td>{{r.street.name}}</td>
               <td class="text-center">
                 <a ng-click="showDetails(r.id)" data-toggle="modal" title="Details"
                    data-target="#detailModal" class="btn btn-xs">

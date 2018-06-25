@@ -6,10 +6,7 @@ import ge.tvera.dto.DistrictDTO;
 import ge.tvera.dto.IncasatorDTO;
 import ge.tvera.dto.PackageGroupDTO;
 import ge.tvera.dto.PackageTypeDTO;
-import ge.tvera.model.District;
-import ge.tvera.model.Incasator;
-import ge.tvera.model.PackageGroup;
-import ge.tvera.model.PackageType;
+import ge.tvera.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +39,8 @@ public class MiscService {
 
         District obj = new District();
         obj.setName(request.getName());
+        obj.setIncasator((Incasator) miscDAO.find(Incasator.class, request.getIncasatorId()));
+        obj.setStreet((Street) miscDAO.find(Street.class, request.getStreetId()));
 
         if (request.getId() != null) {
             obj.setId(request.getId());
