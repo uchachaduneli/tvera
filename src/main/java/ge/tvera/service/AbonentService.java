@@ -180,6 +180,7 @@ public class AbonentService {
         obj.setComment(request.getComment());
         obj.setBillDate(new java.sql.Date(request.getBillDate().getTime()));
         obj.setStreet((Street) abonentDAO.find(Street.class, request.getStreetId()));
+        obj.setDistrict((District) abonentDAO.find(District.class, request.getDistrictId()));
         obj.setJuridicalOrPhisical(request.getJuridicalOrPhisical());
 
         if (request.getId() != null) {

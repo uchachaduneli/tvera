@@ -22,6 +22,7 @@ public class Abonent {
     private Integer juridicalOrPhisical;
     private Integer servicePointsNumber;
     private PackageType packageType;
+    private District district;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -182,5 +183,15 @@ public class Abonent {
 
     public void setPackageType(PackageType packageType) {
         this.packageType = packageType;
+    }
+
+    @JoinColumn(name = "district_id")
+    @OneToOne
+    public District getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
     }
 }

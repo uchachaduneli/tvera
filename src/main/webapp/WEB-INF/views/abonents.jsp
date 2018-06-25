@@ -134,6 +134,7 @@
       $scope.req.comment = $scope.request.comment;
       $scope.req.billDate = $scope.request.billDate;
       $scope.req.streetId = $scope.request.streetId;
+      $scope.req.districtId = $scope.request.districtId;
       $scope.req.juridicalOrPhisical = $scope.request.juridicalOrPhisical;
 
       console.log(angular.toJson($scope.req));
@@ -366,7 +367,7 @@
             </tr>
             <tr>
               <th class="text-right">უბანი</th>
-              <td>{{slcted.street.district.name}}</td>
+              <td>{{slcted.district.name}}</td>
             </tr>
             <tr>
               <th class="text-right">ქუჩა</th>
@@ -467,6 +468,16 @@
               <div class="col-sm-9">
                 <select class="form-control" ng-model="request.streetId">
                   <option ng-repeat="s in streets" ng-selected="s.id === request.streetId" ng-value="s.id">
+                    {{s.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">უბანი</label>
+              <div class="col-sm-9">
+                <select class="form-control" ng-model="request.districtId">
+                  <option ng-repeat="s in districts" ng-selected="s.id === request.districtId" ng-value="s.id">
                     {{s.name}}
                   </option>
                 </select>

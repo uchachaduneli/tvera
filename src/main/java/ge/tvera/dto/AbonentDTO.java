@@ -19,7 +19,6 @@ public class AbonentDTO {
     private StreetDTO street;
     private Integer streetId;
     private Integer incasatorId;
-    private Integer districtId;
     private Double balance;
     private String abonentNumber;
     private String personalNumber;
@@ -35,6 +34,8 @@ public class AbonentDTO {
     private Integer servicePointsNumber;
     private PackageTypeDTO packageType;
     private Integer packageTypeId;
+    private DistrictDTO district;
+    private Integer districtId;
     private Integer hasBill; // -1 დავალიანების მქონე აბონენტები; 0 ყველა
 
     public static Integer JURIDICAL = 2;
@@ -52,6 +53,8 @@ public class AbonentDTO {
             dto.setCreateDate(record.getCreateDate());
             dto.setStreet(StreetDTO.parse(record.getStreet()));
             dto.setStreetId(record.getStreet().getId());
+            dto.setDistrict(DistrictDTO.parse(record.getDistrict()));
+            dto.setDistrictId(record.getDistrict().getId());
             dto.setAbonentNumber(record.getAbonentNumber());
             dto.setDeviceNumber(record.getDeviceNumber());
             dto.setPersonalNumber(record.getPersonalNumber());
@@ -75,6 +78,14 @@ public class AbonentDTO {
             list.add(AbonentDTO.parse(record));
         }
         return list;
+    }
+
+    public DistrictDTO getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(DistrictDTO district) {
+        this.district = district;
     }
 
     public Integer getId() {

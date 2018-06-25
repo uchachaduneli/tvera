@@ -52,13 +52,13 @@ public class AbonentDAO extends AbstractDAO {
             q.append(" and e.deviceNumber ='").append(srchRequest.getDeviceNumber()).append("'");
         }
         if (srchRequest.getDistrictId() != null) {
-            q.append(" and e.street.district.id ='").append(srchRequest.getDistrictId()).append("'");
+            q.append(" and e.district.id ='").append(srchRequest.getDistrictId()).append("'");
         }
         if (srchRequest.getStreetId() != null) {
             q.append(" and e.street.id ='").append(srchRequest.getStreetId()).append("'");
         }
         if (srchRequest.getIncasatorId() != null) {
-            q.append(" and e.street.incasator.id ='").append(srchRequest.getIncasatorId()).append("'");
+            q.append(" and e.district.incasator.id ='").append(srchRequest.getIncasatorId()).append("'");
         }
         if (srchRequest.getHasBill() != null && srchRequest.getHasBill() == -1) {
             q.append(" and e.balance > 0");
