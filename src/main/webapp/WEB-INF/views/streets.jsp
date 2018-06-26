@@ -49,7 +49,8 @@
         var selected = $filter('filter')($scope.list, {id: id}, true);
         $scope.slcted = selected[0];
         $scope.request = selected[0];
-        $scope.request.incasatorId = selected[0].incasator.id;
+        $scope.request.incasatorId = selected[0].district.incasator.id;
+        $scope.request.districtId = selected[0].district.id;
       }
     }
 
@@ -85,6 +86,7 @@
 
       $scope.req.id = $scope.request.id;
       $scope.req.name = $scope.request.name;
+      $scope.req.districtId = $scope.request.districtId;
 
       console.log(angular.toJson($scope.req));
       ajaxCall($http, "street/save-street", angular.toJson($scope.req), resFunc);
@@ -141,6 +143,10 @@
               <th class="text-right">დასახელება</th>
               <td>{{slcted.name}}</td>
             </tr>
+            <tr>
+              <th class="text-right">უბანი</th>
+              <td>{{slcted.district.name}}</td>
+            </tr>
           </table>
           <div class="form-group"><br/></div>
         </div>
@@ -168,6 +174,17 @@
               <div class="col-sm-9">
                 <input type="text" ng-model="request.name" name="name" required
                        class="form-control input-sm"/>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">უბანი</label>
+              <div class="col-sm-9">
+                <select class="form-control" ng-model="request.districtId">
+                  <option ng-repeat="s in districts"
+                          ng-selected="s.id === request.districtId"
+                          ng-value="s.id">{{s.name}}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="form-group col-sm-10"></div>
@@ -215,7 +232,7 @@
           <div id="filter-panel" class="filter-panel">
             <div class="panel panel-default">
               <div class="panel-body">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.id"
                          placeholder="ID">
                 </div>
@@ -223,16 +240,25 @@
                   <input type="text" class="form-control srch" ng-model="srchCase.name"
                          placeholder="Name">
                 </div>
-                <div class="form-group col-md-3">
-                  <select class="form-control" ng-model="srchCase.incasatorId"
+                <div class="form-group col-md-2">
+                  <select class="form-control" ng-model="srchCase.districtId"
                           ng-change="loadMainData()">
-                    <option value="" selected="selected">ინკასატორი</option>
-                    <option ng-repeat="v in incasators" ng-selected="v.id === srchCase.incasatorId"
+                    <option value="" selected="selected">უბანი</option>
+                    <option ng-repeat="v in districts" ng-selected="v.id === srchCase.districtId"
                             value="{{v.id}}">{{v.name}}
                     </option>
                   </select>
                 </div>
                 <div class="form-group col-md-3">
+                  <select class="form-control" ng-model="srchCase.incasatorId"
+                          ng-change="loadMainData()">
+                    <option value="" selected="selected">ინკასატორი</option>
+                    <option ng-repeat="v in incasators" ng-selected="v.id === srchCase.incasatorId"
+                            value="{{v.id}}">{{v.name}} {{v.lastname}}
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
                   <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
                     <span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;
                   </button>
@@ -248,6 +274,7 @@
             <tr>
               <th>ID</th>
               <th>დასახელება</th>
+              <th>უბანი</th>
               <th>ინკასატორი</th>
               <th class="col-md-4 text-center">Action</th>
             </tr>
@@ -256,7 +283,8 @@
             <tr ng-repeat="r in list" ng-dblclick="handleDoubleClick(r.id)">
               <td>{{r.id}}</td>
               <td>{{r.name}}</td>
-              <td>{{r.incasator.name}}</td>
+              <td>{{r.district.name}}</td>
+              <td>{{r.district.incasator.name}} {{r.district.incasator.lastname}}</td>
               <td class="text-center">
                 <a ng-click="showDetails(r.id)" data-toggle="modal" title="Details"
                    data-target="#detailModal" class="btn btn-xs">

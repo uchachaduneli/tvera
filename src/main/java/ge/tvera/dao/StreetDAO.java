@@ -37,6 +37,14 @@ public class StreetDAO extends AbstractDAO {
             q.append(" and e.name like '%").append(srchRequest.getName()).append("%'");
         }
 
+        if (srchRequest.getDistrictId() != null && srchRequest.getDistrictId() > 0) {
+            q.append(" and e.district.id ='").append(srchRequest.getDistrictId()).append("'");
+        }
+
+        if (srchRequest.getIncasatorId() != null && srchRequest.getIncasatorId() > 0) {
+            q.append(" and e.district.incasator.id ='").append(srchRequest.getIncasatorId()).append("'");
+        }
+
         TypedQuery<Street> query = entityManager.createQuery(q.toString(), Street.class);
         return query.setFirstResult(start).setMaxResults(limit).getResultList();
     }

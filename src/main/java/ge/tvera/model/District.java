@@ -7,7 +7,6 @@ public class District {
     private Integer id;
     private String name;
     private Incasator incasator;
-    private Street street;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -38,15 +37,5 @@ public class District {
 
     public void setIncasator(Incasator incasator) {
         this.incasator = incasator;
-    }
-
-    @JoinColumn(name = "street_id")
-    @OneToOne
-    public Street getStreet() {
-        return street;
-    }
-
-    public void setStreet(Street street) {
-        this.street = street;
     }
 }

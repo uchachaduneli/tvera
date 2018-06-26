@@ -375,7 +375,7 @@
             </tr>
             <tr>
               <th class="text-right">ინკასატორი</th>
-              <td>{{slcted.street.incasator.name}}&nbsp;{{slcted.street.incasator.lastname}}</td>
+              <td>{{slcted.district.incasator.name}}&nbsp;{{slcted.district.incasator.lastname}}</td>
             </tr>
             <tr>
               <th class="text-right">რეგისტრაცია</th>
