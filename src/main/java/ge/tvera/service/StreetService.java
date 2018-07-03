@@ -3,7 +3,6 @@ package ge.tvera.service;
 
 import ge.tvera.dao.StreetDAO;
 import ge.tvera.dto.StreetDTO;
-import ge.tvera.model.District;
 import ge.tvera.model.Street;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,6 @@ public class StreetService {
 
         Street obj = new Street();
         obj.setName(request.getName());
-        obj.setDistrict((District) streetDAO.find(District.class, request.getDistrictId()));
 
         if (request.getId() != null) {
             obj.setId(request.getId());

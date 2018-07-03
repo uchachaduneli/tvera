@@ -6,8 +6,6 @@ import javax.persistence.*;
 public class Street {
     private Integer id;
     private String name;
-    private District district;
-
 
     @Id
     @Column(name = "id", nullable = false)
@@ -28,16 +26,6 @@ public class Street {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @JoinColumn(name = "district_id")
-    @OneToOne
-    public District getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(District district) {
-        this.district = district;
     }
 
 }

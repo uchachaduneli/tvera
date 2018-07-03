@@ -245,7 +245,7 @@
 
   $(document).ready(function () {
 
-    $('#packages').on('hidden.bs.modal', function(){
+    $('#packages').on('hidden.bs.modal', function () {
       // $(this).find('form')[0].reset();
       window.location.reload();
       // angular.$scope.$apply();
@@ -386,7 +386,11 @@
               <td>{{slcted.comment}}</td>
             </tr>
             <tr>
-              <th class="text-right">სტატუსი</th>
+              <th class="text-right">ამჟამინდელი სტატუსი</th>
+              <td>{{slcted.status.name}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">სტატუსების ისტორია</th>
               <td>
                 <ul>
                   <li ng-repeat="k in slcted.statusHistory">
@@ -551,7 +555,7 @@
                 <div class="form-group col-md-1">
                   <label class="col-sm-12" title="დავალიანების მქონე აბონენტები">
                     <input type="checkbox" class="srch" ng-true-value="-1" ng-change="loadMainData()"
-                           ng-false-value="0" ng-init="0" ng-model="srchCase.hasBill" >&nbsp; დავ.
+                           ng-false-value="0" ng-init="0" ng-model="srchCase.hasBill">&nbsp; დავ.
                   </label>
                 </div>
                 <div class="form-group col-md-1">
@@ -601,7 +605,7 @@
                           ng-change="loadMainData()">
                     <option value="" selected="selected">ინკასატორი</option>
                     <option ng-repeat="v in incasators" ng-selected="v.id === srchCase.incasatorId"
-                            value="{{v.id}}">{{v.name}}
+                            value="{{v.id}}">{{v.name +' '+ v.lastname}}
                     </option>
                   </select>
                 </div>
@@ -640,6 +644,7 @@
               <th>ქუჩა</th>
               <th>ინკასატორი</th>
               <th>ბალანსი</th>
+              <th>სტატუსი</th>
               <th class="col-md-2 text-center">Action</th>
             </tr>
             </thead>
@@ -653,6 +658,7 @@
               <td>{{r.street.name}}</td>
               <td>{{r.street.incasator.name}}</td>
               <td>{{r.balance}}</td>
+              <td>{{r.status.name}}</td>
               <td class="text-center">
                 <a ng-click="showDetails(r.id)" data-toggle="modal" title="დეტალები"
                    data-target="#detailModal" class="btn btn-xs">
