@@ -182,6 +182,9 @@ public class AbonentService {
         obj.setStreet((Street) abonentDAO.find(Street.class, request.getStreetId()));
         obj.setDistrict((District) abonentDAO.find(District.class, request.getDistrictId()));
         obj.setJuridicalOrPhisical(request.getJuridicalOrPhisical());
+        obj.setStreetNumber(request.getStreetNumber());
+        obj.setRoomNumber(request.getRoomNumber());
+        obj.setFloor(request.getFloor());
 
         if (request.getId() != null) {
             Abonent tmp = (Abonent) abonentDAO.find(Abonent.class, request.getId());

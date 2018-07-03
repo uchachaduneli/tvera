@@ -23,6 +23,9 @@ public class Abonent {
     private Integer servicePointsNumber;
     private PackageType packageType;
     private District district;
+    private String streetNumber;
+    private String floor;
+    private String roomNumber;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -193,5 +196,35 @@ public class Abonent {
 
     public void setDistrict(District district) {
         this.district = district;
+    }
+
+    @Basic
+    @Column(name = "street_number")
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
+    }
+
+    @Basic
+    @Column(name = "floor")
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    @Basic
+    @Column(name = "room_number")
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }

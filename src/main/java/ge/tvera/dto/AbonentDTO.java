@@ -37,6 +37,9 @@ public class AbonentDTO {
     private DistrictDTO district;
     private Integer districtId;
     private Integer hasBill; // -1 დავალიანების მქონე აბონენტები; 0 ყველა
+    private String streetNumber;
+    private String floor;
+    private String roomNumber;
 
     public static Integer JURIDICAL = 2;
     public static Integer PHISICAL = 1;
@@ -68,6 +71,9 @@ public class AbonentDTO {
                 dto.setPackageType(PackageTypeDTO.parse(record.getPackageType()));
                 dto.setPackageTypeId(record.getPackageType().getId());
             }
+            dto.setStreetNumber(record.getStreetNumber());
+            dto.setRoomNumber(record.getRoomNumber());
+            dto.setFloor(record.getFloor());
             return dto;
         } else return null;
     }
@@ -78,6 +84,30 @@ public class AbonentDTO {
             list.add(AbonentDTO.parse(record));
         }
         return list;
+    }
+
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public DistrictDTO getDistrict() {

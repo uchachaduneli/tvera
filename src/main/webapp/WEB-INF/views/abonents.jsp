@@ -135,6 +135,9 @@
       $scope.req.billDate = $scope.request.billDate;
       $scope.req.streetId = $scope.request.streetId;
       $scope.req.districtId = $scope.request.districtId;
+      $scope.req.streetNumber = $scope.request.streetNumber;
+      $scope.req.floor = $scope.request.floor;
+      $scope.req.roomNumber = $scope.request.roomNumber;
       $scope.req.juridicalOrPhisical = $scope.request.juridicalOrPhisical;
 
       console.log(angular.toJson($scope.req));
@@ -374,6 +377,18 @@
               <td>{{slcted.street.name}}</td>
             </tr>
             <tr>
+              <th class="text-right">ქუჩის N</th>
+              <td>{{slcted.streetNumber}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">სართული</th>
+              <td>{{slcted.floor}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">ბინის N</th>
+              <td>{{slcted.roomNumber}}</td>
+            </tr>
+            <tr>
               <th class="text-right">ინკასატორი</th>
               <td>{{slcted.district.incasator.name}}&nbsp;{{slcted.district.incasator.lastname}}</td>
             </tr>
@@ -475,6 +490,27 @@
                     {{s.name}}
                   </option>
                 </select>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">ქუჩის N</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.streetNumber" name="name" required
+                       class="form-control input-sm"/>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">სართული</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.floor" name="name" required
+                       class="form-control input-sm"/>
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">ბინის N</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.roomNumber" name="name" required
+                       class="form-control input-sm"/>
               </div>
             </div>
             <div class="form-group col-sm-10 ">
@@ -587,7 +623,7 @@
                           ng-change="loadMainData()">
                     <option value="" selected="selected">უბანი</option>
                     <option ng-repeat="v in districts" ng-selected="v.id === srchCase.districtId"
-                            value="{{v.id}}">{{v.name}}
+                            value="{{v.id}}">{{v.name +' ('+ v.incasator.name +' '+ v.incasator.lastname +')'}}
                     </option>
                   </select>
                 </div>
@@ -622,7 +658,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group col-md-1">
+                <div class="form-group col-md-2">
                   <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
                     <span class="fa fa-search"></span> &nbsp; ძებნა
                   </button>
@@ -656,7 +692,7 @@
               <td>{{r.name}}</td>
               <td>{{r.lastname}}</td>
               <td>{{r.street.name}}</td>
-              <td>{{r.street.incasator.name}}</td>
+              <td>{{r.district.incasator.name + ' ' + r.district.incasator.lastname}}</td>
               <td>{{r.balance}}</td>
               <td>{{r.status.name}}</td>
               <td class="text-center">
