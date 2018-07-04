@@ -369,7 +369,7 @@
                 <%--placeholder="აბონენტის ID">--%>
                 <%--</div>--%>
                 <div class="form-group col-md-3">
-                  <input type="text" class="form-control srch" ng-model="srchCase.abonent.abonentNumber"
+                  <input type="text" class="form-control srch" ng-model="srchCase.abonent.id"
                          placeholder="აბონენტის N">
                 </div>
                 <div class="form-group col-md-3">

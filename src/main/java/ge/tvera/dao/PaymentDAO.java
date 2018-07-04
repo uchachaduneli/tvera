@@ -38,7 +38,7 @@ public class PaymentDAO extends AbstractDAO {
             q.append(" and e.checkNumber like '%").append(srchRequest.getCheckNumber()).append("%'");
         }
         if (srchRequest.getAbonentNumber() != null) {
-            q.append(" and e.abonent.abonentNumber like '%").append(srchRequest.getAbonentNumber()).append("%'");
+            q.append(" and e.abonent.id = '").append(srchRequest.getAbonentId()).append("'");
         }
         if (srchRequest.getName() != null) {
             q.append(" and e.abonent.name like '%").append(srchRequest.getName()).append("%'");
