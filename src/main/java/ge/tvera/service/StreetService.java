@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,8 +24,8 @@ public class StreetService {
         return StreetDTO.parseToList(streetDAO.getAll(Street.class));
     }
 
-    public List<StreetDTO> getStreets(int start, int limit, StreetDTO srchRequest) {
-        return StreetDTO.parseToList(streetDAO.getStreets(start, limit, srchRequest));
+    public HashMap<String, Object> getStreets(int start, int limit, StreetDTO srchRequest) {
+        return streetDAO.getStreets(start, limit, srchRequest);
     }
 
     @Transactional(rollbackFor = Throwable.class)

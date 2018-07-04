@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Created by ME.
@@ -25,7 +24,7 @@ public class StreetDAO extends AbstractDAO {
         return entityManager;
     }
 
-    public List<Street> getStreets(int start, int limit, StreetDTO srchRequest) {
+    public HashMap<String, Object> getStreets(int start, int limit, StreetDTO srchRequest) {
         StringBuilder q = new StringBuilder();
         q.append("Select e From ").append(Street.class.getSimpleName()).append(" e Where 1=1 ");
 
@@ -37,7 +36,9 @@ public class StreetDAO extends AbstractDAO {
             q.append(" and e.name like '%").append(srchRequest.getName()).append("%'");
         }
 
-        TypedQuery<Street> query = entityManager.createQuery(q.toString(), Street.class);
-        return query.setFirstResult(start).setMaxResults(limit).getResultList();
+        HashMap<String, Object> resultMap = new HashMap();
+        resultMap.put("size", entityManager.createQuery(q.toString(), Street.class).getResultList().size());
+        resultMap.put("list", StreetDTO.parseToList(entityManager.createQuery(q.toString(), Street.class).setFirstResult(start).setMaxResults(limit).getResultList()));
+        return resultMap;
     }
 }

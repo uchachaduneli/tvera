@@ -15,12 +15,13 @@
     $scope.limit = "10";
     $scope.request = {};
     $scope.srchCase = {};
-//        $scope.request.docs = [];
 
     $scope.loadMainData = function () {
       $('#loadingModal').modal('show');
+
       function getMainData(res) {
-        $scope.list = res.data;
+        $scope.list = res.data.list;
+        $scope.rowCount = res.data.size;
         $('#loadingModal').modal('hide');
       }
 
@@ -98,11 +99,11 @@
 
     $scope.handlePage = function (h) {
       if (parseInt(h) >= 0) {
+        $scope.start = $scope.page * parseInt($scope.limit);
         $scope.page += 1;
-        $scope.start = $scope.page * $scope.limit;
       } else {
         $scope.page -= 1;
-        $scope.start = ($scope.page * $scope.limit) < 0 ? 0 : ($scope.page * $scope.limit);
+        $scope.start = ($scope.page * parseInt($scope.limit)) - parseInt($scope.limit);
       }
       $scope.loadMainData();
     }
@@ -198,43 +199,46 @@
           </c:if>
         </div>
         <div class="col-md-2 col-xs-offset-8">
-          <%--<select ng-change="rowNumbersChange()" class="pull-right form-control" ng-model="limit"--%>
-          <%--id="rowCountSelectId">--%>
-          <%--<option value="10" selected>მაჩვენე 10</option>--%>
-          <%--<option value="15">15</option>--%>
-          <%--<option value="30">30</option>--%>
-          <%--<option value="50">50</option>--%>
-          <%--<option value="100">100</option>--%>
-          <%--</select>--%>
+          <select ng-change="rowNumbersChange()" class="pull-right form-control" ng-model="limit"
+                  id="rowCountSelectId">
+            <option value="10" selected>მაჩვენე 10</option>
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <div class="col-xs-offset-3">
+            (ნაპოვნია {{rowCount}} ჩანაწერი) &nbsp;
+          </div>
         </div>
         <div class="row">
           <hr class="col-md-12"/>
         </div>
-        <%--<div class="col-md-12">--%>
-        <%--<div id="filter-panel" class="filter-panel">--%>
-        <%--<div class="panel panel-default">--%>
-        <%--<div class="panel-body">--%>
-        <%--<div class="form-group col-md-4">--%>
-        <%--<input type="text" class="form-control srch" ng-model="srchCase.id"--%>
-        <%--placeholder="ID">--%>
-        <%--</div>--%>
-        <%--<div class="form-group col-md-4">--%>
-        <%--<input type="text" class="form-control srch" ng-model="srchCase.name"--%>
-        <%--placeholder="Name">--%>
-        <%--</div>--%>
-        <%--<div class="form-group col-md-4">--%>
-        <%--<input type="text" class="form-control srch" ng-model="srchCase.lastname"--%>
-        <%--placeholder="Name">--%>
-        <%--</div>--%>
-        <%--<div class="form-group col-md-4">--%>
-        <%--<button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">--%>
-        <%--<span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;--%>
-        <%--</button>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--</div>--%>
+        <div class="col-md-12">
+          <div id="filter-panel" class="filter-panel">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="form-group col-md-3">
+                  <input type="text" class="form-control srch" ng-model="srchCase.id"
+                         placeholder="ID">
+                </div>
+                <div class="form-group col-md-3">
+                  <input type="text" class="form-control srch" ng-model="srchCase.name"
+                         placeholder="სახელი">
+                </div>
+                <div class="form-group col-md-3">
+                  <input type="text" class="form-control srch" ng-model="srchCase.lastname"
+                         placeholder="გვარი">
+                </div>
+                <div class="form-group col-md-3">
+                  <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
+                    <span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- /.box-header -->
         <div class="box-body">
           <table class="table table-bordered table-hover">
@@ -273,6 +277,9 @@
             <div class="row">
               <div class="col col-md-12">
                 <ul class="pagination pull-right">
+                  <li>
+                    <a>(გვერდი {{page}}) </a>
+                  </li>
                   <li>
                     <a ng-click="handlePage(-1)">«</a>
                   </li>

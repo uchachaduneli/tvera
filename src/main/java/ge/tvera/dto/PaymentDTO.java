@@ -1,6 +1,7 @@
 package ge.tvera.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import ge.tvera.misc.JsonDateSerializeSupport;
 import ge.tvera.misc.JsonDateTimeSerializeSupport;
 import ge.tvera.model.Payment;
 
@@ -15,6 +16,8 @@ public class PaymentDTO {
     private Integer abonentId;
     @JsonSerialize(using = JsonDateTimeSerializeSupport.class)
     private Date createDate;
+    @JsonSerialize(using = JsonDateSerializeSupport.class)
+    private Date payDate;
     private Date createDateFrom;
     private Date createDateTo;
     private String checkNumber;
@@ -38,6 +41,7 @@ public class PaymentDTO {
             dto.setCreateDate(record.getCreateDate());
             dto.setCheckNumber(record.getCheckNumber());
             dto.setUser(UsersDTO.parse(record.getUser()));
+            dto.setPayDate(record.getPayDate());
             return dto;
         } else return null;
     }
@@ -48,6 +52,14 @@ public class PaymentDTO {
             list.add(PaymentDTO.parse(record));
         }
         return list;
+    }
+
+    public Date getPayDate() {
+        return payDate;
+    }
+
+    public void setPayDate(Date payDate) {
+        this.payDate = payDate;
     }
 
     public Integer getUserId() {

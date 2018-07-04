@@ -21,8 +21,10 @@
 
     $scope.loadMainData = function () {
       $('#loadingModal').modal('show');
+
       function getMainData(res) {
-        $scope.list = res.data;
+        $scope.list = res.data.list;
+        $scope.rowCount = res.data.size;
         $('#loadingModal').modal('hide');
       }
 
@@ -96,12 +98,17 @@
         }
       }
 
+      if ($scope.request.payDate != undefined && $scope.request.payDate.includes('/')) {
+        $scope.request.payDate = $scope.request.payDate.split(/\//).reverse().join('-')
+      }
+
       $scope.req = {};
 
       //      $scope.req.id = $scope.request.id;
       $scope.req.amount = $scope.request.amount;
       $scope.req.checkNumber = $scope.request.checkNumber;
       $scope.req.abonentId = $scope.founded.id;
+      $scope.req.payDate = $scope.request.payDate;
 
       console.log(angular.toJson($scope.req));
       ajaxCall($http, "payment/save-payment", angular.toJson($scope.req), resFunc);
@@ -116,18 +123,18 @@
 
     $scope.handlePage = function (h) {
       if (parseInt(h) >= 0) {
+        $scope.start = $scope.page * parseInt($scope.limit);
         $scope.page += 1;
-        $scope.start = $scope.page * $scope.limit;
       } else {
         $scope.page -= 1;
-        $scope.start = ($scope.page * $scope.limit) < 0 ? 0 : ($scope.page * $scope.limit);
+        $scope.start = ($scope.page * parseInt($scope.limit)) - parseInt($scope.limit);
       }
       $scope.loadMainData();
     }
 
     $scope.loadAbonent = function () {
       function getAbonentData(res) {
-        $scope.founded = res.data[0];
+        $scope.founded = res.data.list[0];
       }
 
       ajaxCall($http, "abonent/get-abonents?start=0&limit=1", angular.toJson($scope.abonent), getAbonentData);
@@ -158,7 +165,7 @@
             </tr>
             <tr>
               <th class="text-right">აბონენტის N</th>
-              <td>{{slcted.abonent.abonentNumber}}</td>
+              <td>{{slcted.abonent.id}}</td>
             </tr>
             <tr>
               <th class="text-right">პირადი N</th>
@@ -171,6 +178,10 @@
             <tr>
               <th class="text-right">ქვითრის N</th>
               <td>{{slcted.checkNumber}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">გადახდის თარიღი</th>
+              <td>{{slcted.payDate}}</td>
             </tr>
             <tr>
               <th class="text-right">რეგისტრ. დრო</th>
@@ -205,7 +216,7 @@
             <div class="form-group col-sm-10 ">
               <div class="col-sm-2"></div>
               <div class="col-sm-3">
-                <input type="text" placeholder="აბონენტის N" ng-model="abonent.abonentNumber"
+                <input type="text" placeholder="აბონენტის N" ng-model="abonent.id"
                        class="form-control input-sm"/>
               </div>
               <div class="col-sm-1">ან</div>
@@ -221,7 +232,7 @@
             </div>
             <table class="table table-striped">
               <tr>
-                <th class="col-md-2 text-right">აბონენტის ID</th>
+                <th class="col-md-2 text-right">აბონენტის N</th>
                 <td>{{founded.id}}</td>
               </tr>
               <tr>
@@ -229,16 +240,20 @@
                 <td>{{founded.name}} &nbsp; {{founded.lastname}}</td>
               </tr>
               <tr>
-                <th class="text-right">აბონენტის N</th>
-                <td>{{founded.abonentNumber}}</td>
-              </tr>
-              <tr>
                 <th class="text-right">პირადი N</th>
                 <td>{{founded.personalNumber}}</td>
               </tr>
               <tr>
+                <th class="text-right">პაკეტი</th>
+                <td>{{founded.packageType.name}}</td>
+              </tr>
+              <tr>
                 <th class="text-right">ბალანსი</th>
                 <td>{{founded.balance}}</td>
+              </tr>
+              <tr>
+                <th class="text-right">ინკასატორი</th>
+                <td>{{founded.district.incasator.name + ' '+ founded.district.incasator.lastname}}</td>
               </tr>
             </table>
             <div class="form-group col-sm-10 ">
@@ -255,6 +270,14 @@
                        class="form-control input-sm"/>
               </div>
             </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">გადახდის თარიღი</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.payDate" ng-disabled="founded.id === undefined"
+                       class="form-control input-sm dateInput"/>
+              </div>
+            </div>
+
             <div class="form-group col-sm-10"></div>
             <div class="form-group col-sm-10"></div>
             <div class="form-group col-sm-12 text-center">
@@ -292,6 +315,9 @@
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
+          <div class="col-xs-offset-3">
+            (ნაპოვნია {{rowCount}} ჩანაწერი) &nbsp;
+          </div>
         </div>
         <div class="row">
           <hr class="col-md-12"/>
@@ -359,7 +385,7 @@
               <th>აბონენტი</th>
               <th>თანხა</th>
               <th>ქვითრის N</th>
-              <th>რეგისტრ. დრო</th>
+              <th>გადახდის თარიღი</th>
               <th class="col-md-2 text-center">Action</th>
             </tr>
             </thead>
@@ -369,7 +395,7 @@
               <td>{{r.abonent.name}}&nbsp;{{r.abonent.lastname}}</td>
               <td>{{r.amount}}</td>
               <td>{{r.checkNumber}}</td>
-              <td>{{r.createDate}}</td>
+              <td>{{r.payDate}}</td>
               <td class="text-center">
                 <a ng-click="showDetails(r.id)" data-toggle="modal" title="Details"
                    data-target="#detailModal" class="btn btn-xs">
@@ -393,10 +419,13 @@
               <div class="col col-md-12">
                 <ul class="pagination pull-right">
                   <li>
+                    <a>(გვერდი {{page}}) </a>
+                  </li>
+                  <li>
                     <a ng-click="handlePage(-1)">«</a>
                   </li>
                   <li>
-                    <a ng-click="handlePage(1)" ng>»</a>
+                    <a ng-click="handlePage(1)">»</a>
                   </li>
                 </ul>
               </div>

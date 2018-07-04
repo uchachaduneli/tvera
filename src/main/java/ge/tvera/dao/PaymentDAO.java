@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Created by ME.
@@ -25,7 +24,7 @@ public class PaymentDAO extends AbstractDAO {
         return entityManager;
     }
 
-    public List<Payment> getPayments(int start, int limit, PaymentDTO srchRequest) {
+    public HashMap<String, Object> getPayments(int start, int limit, PaymentDTO srchRequest) {
         StringBuilder q = new StringBuilder();
         q.append("Select e From ").append(Payment.class.getSimpleName()).append(" e Where 1=1 ");
 
@@ -54,7 +53,12 @@ public class PaymentDAO extends AbstractDAO {
             q.append(" and e.createDate between '").append(srchRequest.getCreateDateFrom()).append("' and '").append(srchRequest.getCreateDateTo()).append("'");
         }
 
-        TypedQuery<Payment> query = entityManager.createQuery(q.toString(), Payment.class);
-        return query.setFirstResult(start).setMaxResults(limit).getResultList();
+//        TypedQuery<Payment> query = entityManager.createQuery(q.toString(), Payment.class);
+//        return query.setFirstResult(start).setMaxResults(limit).getResultList();
+
+        HashMap<String, Object> resultMap = new HashMap();
+        resultMap.put("size", entityManager.createQuery(q.toString(), Payment.class).getResultList().size());
+        resultMap.put("list", PaymentDTO.parseToList(entityManager.createQuery(q.toString() + " order by e.id desc", Payment.class).setFirstResult(start).setMaxResults(limit).getResultList()));
+        return resultMap;
     }
 }

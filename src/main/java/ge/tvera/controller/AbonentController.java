@@ -3,7 +3,6 @@ package ge.tvera.controller;
 import ge.tvera.dto.AbonentDTO;
 import ge.tvera.dto.PackageDTO;
 import ge.tvera.misc.Response;
-import ge.tvera.model.Package;
 import ge.tvera.request.AbonentPackagesRequest;
 import ge.tvera.service.AbonentService;
 import ge.tvera.service.PackageService;
@@ -106,7 +105,7 @@ public class AbonentController {
         }
 
         HSSFRow row;
-        List<AbonentDTO> exportList = abonentService.getAbonents(0, 99999, request);
+        List<AbonentDTO> exportList = (List<AbonentDTO>) abonentService.getAbonents(0, 99999, request).get("list");
 
         for (int i = 1; i <= exportList.size(); i++) {
             row = sheet.createRow(i);

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -61,8 +62,8 @@ public class MiscService {
         }
     }
 
-    public List<IncasatorDTO> getIncasators() {
-        return IncasatorDTO.parseToList(miscDAO.getAll(Incasator.class));
+    public HashMap<String, Object> getIncasators(int start, int limit, IncasatorDTO srchRequest) {
+        return miscDAO.getIncasators(start, limit, srchRequest);
     }
 
     @Transactional(rollbackFor = Throwable.class)

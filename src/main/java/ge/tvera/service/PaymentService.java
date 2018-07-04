@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * @author ucha
@@ -21,8 +21,8 @@ public class PaymentService {
     @Autowired
     private PaymentDAO paymentDAO;
 
-    public List<PaymentDTO> getPayments(int start, int limit, PaymentDTO srchRequest) {
-        return PaymentDTO.parseToList(paymentDAO.getPayments(start, limit, srchRequest));
+    public HashMap<String, Object> getPayments(int start, int limit, PaymentDTO srchRequest) {
+        return paymentDAO.getPayments(start, limit, srchRequest);
     }
 
     @Transactional(rollbackFor = Throwable.class)
@@ -31,6 +31,7 @@ public class PaymentService {
         Payment obj = new Payment();
         obj.setAmount(request.getAmount());
         obj.setCheckNumber(request.getCheckNumber());
+        obj.setPayDate(new java.sql.Date(request.getPayDate().getTime()));
         obj.setUser((Users) paymentDAO.find(Users.class, request.getUserId()));
         obj.setAbonent((Abonent) paymentDAO.find(Abonent.class, request.getAbonentId()));
 

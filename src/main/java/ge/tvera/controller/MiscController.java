@@ -55,8 +55,9 @@ public class MiscController {
 
     @RequestMapping("/get-incasators")
     @ResponseBody
-    private Response getIncasators() throws Exception {
-        return Response.withSuccess(miscService.getIncasators());
+    private Response getIncasators(@RequestParam("start") int start, @RequestParam("limit") int limit,
+                                   @RequestBody IncasatorDTO request) throws Exception {
+        return Response.withSuccess(miscService.getIncasators(start, limit, request));
     }
 
     @RequestMapping({"/save-incasator"})

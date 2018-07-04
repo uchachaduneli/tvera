@@ -99,11 +99,11 @@
 
     $scope.handlePage = function (h) {
       if (parseInt(h) >= 0) {
+        $scope.start = $scope.page * parseInt($scope.limit);
         $scope.page += 1;
-        $scope.start = $scope.page * $scope.limit;
       } else {
         $scope.page -= 1;
-        $scope.start = ($scope.page * $scope.limit) < 0 ? 0 : ($scope.page * $scope.limit);
+        $scope.start = ($scope.page * parseInt($scope.limit)) - parseInt($scope.limit);
       }
       $scope.loadMainData();
     }
@@ -252,6 +252,9 @@
             <div class="row">
               <div class="col col-md-12">
                 <ul class="pagination pull-right">
+                  <li>
+                    <a>(გვერდი {{page}}) </a>
+                  </li>
                   <li>
                     <a ng-click="handlePage(-1)">«</a>
                   </li>

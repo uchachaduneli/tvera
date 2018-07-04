@@ -24,7 +24,8 @@
       $('#loadingModal').modal('show');
 
       function getMainData(res) {
-        $scope.list = res.data;
+        $scope.list = res.data.list;
+        $scope.rowCount = res.data.size;
         $('#loadingModal').modal('hide');
         console.log($scope.list);
       }
@@ -85,8 +86,14 @@
       if (id != undefined) {
         var selected = $filter('filter')($scope.list, {id: id}, true);
         $scope.slcted = selected[0];
-        console.log($scope.slcted);
         $scope.loadObjectDetails($scope.slcted.id);
+
+        function getAbPackages(res) {
+          $scope.slcted.abonentPackages = res.data;
+        }
+
+        ajaxCall($http, "abonent/get-abonent-packages?id=" + $scope.slcted.id, null, getAbPackages);
+
       }
     };
 
@@ -152,11 +159,11 @@
 
     $scope.handlePage = function (h) {
       if (parseInt(h) >= 0) {
+        $scope.start = $scope.page * parseInt($scope.limit);
         $scope.page += 1;
-        $scope.start = $scope.page * $scope.limit;
       } else {
         $scope.page -= 1;
-        $scope.start = ($scope.page * $scope.limit) < 0 ? 0 : ($scope.page * $scope.limit);
+        $scope.start = ($scope.page * parseInt($scope.limit)) - parseInt($scope.limit);
       }
       $scope.loadMainData();
     }
@@ -168,10 +175,10 @@
     ajaxCall($http, "street/get-all-streets", null, getStreets);
 
     function getIncasators(res) {
-      $scope.incasators = res.data;
+      $scope.incasators = res.data.list;
     }
 
-    ajaxCall($http, "misc/get-incasators", null, getIncasators);
+    ajaxCall($http, "misc/get-incasators?start=0&limit=99999", {}, getIncasators);
 
     function getDistricts(res) {
       $scope.districts = res.data;
@@ -329,7 +336,7 @@
         <div class="row" id="printable">
           <table class="table table-striped">
             <tr>
-              <th class="col-md-4 text-right">ID</th>
+              <th class="col-md-4 text-right">აბონენტის N</th>
               <td>{{slcted.id}}</td>
             </tr>
             <tr>
@@ -339,10 +346,6 @@
             <tr>
               <th class="text-right">გვარი</th>
               <td>{{slcted.lastname}}</td>
-            </tr>
-            <tr>
-              <th class="text-right">აბონენტის N</th>
-              <td>{{slcted.abonentNumber}}</td>
             </tr>
             <tr>
               <th class="text-right">პირადი N</th>
@@ -414,6 +417,17 @@
                 </ul>
               </td>
             </tr>
+            <tr>
+              <th class="text-right">პაკეტები</th>
+              <td>
+                <ul>
+                  <li ng-repeat="t in slcted.abonentPackages">
+                    {{t.type.name}} - {{t.name}}&nbsp;(იურ:{{t.juridicalPrice}}ლ. / ფიზ:{{t.personalPrice}}ლ.)
+                    <span ng-show="t.group.id == 7 || t.group.id == 6"> რაოდენობა - {{t.externalPointCount}}</span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
           </table>
           <div class="form-group"><br/></div>
         </div>
@@ -447,13 +461,6 @@
               <label class="control-label col-sm-3">გვარი</label>
               <div class="col-sm-9">
                 <input type="text" ng-model="request.lastname" name="name" required
-                       class="form-control input-sm"/>
-              </div>
-            </div>
-            <div class="form-group col-sm-10 ">
-              <label class="control-label col-sm-3">აბონენტის N</label>
-              <div class="col-sm-9">
-                <input type="text" ng-model="request.abonentNumber" name="name" required
                        class="form-control input-sm"/>
               </div>
             </div>
@@ -580,6 +587,9 @@
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
+          <div class="col-xs-offset-3">
+            (ნაპოვნია {{rowCount}} ჩანაწერი) &nbsp;
+          </div>
         </div>
         <div class="row">
           <hr class="col-md-12"/>
@@ -594,12 +604,8 @@
                            ng-false-value="0" ng-init="0" ng-model="srchCase.hasBill">&nbsp; დავ.
                   </label>
                 </div>
-                <div class="form-group col-md-1">
+                <div class="form-group col-md-3">
                   <input type="text" class="form-control srch" ng-model="srchCase.id"
-                         placeholder="ID">
-                </div>
-                <div class="form-group col-md-2">
-                  <input type="text" class="form-control srch" ng-model="srchCase.abonentNumber"
                          placeholder="აბონენტის N">
                 </div>
                 <div class="form-group col-md-2">
@@ -672,7 +678,6 @@
           <table class="table table-bordered table-hover">
             <thead>
             <tr>
-              <th>ID</th>
               <th>აბონ. N</th>
               <th>პირადი N</th>
               <th>სახელი</th>
@@ -687,7 +692,6 @@
             <tbody title="Double Click For Detailed Information">
             <tr ng-repeat="r in list" ng-dblclick="handleDoubleClick(r.id)">
               <td>{{r.id}}</td>
-              <td>{{r.abonentNumber}}</td>
               <td>{{r.personalNumber}}</td>
               <td>{{r.name}}</td>
               <td>{{r.lastname}}</td>
@@ -722,10 +726,13 @@
               <div class="col col-md-12">
                 <ul class="pagination pull-right">
                   <li>
+                    <a>(გვერდი {{page}}) </a>
+                  </li>
+                  <li>
                     <a ng-click="handlePage(-1)">«</a>
                   </li>
                   <li>
-                    <a ng-click="handlePage(1)" ng>»</a>
+                    <a ng-click="handlePage(1)">»</a>
                   </li>
                 </ul>
               </div>

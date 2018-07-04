@@ -20,7 +20,8 @@
     $scope.loadMainData = function () {
       $('#loadingModal').modal('show');
       function getMainData(res) {
-        $scope.list = res.data;
+        $scope.list = res.data.list;
+        $scope.rowCount = res.data.size;
         $('#loadingModal').modal('hide');
       }
 
@@ -100,11 +101,11 @@
 
     $scope.handlePage = function (h) {
       if (parseInt(h) >= 0) {
+        $scope.start = $scope.page * parseInt($scope.limit);
         $scope.page += 1;
-        $scope.start = $scope.page * $scope.limit;
       } else {
         $scope.page -= 1;
-        $scope.start = ($scope.page * $scope.limit) < 0 ? 0 : ($scope.page * $scope.limit);
+        $scope.start = ($scope.page * parseInt($scope.limit)) - parseInt($scope.limit);
       }
       $scope.loadMainData();
     }
@@ -224,6 +225,9 @@
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
+          <div class="col-xs-offset-3">
+            (ნაპოვნია {{rowCount}} ჩანაწერი) &nbsp;
+          </div>
         </div>
         <div class="row">
           <hr class="col-md-12"/>
@@ -285,6 +289,9 @@
             <div class="row">
               <div class="col col-md-12">
                 <ul class="pagination pull-right">
+                  <li>
+                    <a>(გვერდი {{page}}) </a>
+                  </li>
                   <li>
                     <a ng-click="handlePage(-1)">«</a>
                   </li>

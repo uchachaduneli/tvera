@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,8 +26,8 @@ public class AbonentService {
     @Autowired
     private PackageDAO packageDAO;
 
-    public List<AbonentDTO> getAbonents(int start, int limit, AbonentDTO srchRequest) {
-        return AbonentDTO.parseToList(abonentDAO.getAbonents(start, limit, srchRequest));
+    public HashMap<String, Object> getAbonents(int start, int limit, AbonentDTO srchRequest) {
+        return abonentDAO.getAbonents(start, limit, srchRequest);
     }
 
     @Transactional(rollbackFor = Throwable.class)

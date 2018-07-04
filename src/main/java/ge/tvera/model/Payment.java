@@ -1,6 +1,7 @@
 package ge.tvera.model;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -11,6 +12,7 @@ public class Payment {
     private Timestamp createDate;
     private String checkNumber;
     private Users user;
+    private Date payDate;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -71,6 +73,16 @@ public class Payment {
 
     public void setUser(Users user) {
         this.user = user;
+    }
+
+    @Basic
+    @Column(name = "pay_date")
+    public Date getPayDate() {
+        return payDate;
+    }
+
+    public void setPayDate(Date payDate) {
+        this.payDate = payDate;
     }
 
 }
