@@ -55,6 +55,12 @@
       }
     };
 
+    function getStreets(res) {
+      $scope.streets = res.data;
+    }
+
+    ajaxCall($http, "street/get-all-streets", null, getStreets);
+
     $scope.edit = function (id) {
       if (id != undefined) {
         var selected = $filter('filter')($scope.list, {id: id}, true);
@@ -133,11 +139,25 @@
     }
 
     $scope.loadAbonent = function () {
+
+      if ($scope.abonent.streetId > 0 && ($scope.abonent.roomNumber == '' || $scope.abonent.roomNumber == undefined)) {
+        errorMsg('ბინის ნომრის მითითება აუცილებელია');
+        return;
+      }
+
       function getAbonentData(res) {
+        $('#detailModal').modal('hide');
+        if (res.data.list.length > 1) {
+          errorMsg('ნაპოვნია ერთზე მეტი ჩანაწერი!!! გთხოვთ მიუთითოთ უნიკალური მახასიათებელი');
+          return;
+        } else if (res.data.list == undefined || res.data.list.length == 0) {
+          errorMsg('მითითებული მონაცემით აბონენტი ვერ მოიძებნა');
+        }
         $scope.founded = res.data.list[0];
       }
 
-      ajaxCall($http, "abonent/get-abonents?start=0&limit=1", angular.toJson($scope.abonent), getAbonentData);
+      $('#detailModal').modal('show');
+      ajaxCall($http, "abonent/get-abonents?start=0&limit=99999", angular.toJson($scope.abonent), getAbonentData);
     }
   })
   ;
@@ -213,19 +233,33 @@
       <div class="modal-body">
         <div class="row">
           <form class="form-horizontal" name="ediFormName">
-            <div class="form-group col-sm-10 ">
-              <div class="col-sm-2"></div>
-              <div class="col-sm-3">
-                <input type="text" placeholder="აბონენტის N" ng-model="abonent.id"
+            <div class="form-group col-sm-12 ">
+              <div class="col-sm-4 col-xs-offset-2">
+                <input type="text" placeholder="აბონ. N" ng-model="abonent.id"
                        class="form-control input-sm"/>
               </div>
               <div class="col-sm-1">ან</div>
-              <div class="col-sm-3">
+              <div class="col-sm-4">
                 <input type="text" placeholder="პირადი N" ng-model="abonent.personalNumber"
                        class="form-control input-sm"/>
               </div>
-              <div class="col-sm-3">
-                <a class="btn btn-default" ng-click="loadAbonent()">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-4 ">
+                <select class="form-control" ng-model="abonent.streetId">
+                  <option value="" selected="selected">ქუჩა</option>
+                  <option ng-repeat="v in streets" ng-selected="v.id === abonent.streetId"
+                          value="{{v.id}}">{{v.name}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-sm-1">და</div>
+              <div class="col-sm-4">
+                <input type="text" placeholder="ბინის N" ng-model="abonent.roomNumber"
+                       class="form-control input-sm"/>
+              </div>
+              <div class="col-sm-3"></div>
+              <div class="col-sm-12 text-center">
+                <a class="btn btn-default col-sm-6 col-xs-offset-4" ng-click="loadAbonent()">
                   <i class="fa fa-search"></i> ძებნა
                 </a>
               </div>

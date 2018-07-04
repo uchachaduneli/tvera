@@ -114,13 +114,13 @@
       $scope.incasators = res.data;
     }
 
-    ajaxCall($http, "misc/get-incasators", null, getIncasators);
+    ajaxCall($http, "misc/get-incasators?start=0&limit=99999", {}, getIncasators);
 
     function getDistricts(res) {
       $scope.districts = res.data;
     }
 
-    ajaxCall($http, "misc/get-districts?start=0&limit=99999", null, getDistricts);
+    ajaxCall($http, "misc/get-districts?start=0&limit=99999", {}, getDistricts);
   });
 </script>
 

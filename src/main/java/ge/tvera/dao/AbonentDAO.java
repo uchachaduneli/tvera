@@ -49,8 +49,8 @@ public class AbonentDAO extends AbstractDAO {
         if (srchRequest.getPersonalNumber() != null) {
             q.append(" and e.personalNumber ='").append(srchRequest.getPersonalNumber()).append("'");
         }
-        if (srchRequest.getDeviceNumber() != null) {
-            q.append(" and e.deviceNumber ='").append(srchRequest.getDeviceNumber()).append("'");
+        if (srchRequest.getRoomNumber() != null) {
+            q.append(" and e.roomNumber ='").append(srchRequest.getRoomNumber()).append("'");
         }
         if (srchRequest.getDistrictId() != null) {
             q.append(" and e.district.id ='").append(srchRequest.getDistrictId()).append("'");
@@ -71,7 +71,7 @@ public class AbonentDAO extends AbstractDAO {
 //        TypedQuery<Abonent> query = entityManager.createQuery(q.toString(), Abonent.class);
         HashMap<String, Object> resultMap = new HashMap();
         resultMap.put("size", entityManager.createQuery(q.toString(), Abonent.class).getResultList().size());
-        resultMap.put("list", AbonentDTO.parseToList(entityManager.createQuery(q.toString(), Abonent.class).setFirstResult(start).setMaxResults(limit).getResultList()));
+        resultMap.put("list", AbonentDTO.parseToList(entityManager.createQuery(q.toString() + " order by id desc", Abonent.class).setFirstResult(start).setMaxResults(limit).getResultList()));
         return resultMap;
     }
 

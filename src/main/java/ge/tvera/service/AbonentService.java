@@ -48,7 +48,9 @@ public class AbonentService {
 
         if (abonentExistingPackages.isEmpty()) {
             //ახალი აბონენტია და პირველი მიბმაა პაკეტების
-
+            if (!request.getAbonentPackages().isEmpty()) {
+                request.setPackageTypeId(request.getAbonentPackages().get(0).getType().getId());
+            }
             for (PackageDTO pack : request.getAbonentPackages()) {
                 switch (pack.getGroup().getId()) {
                     case PackageDTO.DISTRIBUTION:

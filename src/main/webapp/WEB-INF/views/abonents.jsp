@@ -525,7 +525,7 @@
               <div class="col-sm-9">
                 <select class="form-control" ng-model="request.districtId">
                   <option ng-repeat="s in districts" ng-selected="s.id === request.districtId" ng-value="s.id">
-                    {{s.name}}
+                    {{s.name +' ('+s.incasator.name+' '+s.incasator.lastname+')'}}
                   </option>
                 </select>
               </div>
@@ -604,23 +604,19 @@
                            ng-false-value="0" ng-init="0" ng-model="srchCase.hasBill">&nbsp; დავ.
                   </label>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.id"
                          placeholder="აბონენტის N">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                   <input type="text" class="form-control srch" ng-model="srchCase.personalNumber"
                          placeholder="პირადი N">
                 </div>
-                <div class="form-group col-md-2">
-                  <input type="text" class="form-control srch" ng-model="srchCase.deviceNumber"
-                         placeholder="მოწყობილობის N">
-                </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                   <input type="text" class="form-control srch" ng-model="srchCase.name"
                          placeholder="სახელი">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                   <input type="text" class="form-control srch" ng-model="srchCase.lastname"
                          placeholder="გვარი">
                 </div>
@@ -679,7 +675,7 @@
             <thead>
             <tr>
               <th>აბონ. N</th>
-              <th>პირადი N</th>
+              <th>პაკეტი</th>
               <th>სახელი</th>
               <th>გვარი</th>
               <th>ქუჩა</th>
@@ -692,7 +688,7 @@
             <tbody title="Double Click For Detailed Information">
             <tr ng-repeat="r in list" ng-dblclick="handleDoubleClick(r.id)">
               <td>{{r.id}}</td>
-              <td>{{r.personalNumber}}</td>
+              <td>{{r.packageType.name}}</td>
               <td>{{r.name}}</td>
               <td>{{r.lastname}}</td>
               <td>{{r.street.name}}</td>
