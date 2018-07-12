@@ -71,7 +71,7 @@ public class AbonentDAO extends AbstractDAO {
 //        TypedQuery<Abonent> query = entityManager.createQuery(q.toString(), Abonent.class);
         HashMap<String, Object> resultMap = new HashMap();
         resultMap.put("size", entityManager.createQuery(q.toString(), Abonent.class).getResultList().size());
-        resultMap.put("list", AbonentDTO.parseToList(entityManager.createQuery(q.toString() + " order by id desc", Abonent.class).setFirstResult(start).setMaxResults(limit).getResultList()));
+        resultMap.put("list", AbonentDTO.parseToList(entityManager.createQuery(q.toString() + " order by status_id asc, id desc", Abonent.class).setFirstResult(start).setMaxResults(limit).getResultList()));
         return resultMap;
     }
 
