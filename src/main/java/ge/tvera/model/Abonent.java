@@ -13,7 +13,6 @@ public class Abonent {
     private Double bill;
     private Street street;
     private Double balance;
-    private String abonentNumber;
     private String personalNumber;
     private String deviceNumber;
     private String comment;
@@ -96,16 +95,6 @@ public class Abonent {
 
     public void setBalance(Double balance) {
         this.balance = balance;
-    }
-
-    @Basic
-    @Column(name = "abonent_number", nullable = false, length = 50)
-    public String getAbonentNumber() {
-        return abonentNumber;
-    }
-
-    public void setAbonentNumber(String abonentNumber) {
-        this.abonentNumber = abonentNumber;
     }
 
     @Basic

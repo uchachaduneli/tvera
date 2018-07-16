@@ -35,7 +35,7 @@ public class PaymentDTO {
             dto.setId(record.getId());
             dto.setAmount(record.getAmount());
             dto.setAbonent(AbonentDTO.parse(record.getAbonent()));
-            dto.setAbonentNumber(dto.getAbonent().getAbonentNumber());
+            dto.setAbonentNumber(dto.getAbonent().getId() + "");
             dto.setPersonalNumber(dto.getAbonent().getPersonalNumber());
             dto.setAbonentId(record.getAbonent().getId());
             dto.setCreateDate(record.getCreateDate());

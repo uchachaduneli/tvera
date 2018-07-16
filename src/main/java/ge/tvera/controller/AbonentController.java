@@ -113,7 +113,7 @@ public class AbonentController {
             row.createCell(1).setCellValue(exportList.get(i - 1).getName());
             row.createCell(2).setCellValue(exportList.get(i - 1).getLastname());
             row.createCell(3).setCellValue(exportList.get(i - 1).getPersonalNumber());
-            row.createCell(4).setCellValue(exportList.get(i - 1).getAbonentNumber());
+            row.createCell(4).setCellValue(exportList.get(i - 1).getId());
             row.createCell(5).setCellValue(exportList.get(i - 1).getStreet().getName());
             if (exportList.get(i - 1).getBill() == null) row.createCell(6).setCellValue("");
             else row.createCell(6).setCellValue(exportList.get(i - 1).getBill());

@@ -177,7 +177,6 @@ public class AbonentService {
         Abonent obj = new Abonent();
         obj.setName(request.getName());
         obj.setLastname(request.getLastname());
-        obj.setAbonentNumber(request.getAbonentNumber());
         obj.setDeviceNumber(request.getDeviceNumber());
         obj.setPersonalNumber(request.getPersonalNumber());
         obj.setComment(request.getComment());

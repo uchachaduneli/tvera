@@ -20,7 +20,6 @@ public class AbonentDTO {
     private Integer streetId;
     private Integer incasatorId;
     private Double balance;
-    private String abonentNumber;
     private String personalNumber;
     private String deviceNumber;
     private String comment;
@@ -58,7 +57,6 @@ public class AbonentDTO {
             dto.setStreetId(record.getStreet().getId());
             dto.setDistrict(DistrictDTO.parse(record.getDistrict()));
             dto.setDistrictId(record.getDistrict().getId());
-            dto.setAbonentNumber(record.getAbonentNumber());
             dto.setDeviceNumber(record.getDeviceNumber());
             dto.setPersonalNumber(record.getPersonalNumber());
             dto.setComment(record.getComment());
@@ -84,38 +82,6 @@ public class AbonentDTO {
             list.add(AbonentDTO.parse(record));
         }
         return list;
-    }
-
-    public String getStreetNumber() {
-        return streetNumber;
-    }
-
-    public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber;
-    }
-
-    public String getFloor() {
-        return floor;
-    }
-
-    public void setFloor(String floor) {
-        this.floor = floor;
-    }
-
-    public String getRoomNumber() {
-        return roomNumber;
-    }
-
-    public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
-    public DistrictDTO getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(DistrictDTO district) {
-        this.district = district;
     }
 
     public Integer getId() {
@@ -182,28 +148,12 @@ public class AbonentDTO {
         this.incasatorId = incasatorId;
     }
 
-    public Integer getDistrictId() {
-        return districtId;
-    }
-
-    public void setDistrictId(Integer districtId) {
-        this.districtId = districtId;
-    }
-
     public Double getBalance() {
         return balance;
     }
 
     public void setBalance(Double balance) {
         this.balance = balance;
-    }
-
-    public String getAbonentNumber() {
-        return abonentNumber;
-    }
-
-    public void setAbonentNumber(String abonentNumber) {
-        this.abonentNumber = abonentNumber;
     }
 
     public String getPersonalNumber() {
@@ -302,6 +252,54 @@ public class AbonentDTO {
         this.packageTypeId = packageTypeId;
     }
 
+    public DistrictDTO getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(DistrictDTO district) {
+        this.district = district;
+    }
+
+    public Integer getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Integer districtId) {
+        this.districtId = districtId;
+    }
+
+    public Integer getHasBill() {
+        return hasBill;
+    }
+
+    public void setHasBill(Integer hasBill) {
+        this.hasBill = hasBill;
+    }
+
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
     public static Integer getJURIDICAL() {
         return JURIDICAL;
     }
@@ -316,13 +314,5 @@ public class AbonentDTO {
 
     public static void setPHISICAL(Integer PHISICAL) {
         AbonentDTO.PHISICAL = PHISICAL;
-    }
-
-    public Integer getHasBill() {
-        return hasBill;
-    }
-
-    public void setHasBill(Integer hasBill) {
-        this.hasBill = hasBill;
     }
 }
