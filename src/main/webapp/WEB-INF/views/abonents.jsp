@@ -201,8 +201,9 @@
       function resFunc(res) {
         if (res.errorCode == 0) {
           successMsg('Operation Successfull');
-          $scope.loadMainData();
+//          $scope.loadMainData();
           closeModal('packages');
+
         } else {
           errorMsg('Operation Failed');
         }
@@ -257,8 +258,9 @@
 
     $('#packages').on('hidden.bs.modal', function () {
       // $(this).find('form')[0].reset();
-      window.location.reload();
+//      window.location.reload();
       // angular.$scope.$apply();
+      window.location.reload();
     });
   });
 </script>
