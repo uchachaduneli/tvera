@@ -230,8 +230,10 @@ public class AbonentService {
     }
 
     @Transactional(rollbackFor = Throwable.class)
-    public void changeServiceStatus(int id) {
+    public void changeServiceStatus(int id, int userId) {
+        StatusHistory stHistory = new StatusHistory();
         Abonent obj = (Abonent) abonentDAO.find(Abonent.class, id);
+
         if (obj.getStatus().getId() == StatusDTO.STATUS_ACTIVE) {
             obj.setStatus((Status) abonentDAO.find(Status.class, StatusDTO.STATUS_DISABLED));
             abonentDAO.update(obj);
@@ -239,6 +241,9 @@ public class AbonentService {
             obj.setStatus((Status) abonentDAO.find(Status.class, StatusDTO.STATUS_ACTIVE));
             abonentDAO.update(obj);
         }
+        stHistory.setStatus(obj.getStatus());
+        stHistory.setAbonent(obj);
+        abonentDAO.create(stHistory);
     }
 
     public List<StatusHistoryDTO> getStatusHistory(int id) {
