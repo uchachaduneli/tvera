@@ -207,7 +207,7 @@
               <a ng-click="edit(r.userId)" data-toggle="modal" data-target="#editModal"
                  class="btn btn-xs">
                 <i class="fa fa-pencil"></i>&nbsp;Edit
-              </a>&nbsp;|&nbsp;
+              </a>&nbsp;&nbsp;
               <a ng-click="remove(r.userId)" class="btn btn-xs">
                 <i class="fa fa-trash-o"></i>&nbsp;Remove
               </a>

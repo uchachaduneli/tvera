@@ -55,6 +55,13 @@ public class AbonentController {
         return Response.withSuccess(true);
     }
 
+    @RequestMapping({"/change-abonent-status"})
+    @ResponseBody
+    public Response changeServiceStatus(@RequestParam int id) {
+        abonentService.changeServiceStatus(id);
+        return Response.withSuccess(true);
+    }
+
     @RequestMapping({"/get-status-history"})
     @ResponseBody
     public Response getStatusHistory(@RequestParam int id) {

@@ -73,6 +73,24 @@
       }
     };
 
+    $scope.changeStatus = function (id) {
+      if (id != undefined) {
+        var selected = $filter('filter')($scope.list, {id: id}, true);
+        $scope.tmp = selected[0];
+
+        if (confirm("დაადასტურეთ აბონენტის სერვისის " + ($scope.tmp.status.id == 2 ? 'გააქტიურება' : 'გათიშვა'))) {
+          function resFnc(res) {
+            if (res.errorCode == 0) {
+              successMsg('Operation Successfull');
+              $scope.loadMainData();
+            }
+          }
+
+          ajaxCall($http, "abonent/change-abonent-status?id=" + id, null, resFnc);
+        }
+      }
+    };
+
     $scope.edit = function (id) {
       if (id != undefined) {
         var selected = $filter('filter')($scope.list, {id: id}, true);
@@ -292,24 +310,6 @@
                 </label>
                 <hr class="col-sm-11" style="margin: 0 0 !important;">
               </div>
-
-              <%--<div class="form-group col-sm-10 ">--%>
-              <%--<label class="control-label col-sm-3">პაკეტი</label>--%>
-              <%--<div class="col-sm-9">--%>
-              <%--<label ng-repeat="s in packagetypes" class="col-xs-6">--%>
-              <%--<input type="radio" ng-model="package.packageTypeId" ng-value="s.id"--%>
-              <%--class="input-sm">&nbsp; {{s.name}}&nbsp;&nbsp;--%>
-              <%--</label>--%>
-              <%--</div>--%>
-              <%--</div>--%>
-              <%--<div class="form-group col-sm-10 ">--%>
-              <%--<label class="control-label col-sm-3">წერტილების რაოდენობა</label>--%>
-              <%--<div class="col-sm-9">--%>
-              <%--<input type="number" ng-model="package.servicePointsNumber"--%>
-              <%--class="form-control input-sm "/>--%>
-              <%--</div>--%>
-              <%--</div>--%>
-
             </div>
             <div class="form-group col-sm-10"></div>
             <div class="form-group col-sm-10"></div>
@@ -710,6 +710,9 @@
                 <a ng-click="loadAbonentPackages(r.id)" title="პაკეტები" data-toggle="modal"
                    data-target="#packages" class="btn btn-xs">
                   <i class="fa fa-tasks"></i>
+                </a>&nbsp;&nbsp;
+                <a ng-click="changeStatus(r.id)" title="სტატუსის შეცვლა" class="btn btn-xs">
+                  <i class="fa fa-cogs"></i>
                 </a>&nbsp;&nbsp;
                 <a ng-click="remove(r.id)" title="წაშლა" class="btn btn-xs">
                   <i class="fa fa-trash-o"></i>

@@ -229,6 +229,18 @@ public class AbonentService {
         }
     }
 
+    @Transactional(rollbackFor = Throwable.class)
+    public void changeServiceStatus(int id) {
+        Abonent obj = (Abonent) abonentDAO.find(Abonent.class, id);
+        if (obj.getStatus().getId() == StatusDTO.STATUS_ACTIVE) {
+            obj.setStatus((Status) abonentDAO.find(Status.class, StatusDTO.STATUS_DISABLED));
+            abonentDAO.update(obj);
+        } else {
+            obj.setStatus((Status) abonentDAO.find(Status.class, StatusDTO.STATUS_ACTIVE));
+            abonentDAO.update(obj);
+        }
+    }
+
     public List<StatusHistoryDTO> getStatusHistory(int id) {
         return StatusHistoryDTO.parseToList(abonentDAO.getStatusHistory(id));
     }
