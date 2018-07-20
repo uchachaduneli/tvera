@@ -57,8 +57,8 @@ public class AbonentController {
 
     @RequestMapping({"/change-abonent-status"})
     @ResponseBody
-    public Response changeServiceStatus(@RequestParam int id) {
-        abonentService.changeServiceStatus(id);
+    public Response changeServiceStatus(@RequestParam int id, HttpServletRequest servletRequest) {
+        abonentService.changeServiceStatus(id, ((Integer) servletRequest.getSession().getAttribute("userId")));
         return Response.withSuccess(true);
     }
 
