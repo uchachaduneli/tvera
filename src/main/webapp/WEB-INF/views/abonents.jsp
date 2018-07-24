@@ -641,7 +641,7 @@
                   </select>
                 </div>
                 <div class="form-group col-md-2">
-                  <select class="form-control" ng-model="srchCase.streetId"
+                  <select class="form-control" ng-model="srchCase.incasatorId"
                           ng-change="loadMainData()">
                     <option value="" selected="selected">ინკასატორი</option>
                     <option ng-repeat="v in incasators" ng-selected="v.id === srchCase.incasatorId"
