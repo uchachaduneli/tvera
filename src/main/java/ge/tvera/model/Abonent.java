@@ -25,6 +25,8 @@ public class Abonent {
     private String streetNumber;
     private String floor;
     private String roomNumber;
+    private Double installationBill;
+    private Double restoreBill;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -215,5 +217,46 @@ public class Abonent {
 
     public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
+    }
+
+    @Basic
+    @Column(name = "installation_bill")
+    public Double getInstallationBill() {
+        return installationBill;
+    }
+
+    public void setInstallationBill(Double installationBill) {
+        this.installationBill = installationBill;
+    }
+
+    @Basic
+    @Column(name = "restore_bill")
+    public Double getRestoreBill() {
+        return restoreBill;
+    }
+
+    public void setRestoreBill(Double restoreBill) {
+        this.restoreBill = restoreBill;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Abonent abonent = (Abonent) o;
+
+        if (installationBill != null ? !installationBill.equals(abonent.installationBill) : abonent.installationBill != null)
+            return false;
+        if (restoreBill != null ? !restoreBill.equals(abonent.restoreBill) : abonent.restoreBill != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = installationBill != null ? installationBill.hashCode() : 0;
+        result = 31 * result + (restoreBill != null ? restoreBill.hashCode() : 0);
+        return result;
     }
 }

@@ -192,6 +192,8 @@ public class AbonentService {
             Abonent tmp = (Abonent) abonentDAO.find(Abonent.class, request.getId());
             obj.setBalance(tmp.getBalance());
             obj.setBill(tmp.getBill());
+            obj.setInstallationBill(tmp.getInstallationBill());
+            obj.setRestoreBill(tmp.getRestoreBill());
             obj.setId(request.getId());
             obj.setStatus(tmp.getStatus());
             obj.setPackageType(tmp.getPackageType());

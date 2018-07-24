@@ -39,6 +39,8 @@ public class AbonentDTO {
     private String streetNumber;
     private String floor;
     private String roomNumber;
+    private Double installationBill;
+    private Double restoreBill;
 
     public static Integer JURIDICAL = 2;
     public static Integer PHISICAL = 1;
@@ -50,6 +52,8 @@ public class AbonentDTO {
             dto.setId(record.getId());
             dto.setName(record.getName());
             dto.setBill(record.getBill());
+            dto.setInstallationBill(record.getInstallationBill());
+            dto.setRestoreBill(record.getRestoreBill());
             dto.setBalance(record.getBalance());
             dto.setLastname(record.getLastname());
             dto.setCreateDate(record.getCreateDate());
@@ -82,6 +86,22 @@ public class AbonentDTO {
             list.add(AbonentDTO.parse(record));
         }
         return list;
+    }
+
+    public Double getInstallationBill() {
+        return installationBill;
+    }
+
+    public void setInstallationBill(Double installationBill) {
+        this.installationBill = installationBill;
+    }
+
+    public Double getRestoreBill() {
+        return restoreBill;
+    }
+
+    public void setRestoreBill(Double restoreBill) {
+        this.restoreBill = restoreBill;
     }
 
     public Integer getId() {

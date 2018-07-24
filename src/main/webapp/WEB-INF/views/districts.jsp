@@ -109,10 +109,10 @@
     }
 
     function getIncasators(res) {
-      $scope.incasators = res.data;
+      $scope.incasators = res.data.list;
     }
 
-    ajaxCall($http, "misc/get-incasators", null, getIncasators);
+    ajaxCall($http, "misc/get-incasators?start=0&limit=9999999", {}, getIncasators);
 
   });
 </script>
