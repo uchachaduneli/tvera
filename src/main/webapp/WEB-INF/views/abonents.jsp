@@ -27,7 +27,7 @@
         $scope.list = res.data.list;
         $scope.rowCount = res.data.size;
         $('#loadingModal').modal('hide');
-        console.log($scope.list);
+        // console.log($scope.list);
       }
 
       if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
@@ -272,10 +272,38 @@
     };
 
     $scope.printTickets = function () {
-      if ($scope.srchCase == undefined || $scope.srchCase == null || $scope.srchCase.incasatorId == undefined || $scope.srchCase.incasatorId == 0) {
-        errorMsg('გთხოვთ ფილტრში მიუთითოთ ინკასატორი');
+      if ($scope.srchCase == undefined || $scope.srchCase == null || $scope.srchCase.districtId == undefined || $scope.srchCase.districtId == 0) {
+        errorMsg('გთხოვთ ფილტრში მიუთითოთ კონკრეტული უბანი');
       } else {
-        print('receiptDivId');
+        var now = new Date();
+        var currentDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes();
+        $('#dateDivId').text(currentDate);
+
+        var selected = $filter('filter')($scope.districts, {id: parseInt($scope.srchCase.districtId)}, true);
+        $scope.receiptDistrict = selected[0];
+
+
+        function getReceiptData(res) {
+          $scope.receiptlist = res.data.list;
+          $scope.receiptBalanceSum = 0.0;
+          angular.forEach($scope.receiptlist, function (v) {
+            $scope.receiptBalanceSum += v.balance;
+          });
+
+          $('#loadingModal').modal('hide');
+          $('#receiptModal').modal('show');
+        }
+
+        if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
+          $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
+        }
+        if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
+          $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
+        }
+
+        ajaxCall($http, "abonent/get-abonents?start=0&limit=999999999", angular.toJson($scope.srchCase), getReceiptData);
+
+
       }
     };
   });
@@ -297,28 +325,73 @@
     popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" ' +
         'href="/tvera/resources/css/bootstrap.css" />' +
         '<link rel="stylesheet" type="text/css" </head>' +
-        '<body <!--onload="window.print()">-->' + printContents + '</html>');
+        '<body onload="window.print()">' + printContents + '</html>');
     popupWin.document.close();
   }
 </script>
 
 <div class="modal fade bs-example-modal-lg" id="receiptModal" tabindex="-1" role="dialog"
      aria-labelledby="receiptModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" >დეტალები</h4>
-      </div>
       <div class="modal-body">
-        <div class="row" id="receiptDivId">
-          <table class="table table-striped table-bordered table-hover">
-            <tr>
-              <th class="col-md-4 text-right">აბონენტის N</th>
-              <td>{{slcted.id}}</td>
-            </tr>
-          </table>
+        <div class="row">
+          <div class="col-md-12">
+            <a onclick="print('receiptDivId')" title="ბეჭდვა" class="btn btn-primary btn-lg pull-right">
+              <i class="fa fa-print"></i>
+            </a>
+          </div>
+          <div class="col-md-12" id="receiptDivId">
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+              <tr>
+                <th class="text-center" colspan="11">
+                  <h2>საკონტროლო ფურცელი</h2>
+                </th>
+              </tr>
+              <tr>
+                <th class="text-center" colspan="11"> ინკასატორი {{receiptDistrict.incasator.name + ' ' +
+                  receiptDistrict.incasator.lastname}}
+                </th>
+              </tr>
+              <tr>
+                <th class="text-center" colspan="11">{{receiptDistrict.name}}</th>
+              </tr>
+              <tr class="text-center">
+                <th>#</th>
+                <th>აბონ. N</th>
+                <th>სახელი</th>
+                <th>გვარი</th>
+                <th>ქუჩა</th>
+                <th>სართული</th>
+                <th>ბინა</th>
+                <th>ტარიფი</th>
+                <th>აღდგენა</th>
+                <th>მონტაჟი</th>
+                <th>გადასახდელი</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="r in receiptlist" class="text-center">
+                <td>{{$index+1}}</td>
+                <td>{{r.id}}</td>
+                <td>{{r.name}}</td>
+                <td>{{r.lastname}}</td>
+                <td>{{r.street.name + ' #' + r.streetNumber}}</td>
+                <td>{{r.floor}}</td>
+                <td>{{r.roomNumber}}</td>
+                <td>{{r.bill}}</td>
+                <td>{{r.restoreBill}}</td>
+                <td>{{r.installationBill}}</td>
+                <td>{{r.balance}}</td>
+              </tr>
+              <tr class="text-center">
+                <th colspan="10">ამობეჭდვის თარიღი: <span id="dateDivId"></span></th>
+                <th>სულ: {{receiptBalanceSum}}</th>
+              </tr>
+              </tbody>
+            </table>
+          </div>
           <div class="form-group"><br/></div>
         </div>
       </div>
@@ -621,16 +694,17 @@
           <%--</c:if>--%>
         </div>
         <%--<div class="col-md-2 col-xs-offset-6">--%>
-          <%--<a ng-click="downloadExcell()" title="ექსელში ექსპორტი" class="btn btn-default pull-right">--%>
-            <%--<i class="fa fa-file-excel-o"></i>--%>
-          <%--</a>--%>
+        <%--<a ng-click="downloadExcell()" title="ექსელში ექსპორტი" class="btn btn-default pull-right">--%>
+        <%--<i class="fa fa-file-excel-o"></i>--%>
+        <%--</a>--%>
         <%--</div>--%>
         <div class="col-md-1 col-xs-offset-6">
           <div class="btn-group">
             <a ng-click="downloadExcell()" title="ექსელში ექსპორტი" class="btn btn-default pull-right">
               <i class="fa fa-file-excel-o"></i>
             </a>
-            <a ng-click="printTickets()" title="ქვითრის ბეჭდვა" class="btn btn-default pull-right">
+            <a ng-click="printTickets()" title="ქვითრის ბეჭდვა"
+               class="btn btn-default pull-right">
               <i class="fa fa-print"></i>
             </a>
           </div>
