@@ -173,7 +173,7 @@
     $scope.rowNumbersChange = function () {
       $scope.start = 0;
       $scope.loadMainData();
-    }
+    };
 
     $scope.handlePage = function (h) {
       if (parseInt(h) >= 0) {
@@ -184,7 +184,7 @@
         $scope.start = ($scope.page * parseInt($scope.limit)) - parseInt($scope.limit);
       }
       $scope.loadMainData();
-    }
+    };
 
     function getStreets(res) {
       $scope.streets = res.data;
@@ -210,7 +210,7 @@
       }
 
       ajaxCall($http, "package/get-packages", null, setPackages);
-    }
+    };
 
     $scope.getPackages();
 
@@ -235,7 +235,7 @@
 
       console.log(angular.toJson($scope.req));
       ajaxCall($http, "abonent/save-abonent-packages", angular.toJson($scope.req), resFunc);
-    }
+    };
 
     $scope.loadAbonentPackages = function (id) {
 //      $scope.getPackages();
@@ -270,6 +270,14 @@
         return false;
       }
     };
+
+    $scope.printTickets = function () {
+      if ($scope.srchCase == undefined || $scope.srchCase == null || $scope.srchCase.incasatorId == undefined || $scope.srchCase.incasatorId == 0) {
+        errorMsg('გთხოვთ ფილტრში მიუთითოთ ინკასატორი');
+      } else {
+        print('receiptDivId');
+      }
+    };
   });
 
   $(document).ready(function () {
@@ -281,7 +289,44 @@
       window.location.reload();
     });
   });
+
+  function print(contentId) {
+    var printContents = document.getElementById(contentId).innerHTML;
+    var popupWin = window.open('', '_blank', 'width=1200,height=700');
+    popupWin.document.open();
+    popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" ' +
+        'href="/tvera/resources/css/bootstrap.css" />' +
+        '<link rel="stylesheet" type="text/css" </head>' +
+        '<body <!--onload="window.print()">-->' + printContents + '</html>');
+    popupWin.document.close();
+  }
 </script>
+
+<div class="modal fade bs-example-modal-lg" id="receiptModal" tabindex="-1" role="dialog"
+     aria-labelledby="receiptModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" >დეტალები</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" id="receiptDivId">
+          <table class="table table-striped table-bordered table-hover">
+            <tr>
+              <th class="col-md-4 text-right">აბონენტის N</th>
+              <td>{{slcted.id}}</td>
+            </tr>
+          </table>
+          <div class="form-group"><br/></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+</div>
 
 <div class="modal fade bs-example-modal-lg not-printable" id="packages" role="dialog"
      aria-labelledby="packagesModalLabel"
@@ -575,12 +620,22 @@
           </button>
           <%--</c:if>--%>
         </div>
-        <div class="col-md-2 col-xs-offset-6">
-          <a ng-click="downloadExcell()" title="ექსელში ექსპორტი" class="btn btn-default pull-right">
-            <i class="fa fa-file-excel-o"></i>
-          </a>
+        <%--<div class="col-md-2 col-xs-offset-6">--%>
+          <%--<a ng-click="downloadExcell()" title="ექსელში ექსპორტი" class="btn btn-default pull-right">--%>
+            <%--<i class="fa fa-file-excel-o"></i>--%>
+          <%--</a>--%>
+        <%--</div>--%>
+        <div class="col-md-1 col-xs-offset-6">
+          <div class="btn-group">
+            <a ng-click="downloadExcell()" title="ექსელში ექსპორტი" class="btn btn-default pull-right">
+              <i class="fa fa-file-excel-o"></i>
+            </a>
+            <a ng-click="printTickets()" title="ქვითრის ბეჭდვა" class="btn btn-default pull-right">
+              <i class="fa fa-print"></i>
+            </a>
+          </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <select ng-change="rowNumbersChange()" class="pull-right form-control" ng-model="limit"
                   id="rowCountSelectId">
             <option value="10" selected>მაჩვენე 10</option>
@@ -614,13 +669,21 @@
                   <input type="text" class="form-control srch" ng-model="srchCase.personalNumber"
                          placeholder="პირადი N">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.name"
                          placeholder="სახელი">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.lastname"
                          placeholder="გვარი">
+                </div>
+                <div class="form-group col-md-2">
+                  <select class="form-control" ng-model="srchCase.statusId"
+                          ng-change="loadMainData()">
+                    <option value="" selected="selected">სტატუსი</option>
+                    <option ng-selected="1 === srchCase.statusId" value="{{1}}">აქტიური</option>
+                    <option ng-selected="2 === srchCase.statusId" value="{{2}}">გათიშული</option>
+                  </select>
                 </div>
                 <div class="form-group col-md-2">
                   <select class="form-control" ng-model="srchCase.districtId"

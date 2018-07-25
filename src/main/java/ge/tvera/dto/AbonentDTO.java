@@ -25,7 +25,9 @@ public class AbonentDTO {
     private String comment;
     @JsonSerialize(using = JsonDateSerializeSupport.class)
     private Date billDate;
+    @JsonSerialize(using = JsonDateSerializeSupport.class)
     private Date billDateFrom;
+    @JsonSerialize(using = JsonDateSerializeSupport.class)
     private Date billDateTo;
     private StatusDTO status;
     private Integer statusId;
