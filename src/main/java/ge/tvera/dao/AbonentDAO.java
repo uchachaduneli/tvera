@@ -52,6 +52,9 @@ public class AbonentDAO extends AbstractDAO {
         if (srchRequest.getDistrictId() != null) {
             q.append(" and e.district.id ='").append(srchRequest.getDistrictId()).append("'");
         }
+        if (srchRequest.getStatusId() != null) {
+            q.append(" and e.status.id ='").append(srchRequest.getStatusId()).append("'");
+        }
         if (srchRequest.getStreetId() != null) {
             q.append(" and e.street.id ='").append(srchRequest.getStreetId()).append("'");
         }
@@ -61,8 +64,9 @@ public class AbonentDAO extends AbstractDAO {
         if (srchRequest.getHasBill() != null && srchRequest.getHasBill() == -1) {
             q.append(" and e.balance > 0");
         }
-        if (srchRequest.getBillDate() != null && srchRequest.getBillDateTo() != null) {
-            q.append(" and e.billDate between '").append(srchRequest.getBillDate()).append("' and '").append(srchRequest.getBillDateTo()).append("'");
+        if (srchRequest.getBillDateFrom() != null && srchRequest.getBillDateTo() != null) {
+            q.append(" and e.billDate between '").append(new java.sql.Date(srchRequest.getBillDateFrom().getTime())).append("' and '")
+                    .append(new java.sql.Date(srchRequest.getBillDateTo().getTime())).append("'");
         }
 
 //        TypedQuery<Abonent> query = entityManager.createQuery(q.toString(), Abonent.class);
