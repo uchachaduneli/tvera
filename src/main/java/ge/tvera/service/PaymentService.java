@@ -55,6 +55,9 @@ public class PaymentService {
     public void deletePayment(int id) {
         Payment obj = (Payment) paymentDAO.find(Payment.class, id);
         if (obj != null) {
+            Abonent abonent = obj.getAbonent();
+            abonent.setBalance(abonent.getBalance() + obj.getAmount());
+            paymentDAO.update(abonent);
             paymentDAO.delete(obj);
         }
     }

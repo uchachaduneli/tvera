@@ -416,6 +416,7 @@
             <thead>
             <tr>
               <th>ID</th>
+              <th>აბონ. N</th>
               <th>აბონენტი</th>
               <th>თანხა</th>
               <th>ქვითრის N</th>
@@ -426,6 +427,7 @@
             <tbody title="Double Click For Detailed Information">
             <tr ng-repeat="r in list" ng-dblclick="handleDoubleClick(r.id)">
               <td>{{r.id}}</td>
+              <td>{{r.abonent.id}}</td>
               <td>{{r.abonent.name}}&nbsp;{{r.abonent.lastname}}</td>
               <td>{{r.amount}}</td>
               <td>{{r.checkNumber}}</td>
@@ -440,9 +442,9 @@
                 <%--class="btn btn-xs">--%>
                 <%--<i class="fa fa-pencil"></i>&nbsp;რედაქტირება--%>
                 <%--</a>&nbsp;&nbsp;--%>
-                <%--<a ng-click="remove(r.id)" class="btn btn-xs">--%>
-                <%--<i class="fa fa-trash-o"></i>&nbsp;წაშლა--%>
-                <%--</a>--%>
+                <a ng-click="remove(r.id)" class="btn btn-xs">
+                  <i class="fa fa-trash-o"></i>&nbsp;წაშლა
+                </a>
                 <%--</c:if>--%>
               </td>
             </tr>
