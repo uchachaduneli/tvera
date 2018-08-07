@@ -16,6 +16,8 @@ public class StatusHistoryDTO {
     private Integer statusId;
     @JsonSerialize(using = JsonDateSerializeSupport.class)
     private Date createDate;
+    @JsonSerialize(using = JsonDateSerializeSupport.class)
+    private Date disableDate;
 
 
     public static StatusHistoryDTO parse(StatusHistory record) {
@@ -25,6 +27,7 @@ public class StatusHistoryDTO {
         dto.setAbonentId(record.getAbonent().getId());
         dto.setStatusId(record.getStatus().getId());
         dto.setCreateDate(record.getCreateDate());
+        dto.setDisableDate(record.getDisableDate());
         return dto;
     }
 
@@ -35,6 +38,14 @@ public class StatusHistoryDTO {
             list.add(StatusHistoryDTO.parse(record));
         }
         return list;
+    }
+
+    public Date getDisableDate() {
+        return disableDate;
+    }
+
+    public void setDisableDate(Date disableDate) {
+        this.disableDate = disableDate;
     }
 
     public Date getCreateDate() {

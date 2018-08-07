@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -232,7 +233,7 @@ public class AbonentService {
     }
 
     @Transactional(rollbackFor = Throwable.class)
-    public void changeServiceStatus(int id, int userId) {
+    public void changeServiceStatus(int id, Date disableDate, int userId) {
         StatusHistory stHistory = new StatusHistory();
         Abonent obj = (Abonent) abonentDAO.find(Abonent.class, id);
 
@@ -245,6 +246,7 @@ public class AbonentService {
         }
         stHistory.setStatus(obj.getStatus());
         stHistory.setAbonent(obj);
+        stHistory.setDisableDate(disableDate);
         abonentDAO.create(stHistory);
     }
 

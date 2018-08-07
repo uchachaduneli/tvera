@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 
@@ -57,8 +58,8 @@ public class AbonentController {
 
     @RequestMapping({"/change-abonent-status"})
     @ResponseBody
-    public Response changeServiceStatus(@RequestParam int id, HttpServletRequest servletRequest) {
-        abonentService.changeServiceStatus(id, ((Integer) servletRequest.getSession().getAttribute("userId")));
+    public Response changeServiceStatus(@RequestParam int id, @RequestParam(value = "date", required = false) Date date, HttpServletRequest servletRequest) {
+        abonentService.changeServiceStatus(id, date, ((Integer) servletRequest.getSession().getAttribute("userId")));
         return Response.withSuccess(true);
     }
 
@@ -99,8 +100,9 @@ public class AbonentController {
         rowhead.createCell(3).setCellValue("პირადი N");
         rowhead.createCell(4).setCellValue("აბონენტის N");
         rowhead.createCell(5).setCellValue("ქუჩა");
-        rowhead.createCell(6).setCellValue("გადასახადი");
-        rowhead.createCell(7).setCellValue("ბალანსი");
+        rowhead.createCell(6).setCellValue("ბინის N");
+        rowhead.createCell(7).setCellValue("გადასახადი");
+        rowhead.createCell(8).setCellValue("ბალანსი");
 
         HSSFCellStyle cellStyle = workbook.createCellStyle();
         cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
@@ -121,11 +123,12 @@ public class AbonentController {
             row.createCell(2).setCellValue(exportList.get(i - 1).getLastname());
             row.createCell(3).setCellValue(exportList.get(i - 1).getPersonalNumber());
             row.createCell(4).setCellValue(exportList.get(i - 1).getId());
-            row.createCell(5).setCellValue(exportList.get(i - 1).getStreet().getName());
+            row.createCell(5).setCellValue(exportList.get(i - 1).getStreet().getName() + " " + exportList.get(i - 1).getStreetNumber());
+            row.createCell(6).setCellValue(exportList.get(i - 1).getRoomNumber());
             if (exportList.get(i - 1).getBill() == null) row.createCell(6).setCellValue("");
-            else row.createCell(6).setCellValue(exportList.get(i - 1).getBill());
+            else row.createCell(7).setCellValue(exportList.get(i - 1).getBill());
             if (exportList.get(i - 1).getBalance() == null) row.createCell(7).setCellValue("");
-            else row.createCell(7).setCellValue(exportList.get(i - 1).getBalance());
+            else row.createCell(8).setCellValue(exportList.get(i - 1).getBalance());
         }
 
         FileOutputStream fileOut = new FileOutputStream(realPath);

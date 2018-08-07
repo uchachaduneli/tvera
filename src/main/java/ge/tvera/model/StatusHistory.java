@@ -1,15 +1,17 @@
 package ge.tvera.model;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "status_history")
+@Table(name = "status_history", schema = "tvera", catalog = "")
 public class StatusHistory {
     private Integer id;
     private Status status;
     private Abonent abonent;
     private Timestamp createDate;
+    private Date disableDate;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -50,5 +52,15 @@ public class StatusHistory {
 
     public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
+    }
+
+    @Basic
+    @Column(name = "disable_date", nullable = true)
+    public Date getDisableDate() {
+        return disableDate;
+    }
+
+    public void setDisableDate(Date disableDate) {
+        this.disableDate = disableDate;
     }
 }

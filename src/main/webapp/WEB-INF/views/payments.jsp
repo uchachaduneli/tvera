@@ -119,8 +119,7 @@
 
       console.log(angular.toJson($scope.req));
       ajaxCall($http, "payment/save-payment", angular.toJson($scope.req), resFunc);
-    }
-    ;
+    };
 
 
     $scope.rowNumbersChange = function () {

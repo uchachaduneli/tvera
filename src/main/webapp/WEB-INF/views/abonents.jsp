@@ -73,20 +73,27 @@
       }
     };
 
-    $scope.changeStatus = function (id) {
-      if (id != undefined) {
-        var selected = $filter('filter')($scope.list, {id: id}, true);
-        $scope.tmp = selected[0];
+    $scope.changeStatus = function () {
+      if ($scope.slcted != undefined) {
 
-        if (confirm("დაადასტურეთ აბონენტის სერვისის " + ($scope.tmp.status.id == 2 ? 'გააქტიურება' : 'გათიშვა'))) {
+        if (confirm("დაადასტურეთ აბონენტის სერვისის " + ($scope.slcted.status.id == 2 ? 'გააქტიურება' : 'გათიშვა'))) {
           function resFnc(res) {
             if (res.errorCode == 0) {
               successMsg('Operation Successfull');
+              closeModal('statusDialog');
               $scope.loadMainData();
             }
           }
 
-          ajaxCall($http, "abonent/change-abonent-status?id=" + id, null, resFnc);
+          if ($scope.disableDate != undefined && $scope.disableDate.includes('/')) {
+            $scope.disableDate = $scope.disableDate.split(/\//).reverse().join('-')
+          }
+          if ($scope.disableDate == undefined || $scope.disableDate.length < 1) {
+            errorMsg('თარიღის მითითება სავალდებულოა');
+            return;
+          }
+
+          ajaxCall($http, "abonent/change-abonent-status?id=" + $scope.slcted.id + "&date=" + $scope.disableDate, null, resFnc);
         }
       }
     };
@@ -291,7 +298,6 @@
           });
 
           $('#loadingModal').modal('hide');
-          $('#receiptModal').modal('show');
         }
 
         if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
@@ -532,7 +538,7 @@
               <td>
                 <ul>
                   <li ng-repeat="k in slcted.statusHistory">
-                    {{k.status.name}} - {{k.createDate}}
+                    {{k.status.name}} - {{k.disableDate}}
                   </li>
                 </ul>
               </td>
@@ -557,6 +563,60 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade bs-example-modal-lg not-printable" id="statusDialog" role="dialog"
+     aria-labelledby="statusDialogLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="statusDialogLabel">სტატუსის ცვლილება</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <table class="table table-striped">
+            <tr>
+              <th class="col-md-4 text-right">აბონენტის N</th>
+              <td>{{slcted.id}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">სახელი, გვარი</th>
+              <td>{{slcted.name}}&nbsp; {{slcted.lastname}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">პირადი N</th>
+              <td>{{slcted.personalNumber}}</td>
+            </tr>
+            <tr>
+              <th class="text-right">სტატუსი</th>
+              <td>{{slcted.status.name}}</td>
+            </tr>
+          </table>
+          <form class="form-horizontal" name="ediFormName">
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">ოპერაციის თარიღი</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="disableDate" ng-init=""
+                       class="form-control input-sm dateInput"/>
+              </div>
+            </div>
+            <div class="form-group col-sm-10"></div>
+            <div class="form-group col-sm-10"></div>
+            <div class="form-group col-sm-12 text-center">
+              <a class="btn btn-app" ng-click="changeStatus()">
+                <i class="fa fa-save"></i> შენახვა
+              </a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div class="modal fade bs-example-modal-lg not-printable" id="editModal" role="dialog" aria-labelledby="editModalLabel"
      aria-hidden="true">
@@ -832,7 +892,9 @@
               <td>{{r.lastname}}</td>
               <td>{{r.street.name}}</td>
               <td>{{r.district.incasator.name + ' ' + r.district.incasator.lastname}}</td>
-              <td>{{r.balance}}</td>
+              <td style="background-color: {{(r.balance < 0 ? '#c4e3f3':(r.balance > 0 ? '#ebcccc':''))}}">
+                {{r.balance*-1}}
+              </td>
               <td>{{r.status.name}}</td>
               <td class="text-center">
                 <a ng-click="showDetails(r.id)" data-toggle="modal" title="დეტალები"
@@ -848,7 +910,8 @@
                    data-target="#packages" class="btn btn-xs">
                   <i class="fa fa-tasks"></i>
                 </a>&nbsp;&nbsp;
-                <a ng-click="changeStatus(r.id)" title="სტატუსის შეცვლა" class="btn btn-xs">
+                <a ng-click="showDetails(r.id)" data-toggle="modal"
+                   data-target="#statusDialog" title="სტატუსის შეცვლა" class="btn btn-xs">
                   <i class="fa fa-cogs"></i>
                 </a>&nbsp;&nbsp;
                 <a ng-click="remove(r.id)" title="წაშლა" class="btn btn-xs">
