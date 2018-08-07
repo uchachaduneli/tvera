@@ -93,11 +93,12 @@
       if ($scope.founded == undefined || $scope.founded.id == undefined) {
         errorMsg('აბონენტის ID ვერ მოიძებნა');
       }
-
+      $('#loadingModal').modal('show');
       function resFunc(res) {
         if (res.errorCode == 0) {
           successMsg('Operation Successfull');
           $scope.loadMainData();
+          $('#loadingModal').modal('hide');
           closeModal('editModal');
         } else {
           errorMsg('Operation Failed');
@@ -369,23 +370,23 @@
                 <%--placeholder="აბონენტის ID">--%>
                 <%--</div>--%>
                 <div class="form-group col-md-3">
-                  <input type="text" class="form-control srch" ng-model="srchCase.abonent.id"
+                  <input type="text" class="form-control srch" ng-model="srchCase.abonentId"
                          placeholder="აბონენტის N">
                 </div>
                 <div class="form-group col-md-3">
-                  <input type="text" class="form-control srch" ng-model="srchCase.abonent.personalNumber"
+                  <input type="text" class="form-control srch" ng-model="srchCase.personalNumber"
                          placeholder="პირადი N">
                 </div>
                 <div class="form-group col-md-3">
-                  <input type="text" class="form-control srch" ng-model="srchCase.abonent.checkNumber"
+                  <input type="text" class="form-control srch" ng-model="srchCase.checkNumber"
                          placeholder="ქვითრის N">
                 </div>
                 <div class="form-group col-md-3">
-                  <input type="text" class="form-control srch" ng-model="srchCase.abonent.name"
+                  <input type="text" class="form-control srch" ng-model="srchCase.name"
                          placeholder="სახელი">
                 </div>
                 <div class="form-group col-md-3">
-                  <input type="text" class="form-control srch" ng-model="srchCase.abonent.lastname"
+                  <input type="text" class="form-control srch" ng-model="srchCase.lastname"
                          placeholder="გვარი">
                 </div>
                 <div class="form-group col-md-4">
