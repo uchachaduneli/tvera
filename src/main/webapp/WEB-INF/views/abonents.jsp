@@ -297,6 +297,7 @@
             $scope.receiptBalanceSum += v.balance;
           });
 
+          $('#receiptModal').modal('show');
           $('#loadingModal').modal('hide');
         }
 
@@ -310,6 +311,41 @@
         ajaxCall($http, "abonent/get-abonents?start=0&limit=999999999", angular.toJson($scope.srchCase), getReceiptData);
 
 
+      }
+    };
+
+    $scope.printHistory = function () {
+      if ($scope.srchCase == undefined || $scope.srchCase == null || $scope.srchCase.districtId == undefined || $scope.srchCase.districtId == 0) {
+        errorMsg('გთხოვთ ფილტრში მიუთითოთ კონკრეტული უბანი');
+      } else {
+        var now = new Date();
+        var currentDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes();
+        $('#dateDivId2').text(currentDate);
+
+        var selected = $filter('filter')($scope.districts, {id: parseInt($scope.srchCase.districtId)}, true);
+        $scope.receiptDistrict = selected[0];
+
+        function getHistoryData(res) {
+          $scope.historylist = res.data;
+          $scope.uniqAbonentsHistory = [];
+          angular.forEach($scope.historylist, function (v) {
+            if ($scope.uniqAbonentsHistory.indexOf(v.abonent.id) === -1) {
+              $scope.uniqAbonentsHistory.push(v.abonent.id);
+            }
+          });
+          console.log($scope.receiptDistrict);
+          $('#historyModal').modal('show');
+          $('#loadingModal').modal('hide');
+        }
+
+        if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
+          $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
+        }
+        if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
+          $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
+        }
+
+        ajaxCall($http, "abonent/get-balance-history", angular.toJson($scope.srchCase), getHistoryData);
       }
     };
   });
@@ -335,6 +371,95 @@
     popupWin.document.close();
   }
 </script>
+
+<div class="modal fade bs-example-modal-lg" id="historyModal" tabindex="-1" role="dialog"
+     aria-labelledby="historyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <a onclick="print('historyDivId')" title="ბეჭდვა" class="btn btn-primary btn-lg pull-right">
+              <i class="fa fa-print"></i>
+            </a>
+          </div>
+          <div class="col-md-12" id="historyDivId">
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+              <tr>
+                <th class="text-center" colspan="8">
+                  <h2>დავალიანების ისტორია</h2>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="4">
+                  ამობეჭდვის თარიღი: <span id="dateDivId2"></span>
+                </th>
+                <th class="text-center" colspan="4"> ინკასატორი {{receiptDistrict.incasator.name + ' ' +
+                  receiptDistrict.incasator.lastname}}
+                </th>
+              </tr>
+              <tr>
+                <th class="text-center" colspan="8">{{receiptDistrict.name}}</th>
+              </tr>
+              </thead>
+            </table>
+            <table ng-repeat="v in uniqAbonentsHistory"
+                   class="table table-striped table-bordered table-hover">
+              <thead>
+              <tr class="text-center">
+                <th>#</th>
+                <th>აბონ. N</th>
+                <th>სახელი</th>
+                <th>გვარი</th>
+                <th>ქუჩა</th>
+                <th>სართული</th>
+                <th>ბინა</th>
+                <th>ტარიფი</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="r in historylist | filter:{abonent:{id:v}}:true " ng-if="$index == 0" class="text-center">
+                <td></td>
+                <td>{{r.abonent.id}}</td>
+                <td>{{r.abonent.name}}</td>
+                <td>{{r.abonent.lastname}}</td>
+                <td>{{r.abonent.street.name + ' #' + r.abonent.streetNumber}}</td>
+                <td>{{r.abonent.floor}}</td>
+                <td>{{r.abonent.roomNumber}}</td>
+                <td>{{r.abonent.bill}}</td>
+              </tr>
+              <tr>
+                <th colspan="2" style="background-color: #30bbbb;">თარიღი</th>
+                <th colspan="2" style="background-color: #30bbbb;">დავალიანება</th>
+                <th colspan="2" style="background-color: #30bbbb;">აღდგენის დავალ.</th>
+                <th colspan="2" style="background-color: #30bbbb;">მონტაჟის დავალ.</th>
+              </tr>
+              <tr ng-repeat="a in historylist | filter:{abonent:{id:v}}: true" class="text-center">
+                <td colspan="2">{{a.createDate}}</td>
+                <td colspan="2">{{a.balance}}</td>
+                <td colspan="2">{{a.restoreBalance}}</td>
+                <td colspan="2">{{a.installationBalance}}</td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="8">
+                  <hr/>
+                </td>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="form-group"><br/></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+</div>
+
 
 <div class="modal fade bs-example-modal-lg" id="receiptModal" tabindex="-1" role="dialog"
      aria-labelledby="receiptModalLabel" aria-hidden="true">
@@ -491,7 +616,7 @@
             </tr>
             <tr>
               <th class="text-right">ბალანსი</th>
-              <td>{{slcted.balance}}</td>
+              <td>{{slcted.balance*-1}}</td>
             </tr>
             <tr>
               <th class="text-right">გადახდის თარიღი</th>
@@ -758,7 +883,7 @@
         <%--<i class="fa fa-file-excel-o"></i>--%>
         <%--</a>--%>
         <%--</div>--%>
-        <div class="col-md-1 col-xs-offset-6">
+        <div class="col-md-2 col-xs-offset-5">
           <div class="btn-group">
             <a ng-click="downloadExcell()" title="ექსელში ექსპორტი" class="btn btn-default pull-right">
               <i class="fa fa-file-excel-o"></i>
@@ -766,6 +891,10 @@
             <a ng-click="printTickets()" title="ქვითრის ბეჭდვა"
                class="btn btn-default pull-right">
               <i class="fa fa-print"></i>
+            </a>
+            <a ng-click="printHistory()" title="დავალიანებების ისტორია"
+               class="btn btn-default pull-right">
+              <i class="fa fa-clock-o"></i>
             </a>
           </div>
         </div>

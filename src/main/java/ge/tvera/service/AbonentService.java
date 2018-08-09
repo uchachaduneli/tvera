@@ -31,6 +31,10 @@ public class AbonentService {
         return abonentDAO.getAbonents(start, limit, srchRequest);
     }
 
+    public List<BalanceHistoryDTO> getAbonentBalanceHistory(AbonentDTO srchRequest) {
+        return abonentDAO.getAbonentBalanceHistory(srchRequest);
+    }
+
     @Transactional(rollbackFor = Throwable.class)
     public void abonentPackagesAction(AbonentPackagesRequest request) {
         Abonent abonent = (Abonent) abonentDAO.find(Abonent.class, request.getAbonendId());

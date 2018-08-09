@@ -38,8 +38,8 @@
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://212.72.143.212:15816/tvera"/>
-        <!--<property name="url" value="jdbc:mysql://localhost:3306/tvera"/>-->
+        <!--<property name="url" value="jdbc:mysql://212.72.143.212:15816/tvera"/>-->
+        <property name="url" value="jdbc:mysql://localhost:3306/tvera"/>
         <property name="username" value="root"/>
         <property name="password" value="root"/>
     </bean>

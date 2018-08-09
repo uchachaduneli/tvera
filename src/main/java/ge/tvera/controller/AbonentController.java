@@ -43,6 +43,12 @@ public class AbonentController {
         return Response.withSuccess(abonentService.getAbonents(start, limit, request));
     }
 
+    @RequestMapping("/get-balance-history")
+    @ResponseBody
+    private Response getAbonents(@RequestBody AbonentDTO request) throws Exception {
+        return Response.withSuccess(abonentService.getAbonentBalanceHistory(request));
+    }
+
     @RequestMapping({"/save-abonent"})
     @ResponseBody
     public Response saveAbonent(@RequestBody AbonentDTO request) throws Exception {
