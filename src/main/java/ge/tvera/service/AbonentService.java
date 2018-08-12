@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -106,7 +107,33 @@ public class AbonentService {
             }
         } else {
             //აბონენტის არსებული პაკეტების ედიტია, რედაქტირდება მარტო წერტილების დამატება თუ მოხდა მაგათი რაოდენობის მხედვით ედიტდება ბალანსები და სააბონენტოს თანხა
+
+            List<Integer> requestedPackageId = new ArrayList<>();
             for (PackageDTO pack : request.getAbonentPackages()) {
+                requestedPackageId.add(pack.getId());
+            }
+
+            List<Integer> existedPackageId = new ArrayList<>();
+            for (Package pack : abonentExistingPackages) {
+                requestedPackageId.add(pack.getId());
+            }
+            List<Integer> mergedIds = new ArrayList<>();
+            if (requestedPackageId.size() != existedPackageId) {
+
+                if (requestedPackageId.size() > existedPackageId.size()) {
+                    requestedPackageId.removeAll(existedPackageId);
+                    mergedIds.addAll(requestedPackageId);
+                } else {
+                    existedPackageId.removeAll(requestedPackageId);
+                    mergedIds.addAll(existedPackageId);
+                }
+
+                List<Package> mergedPackages = abonentDAO.getAbonentPackagesByIdList(mergedIds);
+
+            }
+
+                /* aqedan dzvelia
+                for (PackageDTO pack : request.getAbonentPackages()) {
                 switch (pack.getGroup().getId()) {
                     case PackageDTO.DISTRIBUTION_ON_EXTRA_POINT:
                         if (abonent.getServicePointsNumber() != pack.getExternalPointCount() && pack.getExternalPointCount() != null) {
@@ -153,8 +180,8 @@ public class AbonentService {
                         break;
                     default:
                         break;
-                }
-            }
+                }*/
+        }
             /* თუ ახალი პაკეტებიც მიაბეს რო დაემატოს ბაზაში
             List<PackageDTO> newOnes = request.getAbonentPackages();
             newOnes.removeAll(abonentExistingPackages);
@@ -167,14 +194,15 @@ public class AbonentService {
                 }
             }
             */
-        }
+    }
 
-        abonent.setPackageType((PackageType) abonentDAO.find(PackageType.class, request.getPackageTypeId()));
+        abonent.setPackageType((PackageType)abonentDAO.find(PackageType.class,request.getPackageTypeId()));
         abonent.setBill(billSum);
         abonent.setBalance(balance);
         abonent.setServicePointsNumber(servicePointsNumber);
-        abonent = (Abonent) abonentDAO.update(abonent);
-    }
+    abonent =(Abonent)abonentDAO.update(abonent);
+}
+
 
     @Transactional(rollbackFor = Throwable.class)
     public Abonent saveAbonent(AbonentDTO request) {

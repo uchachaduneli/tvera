@@ -1043,6 +1043,10 @@
                    data-target="#statusDialog" title="სტატუსის შეცვლა" class="btn btn-xs">
                   <i class="fa fa-cogs"></i>
                 </a>&nbsp;&nbsp;
+                <a ng-click="loadAbonentPackages(r.id)" data-toggle="modal"
+                   data-target="#changePackageDialog" title="პაკეტის ცვლილება" class="btn btn-xs">
+                  <i class="fa fa-wrench"></i>
+                </a>&nbsp;&nbsp;
                 <a ng-click="remove(r.id)" title="წაშლა" class="btn btn-xs">
                   <i class="fa fa-trash-o"></i>
                 </a>
