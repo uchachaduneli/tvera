@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by ME.
@@ -46,7 +48,17 @@ public class PaymentDAO extends AbstractDAO {
         if (srchRequest.getPersonalNumber() != null) {
             q.append(" and e.abonent.personalNumber like '%").append(srchRequest.getPersonalNumber()).append("%'");
         }
+        if (srchRequest.getDistrictId() != null) {
+            q.append(" and e.abonent.district.id ='").append(srchRequest.getDistrictId()).append("'");
+        }
+        if (srchRequest.getIncasatorId() != null) {
+            q.append(" and e.abonent.district.incasator.id ='").append(srchRequest.getIncasatorId()).append("'");
+        }
         if (srchRequest.getCreateDateFrom() != null && srchRequest.getCreateDateTo() != null) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(srchRequest.getCreateDateTo());
+            c.add(Calendar.DATE, 1);
+            srchRequest.setCreateDateTo(c.getTime());
             q.append(" and e.createDate between '").append(srchRequest.getCreateDateFrom()).append("' and '").append(srchRequest.getCreateDateTo()).append("'");
         }
 
@@ -54,7 +66,13 @@ public class PaymentDAO extends AbstractDAO {
 //        return query.setFirstResult(start).setMaxResults(limit).getResultList();
 
         HashMap<String, Object> resultMap = new HashMap();
-        resultMap.put("size", entityManager.createQuery(q.toString(), Payment.class).getResultList().size());
+        List<Payment> allREslt = entityManager.createQuery(q.toString(), Payment.class).getResultList();
+        Double total = 0.0;
+        for (Payment p : allREslt) {
+            total += p.getAmount();
+        }
+        resultMap.put("total", total);
+        resultMap.put("size", allREslt.size());
         resultMap.put("list", PaymentDTO.parseToList(entityManager.createQuery(q.toString() + " order by e.id desc", Payment.class).setFirstResult(start).setMaxResults(limit).getResultList()));
         return resultMap;
     }

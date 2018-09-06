@@ -28,6 +28,8 @@ public class PaymentDTO {
     private String deviceNumber;
     private UsersDTO user;
     private Integer userId;
+    private Integer districtId;
+    private Integer incasatorId;
 
     public static PaymentDTO parse(Payment record) {
         if (record != null) {
@@ -180,5 +182,21 @@ public class PaymentDTO {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public Integer getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Integer districtId) {
+        this.districtId = districtId;
+    }
+
+    public Integer getIncasatorId() {
+        return incasatorId;
+    }
+
+    public void setIncasatorId(Integer incasatorId) {
+        this.incasatorId = incasatorId;
     }
 }

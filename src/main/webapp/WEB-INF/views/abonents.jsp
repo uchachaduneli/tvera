@@ -410,8 +410,8 @@
               <tr class="text-center">
                 <th>#</th>
                 <th>აბონ. N</th>
-                <th>სახელი</th>
-                <th>გვარი</th>
+                <th>სახელი, გვარი</th>
+                <th>პირ. N</th>
                 <th>ქუჩა</th>
                 <th>სართული</th>
                 <th>ბინა</th>
@@ -422,8 +422,8 @@
               <tr ng-repeat="r in historylist | filter:{abonent:{id:v}}:true " ng-if="$index == 0" class="text-center">
                 <td></td>
                 <td>{{r.abonent.id}}</td>
-                <td>{{r.abonent.name}}</td>
-                <td>{{r.abonent.lastname}}</td>
+                <td>{{r.abonent.name}}{{r.abonent.lastname}}</td>
+                <td>{{r.abonent.personalNumber}}</td>
                 <td>{{r.abonent.street.name + ' #' + r.abonent.streetNumber}}</td>
                 <td>{{r.abonent.floor}}</td>
                 <td>{{r.abonent.roomNumber}}</td>
@@ -491,8 +491,8 @@
               <tr class="text-center">
                 <th>#</th>
                 <th>აბონ. N</th>
-                <th>სახელი</th>
-                <th>გვარი</th>
+                <th>სახელი, გვარი</th>
+                <th>პირადი N</th>
                 <th>ქუჩა</th>
                 <th>სართული</th>
                 <th>ბინა</th>
@@ -506,8 +506,8 @@
               <tr ng-repeat="r in receiptlist" class="text-center">
                 <td>{{$index+1}}</td>
                 <td>{{r.id}}</td>
-                <td>{{r.name}}</td>
-                <td>{{r.lastname}}</td>
+                <td>{{r.name}}, {{r.lastname}}</td>
+                <td>{{r.personalNumber}}</td>
                 <td>{{r.street.name + ' #' + r.streetNumber}}</td>
                 <td>{{r.floor}}</td>
                 <td>{{r.roomNumber}}</td>
@@ -918,7 +918,7 @@
           <div id="filter-panel" class="filter-panel">
             <div class="panel panel-default">
               <div class="panel-body">
-                <div class="form-group col-md-1">
+                <div class="form-group col-md-2">
                   <label class="col-sm-12" title="დავალიანების მქონე აბონენტები">
                     <input type="checkbox" class="srch" ng-true-value="-1" ng-change="loadMainData()"
                            ng-false-value="0" ng-init="0" ng-model="srchCase.hasBill">&nbsp; დავ.
@@ -926,19 +926,27 @@
                 </div>
                 <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.id"
-                         placeholder="აბონენტის N">
+                         placeholder="აბ. N">
                 </div>
                 <div class="form-group col-md-3">
                   <input type="text" class="form-control srch" ng-model="srchCase.personalNumber"
-                         placeholder="პირადი N">
+                         placeholder="პირ. N">
                 </div>
                 <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.name"
                          placeholder="სახელი">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                   <input type="text" class="form-control srch" ng-model="srchCase.lastname"
                          placeholder="გვარი">
+                </div>
+                <div class="form-group col-md-2">
+                  <input type="text" class="form-control srch" ng-model="srchCase.streetNumber"
+                         placeholder="ქუჩის N">
+                </div>
+                <div class="form-group col-md-2">
+                  <input type="text" class="form-control srch" ng-model="srchCase.roomNumber"
+                         placeholder="ბინის N">
                 </div>
                 <div class="form-group col-md-2">
                   <select class="form-control" ng-model="srchCase.statusId"
@@ -975,7 +983,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <div class="input-group">
                     <div class="input-append">
                       <input type="text" class="form-control srch dateInput"
@@ -988,7 +996,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3 col-xs-offset-5">
                   <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
                     <span class="fa fa-search"></span> &nbsp; ძებნა
                   </button>

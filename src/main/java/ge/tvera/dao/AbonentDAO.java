@@ -42,6 +42,12 @@ public class AbonentDAO extends AbstractDAO {
         if (srchRequest.getLastname() != null) {
             q.append(" and e.lastname like '%").append(srchRequest.getLastname()).append("%'");
         }
+        if (srchRequest.getStreetNumber() != null) {
+            q.append(" and e.streetNumber like '%").append(srchRequest.getStreetNumber()).append("%'");
+        }
+        if (srchRequest.getRoomNumber() != null) {
+            q.append(" and e.roomNumber like '%").append(srchRequest.getRoomNumber()).append("%'");
+        }
         if (srchRequest.getPersonalNumber() != null) {
             q.append(" and e.personalNumber ='").append(srchRequest.getPersonalNumber()).append("'");
         }

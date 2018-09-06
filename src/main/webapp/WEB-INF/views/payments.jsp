@@ -25,6 +25,7 @@
       function getMainData(res) {
         $scope.list = res.data.list;
         $scope.rowCount = res.data.size;
+        $scope.total = res.data.total;
         $('#loadingModal').modal('hide');
       }
 
@@ -39,6 +40,18 @@
     }
 
     $scope.loadMainData();
+
+    function getIncasators(res) {
+      $scope.incasators = res.data.list;
+    }
+
+    ajaxCall($http, "misc/get-incasators?start=0&limit=99999", {}, getIncasators);
+
+    function getDistricts(res) {
+      $scope.districts = res.data;
+    }
+
+    ajaxCall($http, "misc/get-districts", null, getDistricts);
 
     $scope.remove = function (id) {
       if (confirm("Pleace confirm operation?")) {
@@ -94,6 +107,7 @@
         errorMsg('აბონენტის ID ვერ მოიძებნა');
       }
       $('#loadingModal').modal('show');
+
       function resFunc(res) {
         if (res.errorCode == 0) {
           successMsg('Operation Successfull');
@@ -340,7 +354,7 @@
           </button>
           <%--</c:if>--%>
         </div>
-        <div class="col-md-2 col-xs-offset-8">
+        <div class="col-md-3 col-xs-offset-7">
           <select ng-change="rowNumbersChange()" class="pull-right form-control" ng-model="limit"
                   id="rowCountSelectId">
             <option value="10" selected>მაჩვენე 10</option>
@@ -349,7 +363,7 @@
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
-          <div class="col-xs-offset-3">
+          <div class="col-xs-offset-2">
             (ნაპოვნია {{rowCount}} ჩანაწერი) &nbsp;
           </div>
         </div>
@@ -402,6 +416,23 @@
                   </div>
                 </div>
                 <div class="form-group col-md-2">
+                  <select class="form-control" ng-model="srchCase.districtId" ng-change="loadMainData()">
+                    <option value="" selected="selected">უბანი</option>
+                    <option ng-repeat="s in districts" ng-selected="s.id === srchCase.districtId" ng-value="s.id">
+                      {{s.name +' ('+s.incasator.name+' '+s.incasator.lastname+')'}}
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
+                  <select class="form-control" ng-model="srchCase.incasatorId"
+                          ng-change="loadMainData()">
+                    <option value="" selected="selected">ინკასატორი</option>
+                    <option ng-repeat="v in incasators" ng-selected="v.id === srchCase.incasatorId"
+                            value="{{v.id}}">{{v.name +' '+ v.lastname}}
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
                   <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
                     <span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;
                   </button>
@@ -449,6 +480,11 @@
               </td>
             </tr>
             </tbody>
+            <tfoot>
+            <th colspan="3"></th>
+            <th>სულ: {{total}}</th>
+            <th colspan="3"></th>
+            </tfoot>
           </table>
           <div class="panel-footer">
             <div class="row">
