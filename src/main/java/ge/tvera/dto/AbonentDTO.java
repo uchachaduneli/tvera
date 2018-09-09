@@ -43,6 +43,7 @@ public class AbonentDTO {
     private String roomNumber;
     private Double installationBill;
     private Double restoreBill;
+    public Integer forTickets;
 
     public static Integer JURIDICAL = 2;
     public static Integer PHISICAL = 1;
@@ -88,6 +89,14 @@ public class AbonentDTO {
             list.add(AbonentDTO.parse(record));
         }
         return list;
+    }
+
+    public Integer getForTickets() {
+        return forTickets;
+    }
+
+    public void setForTickets(Integer forTickets) {
+        this.forTickets = forTickets;
     }
 
     public Double getInstallationBill() {

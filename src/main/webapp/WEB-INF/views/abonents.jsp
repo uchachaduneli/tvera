@@ -279,6 +279,7 @@
     };
 
     $scope.printTickets = function () {
+      $scope.srchCase.forTickets = 1;
       if ($scope.srchCase == undefined || $scope.srchCase == null || $scope.srchCase.districtId == undefined || $scope.srchCase.districtId == 0) {
         errorMsg('გთხოვთ ფილტრში მიუთითოთ კონკრეტული უბანი');
       } else {

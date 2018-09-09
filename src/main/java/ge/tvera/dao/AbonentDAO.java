@@ -73,11 +73,15 @@ public class AbonentDAO extends AbstractDAO {
             q.append(" and e.billDate between '").append(new java.sql.Date(srchRequest.getBillDateFrom().getTime())).append("' and '")
                     .append(new java.sql.Date(srchRequest.getBillDateTo().getTime())).append("'");
         }
+        String orderByStr = " order by status_id asc, id desc";
+        if (srchRequest.getForTickets() != null && srchRequest.getForTickets() == 1) {
+            orderByStr = " order by e.street.id asc, e.streetNumber asc";
+        }
 
 //        TypedQuery<Abonent> query = entityManager.createQuery(q.toString(), Abonent.class);
         HashMap<String, Object> resultMap = new HashMap();
         resultMap.put("size", entityManager.createQuery(q.toString(), Abonent.class).getResultList().size());
-        resultMap.put("list", AbonentDTO.parseToList(entityManager.createQuery(q.toString() + " order by status_id asc, id desc", Abonent.class).setFirstResult(start).setMaxResults(limit).getResultList()));
+        resultMap.put("list", AbonentDTO.parseToList(entityManager.createQuery(q.toString() + orderByStr, Abonent.class).setFirstResult(start).setMaxResults(limit).getResultList()));
         return resultMap;
     }
 
