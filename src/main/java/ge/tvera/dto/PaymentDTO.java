@@ -10,193 +10,213 @@ import java.util.Date;
 import java.util.List;
 
 public class PaymentDTO {
-    private Integer id;
-    private Double amount;
-    private AbonentDTO abonent;
-    private Integer abonentId;
-    @JsonSerialize(using = JsonDateTimeSerializeSupport.class)
-    private Date createDate;
-    @JsonSerialize(using = JsonDateSerializeSupport.class)
-    private Date payDate;
-    private Date createDateFrom;
-    private Date createDateTo;
-    private String checkNumber;
-    private String abonentNumber;
-    private String name;
-    private String lastname;
-    private String personalNumber;
-    private String deviceNumber;
-    private UsersDTO user;
-    private Integer userId;
-    private Integer districtId;
-    private Integer incasatorId;
+  private Integer id;
+  private Double amount;
+  private AbonentDTO abonent;
+  private Integer abonentId;
+  @JsonSerialize(using = JsonDateTimeSerializeSupport.class)
+  private Date createDate;
+  @JsonSerialize(using = JsonDateSerializeSupport.class)
+  private Date payDate;
+  private Date createDateFrom;
+  private Date createDateTo;
+  private String checkNumber;
+  private String abonentNumber;
+  private String name;
+  private String lastname;
+  private String personalNumber;
+  private String deviceNumber;
+  private UsersDTO user;
+  private Integer userId;
+  private Integer districtId;
+  private Integer incasatorId;
+  private Integer isCredit;
+  private Integer bankPayment;
 
-    public static PaymentDTO parse(Payment record) {
-        if (record != null) {
-            PaymentDTO dto = new PaymentDTO();
-            dto.setId(record.getId());
-            dto.setAmount(record.getAmount());
-            dto.setAbonent(AbonentDTO.parse(record.getAbonent()));
-            dto.setAbonentNumber(dto.getAbonent().getId() + "");
-            dto.setPersonalNumber(dto.getAbonent().getPersonalNumber());
-            dto.setAbonentId(record.getAbonent().getId());
-            dto.setCreateDate(record.getCreateDate());
-            dto.setCheckNumber(record.getCheckNumber());
-            dto.setUser(UsersDTO.parse(record.getUser()));
-            dto.setPayDate(record.getPayDate());
-            return dto;
-        } else return null;
-    }
+  public static PaymentDTO parse(Payment record) {
+    if (record != null) {
+      PaymentDTO dto = new PaymentDTO();
+      dto.setId(record.getId());
+      dto.setAmount(record.getAmount());
+      dto.setAbonent(AbonentDTO.parse(record.getAbonent()));
+      dto.setAbonentNumber(dto.getAbonent().getId() + "");
+      dto.setPersonalNumber(dto.getAbonent().getPersonalNumber());
+      dto.setAbonentId(record.getAbonent().getId());
+      dto.setCreateDate(record.getCreateDate());
+      dto.setCheckNumber(record.getCheckNumber());
+      dto.setUser(UsersDTO.parse(record.getUser()));
+      dto.setPayDate(record.getPayDate());
+      dto.setIsCredit(record.getIsCredit());
+      dto.setBankPayment(record.getBankPayment());
+      return dto;
+    } else return null;
+  }
 
-    public static List<PaymentDTO> parseToList(List<Payment> records) {
-        ArrayList<PaymentDTO> list = new ArrayList<PaymentDTO>();
-        for (Payment record : records) {
-            list.add(PaymentDTO.parse(record));
-        }
-        return list;
+  public static List<PaymentDTO> parseToList(List<Payment> records) {
+    ArrayList<PaymentDTO> list = new ArrayList<PaymentDTO>();
+    for (Payment record : records) {
+      list.add(PaymentDTO.parse(record));
     }
+    return list;
+  }
 
-    public Date getPayDate() {
-        return payDate;
-    }
+  public Integer getId() {
+    return id;
+  }
 
-    public void setPayDate(Date payDate) {
-        this.payDate = payDate;
-    }
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-    public Integer getUserId() {
-        return userId;
-    }
+  public Double getAmount() {
+    return amount;
+  }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+  public void setAmount(Double amount) {
+    this.amount = amount;
+  }
 
-    public UsersDTO getUser() {
-        return user;
-    }
+  public AbonentDTO getAbonent() {
+    return abonent;
+  }
 
-    public void setUser(UsersDTO user) {
-        this.user = user;
-    }
+  public void setAbonent(AbonentDTO abonent) {
+    this.abonent = abonent;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public Integer getAbonentId() {
+    return abonentId;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setAbonentId(Integer abonentId) {
+    this.abonentId = abonentId;
+  }
 
-    public String getLastname() {
-        return lastname;
-    }
+  public Date getCreateDate() {
+    return createDate;
+  }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+  public void setCreateDate(Date createDate) {
+    this.createDate = createDate;
+  }
 
-    public String getAbonentNumber() {
-        return abonentNumber;
-    }
+  public Date getPayDate() {
+    return payDate;
+  }
 
-    public void setAbonentNumber(String abonentNumber) {
-        this.abonentNumber = abonentNumber;
-    }
+  public void setPayDate(Date payDate) {
+    this.payDate = payDate;
+  }
 
-    public String getPersonalNumber() {
-        return personalNumber;
-    }
+  public Date getCreateDateFrom() {
+    return createDateFrom;
+  }
 
-    public void setPersonalNumber(String personalNumber) {
-        this.personalNumber = personalNumber;
-    }
+  public void setCreateDateFrom(Date createDateFrom) {
+    this.createDateFrom = createDateFrom;
+  }
 
-    public String getDeviceNumber() {
-        return deviceNumber;
-    }
+  public Date getCreateDateTo() {
+    return createDateTo;
+  }
 
-    public void setDeviceNumber(String deviceNumber) {
-        this.deviceNumber = deviceNumber;
-    }
+  public void setCreateDateTo(Date createDateTo) {
+    this.createDateTo = createDateTo;
+  }
 
-    public Date getCreateDateFrom() {
-        return createDateFrom;
-    }
+  public String getCheckNumber() {
+    return checkNumber;
+  }
 
-    public void setCreateDateFrom(Date createDateFrom) {
-        this.createDateFrom = createDateFrom;
-    }
+  public void setCheckNumber(String checkNumber) {
+    this.checkNumber = checkNumber;
+  }
 
-    public Date getCreateDateTo() {
-        return createDateTo;
-    }
+  public String getAbonentNumber() {
+    return abonentNumber;
+  }
 
-    public void setCreateDateTo(Date createDateTo) {
-        this.createDateTo = createDateTo;
-    }
+  public void setAbonentNumber(String abonentNumber) {
+    this.abonentNumber = abonentNumber;
+  }
 
-    public String getCheckNumber() {
-        return checkNumber;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setCheckNumber(String checkNumber) {
-        this.checkNumber = checkNumber;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public Integer getId() {
-        return id;
-    }
+  public String getLastname() {
+    return lastname;
+  }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+  public void setLastname(String lastname) {
+    this.lastname = lastname;
+  }
 
-    public Double getAmount() {
-        return amount;
-    }
+  public String getPersonalNumber() {
+    return personalNumber;
+  }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
+  public void setPersonalNumber(String personalNumber) {
+    this.personalNumber = personalNumber;
+  }
 
-    public AbonentDTO getAbonent() {
-        return abonent;
-    }
+  public String getDeviceNumber() {
+    return deviceNumber;
+  }
 
-    public void setAbonent(AbonentDTO abonent) {
-        this.abonent = abonent;
-    }
+  public void setDeviceNumber(String deviceNumber) {
+    this.deviceNumber = deviceNumber;
+  }
 
-    public Integer getAbonentId() {
-        return abonentId;
-    }
+  public UsersDTO getUser() {
+    return user;
+  }
 
-    public void setAbonentId(Integer abonentId) {
-        this.abonentId = abonentId;
-    }
+  public void setUser(UsersDTO user) {
+    this.user = user;
+  }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+  public Integer getUserId() {
+    return userId;
+  }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+  public void setUserId(Integer userId) {
+    this.userId = userId;
+  }
 
-    public Integer getDistrictId() {
-        return districtId;
-    }
+  public Integer getDistrictId() {
+    return districtId;
+  }
 
-    public void setDistrictId(Integer districtId) {
-        this.districtId = districtId;
-    }
+  public void setDistrictId(Integer districtId) {
+    this.districtId = districtId;
+  }
 
-    public Integer getIncasatorId() {
-        return incasatorId;
-    }
+  public Integer getIncasatorId() {
+    return incasatorId;
+  }
 
-    public void setIncasatorId(Integer incasatorId) {
-        this.incasatorId = incasatorId;
-    }
+  public void setIncasatorId(Integer incasatorId) {
+    this.incasatorId = incasatorId;
+  }
+
+  public Integer getIsCredit() {
+    return isCredit;
+  }
+
+  public void setIsCredit(Integer isCredit) {
+    this.isCredit = isCredit;
+  }
+
+  public Integer getBankPayment() {
+    return bankPayment;
+  }
+
+  public void setBankPayment(Integer bankPayment) {
+    this.bankPayment = bankPayment;
+  }
 }

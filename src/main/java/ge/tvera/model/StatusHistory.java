@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "status_history", schema = "tvera", catalog = "")
+@Table(name = "status_history", schema = "tvera")
 public class StatusHistory {
     private Integer id;
     private Status status;

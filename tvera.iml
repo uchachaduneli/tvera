@@ -24,6 +24,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="Entities" />
+          <factory-entry name="noname-a.xml@0" value="a9b8bc55-c7c2-4e55-943b-e88954c5dd5a" />
           <factory-entry name="tvera" value="a9b8bc55-c7c2-4e55-943b-e88954c5dd5a" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/java/META-INF/persistence.xml" />
