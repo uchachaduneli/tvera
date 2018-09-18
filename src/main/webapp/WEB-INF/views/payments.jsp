@@ -374,7 +374,7 @@
           <div id="filter-panel" class="filter-panel">
             <div class="panel panel-default">
               <div class="panel-body">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-1">
                   <input type="text" class="form-control srch" ng-model="srchCase.id"
                          placeholder="ID">
                 </div>
@@ -394,7 +394,7 @@
                   <input type="text" class="form-control srch" ng-model="srchCase.checkNumber"
                          placeholder="ქვითრის N">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                   <input type="text" class="form-control srch" ng-model="srchCase.name"
                          placeholder="სახელი">
                 </div>
@@ -402,19 +402,7 @@
                   <input type="text" class="form-control srch" ng-model="srchCase.lastname"
                          placeholder="გვარი">
                 </div>
-                <div class="form-group col-md-4">
-                  <div class="input-group">
-                    <div class="input-append">
-                      <input type="text" class="form-control srch dateInput"
-                             placeholder="დან" ng-model="srchCase.createDateFrom">
-                    </div>
-                    <span class="input-group-addon">გადახდის დრო</span>
-                    <div class="input-append">
-                      <input type="text" class="form-control srch dateInput"
-                             placeholder="მდე" ng-model="srchCase.createDateTo">
-                    </div>
-                  </div>
-                </div>
+
                 <div class="form-group col-md-2">
                   <select class="form-control" ng-model="srchCase.districtId" ng-change="loadMainData()">
                     <option value="" selected="selected">უბანი</option>
@@ -431,6 +419,19 @@
                             value="{{v.id}}">{{v.name +' '+ v.lastname}}
                     </option>
                   </select>
+                </div>
+                <div class="form-group col-md-3">
+                  <div class="input-group">
+                    <div class="input-append">
+                      <input type="text" class="form-control srch dateInput"
+                             placeholder="დან" ng-model="srchCase.createDateFrom">
+                    </div>
+                    <span class="input-group-addon">გადახდის დრო</span>
+                    <div class="input-append">
+                      <input type="text" class="form-control srch dateInput"
+                             placeholder="მდე" ng-model="srchCase.createDateTo">
+                    </div>
+                  </div>
                 </div>
                 <div class="form-group col-md-2">
                   <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">

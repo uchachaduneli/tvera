@@ -48,6 +48,7 @@
       $('.dateInput').datepicker({
         format: "dd/mm/yyyy",
         autoclose: true,
+        orientation: 'bottom'
       })
 
       $('.srch').keypress(function (e) {

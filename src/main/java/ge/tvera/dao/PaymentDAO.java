@@ -59,7 +59,7 @@ public class PaymentDAO extends AbstractDAO {
             c.setTime(srchRequest.getCreateDateTo());
             c.add(Calendar.DATE, 1);
             srchRequest.setCreateDateTo(c.getTime());
-            q.append(" and e.createDate between '").append(srchRequest.getCreateDateFrom()).append("' and '").append(srchRequest.getCreateDateTo()).append("'");
+            q.append(" and e.payDate between '").append(srchRequest.getCreateDateFrom()).append("' and '").append(srchRequest.getCreateDateTo()).append("'");
         }
 
 //        TypedQuery<Payment> query = entityManager.createQuery(q.toString(), Payment.class);
