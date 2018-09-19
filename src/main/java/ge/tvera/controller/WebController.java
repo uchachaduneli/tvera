@@ -50,6 +50,11 @@ public class WebController {
         return "payments";
     }
 
+    @RequestMapping("/statistics")
+    public String statistics() {
+        return "statistics";
+    }
+
     @RequestMapping("/")
     public String defaultFnc() {
         return "";
