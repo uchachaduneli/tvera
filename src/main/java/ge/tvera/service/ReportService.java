@@ -16,7 +16,7 @@ public class ReportService {
     @Autowired
     private ReportDAO reportDAO;
 
-    public HashMap<String, Object> getAbonents(AbonentDTO srchRequest) {
+    public HashMap<String, Object> getCountrReport(AbonentDTO srchRequest) {
         return reportDAO.getCountReport(srchRequest);
     }
 }

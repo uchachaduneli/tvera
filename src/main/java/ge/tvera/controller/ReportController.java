@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * @author ucha
  */
-@RequestMapping("/abonent")
+@RequestMapping("/statistics")
 @Controller
 public class ReportController {
 
@@ -23,7 +23,7 @@ public class ReportController {
     @RequestMapping("/get-count-data")
     @ResponseBody
     private Response getCountrReport(@RequestBody AbonentDTO request) throws Exception {
-        return Response.withSuccess(reportService.getAbonents(request));
+      return Response.withSuccess(reportService.getCountrReport(request));
     }
 
 }
