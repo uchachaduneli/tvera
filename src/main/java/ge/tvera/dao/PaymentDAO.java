@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,9 @@ public class PaymentDAO extends AbstractDAO {
   }
 
   public HashMap<String, Object> getPayments(int start, int limit, PaymentDTO srchRequest) {
+
+      SimpleDateFormat dtfrmt = new SimpleDateFormat("yyyy-MM-dd");
+
     StringBuilder q = new StringBuilder();
     q.append("Select e From ").append(Payment.class.getSimpleName()).append(" e Where 1=1 ");
 
@@ -65,7 +69,8 @@ public class PaymentDAO extends AbstractDAO {
       c.setTime(srchRequest.getCreateDateTo());
       c.add(Calendar.DATE, 1);
       srchRequest.setCreateDateTo(c.getTime());
-      q.append(" and e.payDate between '").append(srchRequest.getCreateDateFrom()).append("' and '").append(srchRequest.getCreateDateTo()).append("'");
+        q.append(" and e.payDate between '").append(dtfrmt.format(srchRequest.getCreateDateFrom())).append("' and '")
+                .append(dtfrmt.format(srchRequest.getCreateDateTo())).append("'");
     }
 
 //        TypedQuery<Payment> query = entityManager.createQuery(q.toString(), Payment.class);
