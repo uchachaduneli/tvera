@@ -64,8 +64,19 @@ public class ReportDAO extends AbstractDAO {
       abonentBalanceSumQuery += " and a.abonent.district.incasator.id ='" + srchRequest.getIncasatorId() + "'";
     }
 
-    resultMap.put("activesCount", entityManager.createQuery(q.toString() + (srchRequest.getStatusId() == null ? " and e.status.id = '1'" : "")).getSingleResult());
-    resultMap.put("inactivesCount", entityManager.createQuery(q.toString() + (srchRequest.getStatusId() == null ? " and e.status.id = '2'" : "")).getSingleResult());
+    if (srchRequest.getStatusId() == null) {
+      resultMap.put("activesCount", entityManager.createQuery(q.toString() + " and e.status.id = '1'").getSingleResult());
+      resultMap.put("inactivesCount", entityManager.createQuery(q.toString() + " and e.status.id = '2'").getSingleResult());
+    } else {
+      if (srchRequest.getStatusId() == 1) {
+        resultMap.put("activesCount", entityManager.createQuery(q.toString() + " and e.status.id = '1'").getSingleResult());
+        resultMap.put("inactivesCount", 0);
+      }
+      if (srchRequest.getStatusId() == 2) {
+        resultMap.put("activesCount", 0);
+        resultMap.put("inactivesCount", entityManager.createQuery(q.toString() + " and e.status.id = '2'").getSingleResult());
+      }
+    }
 
     if (srchRequest.getBillDateFrom() != null && srchRequest.getBillDateTo() != null) {
 
