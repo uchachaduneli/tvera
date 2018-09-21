@@ -3,6 +3,7 @@ package ge.tvera.model;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 public class Payment {
@@ -13,8 +14,9 @@ public class Payment {
   private String checkNumber;
   private Users user;
   private Date payDate;
-  private Integer isCredit;
   private Integer bankPayment;
+  private double avans;
+  private double daval;
 
   @Id
   @Column(name = "id", nullable = false)
@@ -88,16 +90,6 @@ public class Payment {
   }
 
   @Basic
-  @Column(name = "is_credit")
-  public Integer getIsCredit() {
-    return isCredit;
-  }
-
-  public void setIsCredit(Integer isCredit) {
-    this.isCredit = isCredit;
-  }
-
-  @Basic
   @Column(name = "bank_payment")
   public Integer getBankPayment() {
     return bankPayment;
@@ -107,4 +99,37 @@ public class Payment {
     this.bankPayment = bankPayment;
   }
 
+  @Basic
+  @Column(name = "avans")
+  public double getAvans() {
+    return avans;
+  }
+
+  public void setAvans(double avans) {
+    this.avans = avans;
+  }
+
+  @Basic
+  @Column(name = "daval")
+  public double getDaval() {
+    return daval;
+  }
+
+  public void setDaval(double daval) {
+    this.daval = daval;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Payment payment = (Payment) o;
+    return Double.compare(payment.avans, avans) == 0 &&
+        Double.compare(payment.daval, daval) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(avans, daval);
+  }
 }

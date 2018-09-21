@@ -30,8 +30,10 @@ public class PaymentDTO {
   private Integer userId;
   private Integer districtId;
   private Integer incasatorId;
-  private Integer isCredit;
   private Integer bankPayment;
+  private Integer isCredit;
+  private double avans;
+  private double daval;
 
   public static PaymentDTO parse(Payment record) {
     if (record != null) {
@@ -46,8 +48,9 @@ public class PaymentDTO {
       dto.setCheckNumber(record.getCheckNumber());
       dto.setUser(UsersDTO.parse(record.getUser()));
       dto.setPayDate(record.getPayDate());
-      dto.setIsCredit(record.getIsCredit());
       dto.setBankPayment(record.getBankPayment());
+      dto.setAvans(record.getAvans());
+      dto.setDaval(record.getDaval());
       return dto;
     } else return null;
   }
@@ -58,6 +61,14 @@ public class PaymentDTO {
       list.add(PaymentDTO.parse(record));
     }
     return list;
+  }
+
+  public Integer getIsCredit() {
+    return isCredit;
+  }
+
+  public void setIsCredit(Integer isCredit) {
+    this.isCredit = isCredit;
   }
 
   public Integer getId() {
@@ -204,19 +215,27 @@ public class PaymentDTO {
     this.incasatorId = incasatorId;
   }
 
-  public Integer getIsCredit() {
-    return isCredit;
-  }
-
-  public void setIsCredit(Integer isCredit) {
-    this.isCredit = isCredit;
-  }
-
   public Integer getBankPayment() {
     return bankPayment;
   }
 
   public void setBankPayment(Integer bankPayment) {
     this.bankPayment = bankPayment;
+  }
+
+  public double getAvans() {
+    return avans;
+  }
+
+  public void setAvans(double avans) {
+    this.avans = avans;
+  }
+
+  public double getDaval() {
+    return daval;
+  }
+
+  public void setDaval(double daval) {
+    this.daval = daval;
   }
 }

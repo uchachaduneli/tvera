@@ -26,6 +26,8 @@
         $scope.list = res.data.list;
         $scope.rowCount = res.data.size;
         $scope.total = res.data.total;
+        $scope.davalTotal = res.data.davalTotal;
+        $scope.avansTotal = res.data.avansTotal;
         $('#loadingModal').modal('hide');
       }
 
@@ -130,7 +132,6 @@
       $scope.req.checkNumber = $scope.request.checkNumber;
       $scope.req.abonentId = $scope.founded.id;
       $scope.req.payDate = $scope.request.payDate;
-      $scope.req.isCredit = $scope.request.isCredit;
       $scope.req.bankPayment = $scope.request.bankPayment;
 
       console.log(angular.toJson($scope.req));
@@ -196,10 +197,6 @@
                             <td>{{slcted.id}}</td>
                         </tr>
                         <tr>
-                            <th class="text-right">დავალიანების დაფარვა</th>
-                            <td>{{slcted.isCredit == 1 ? 'კი':'არა'}}</td>
-                        </tr>
-                        <tr>
                             <th class="text-right">ბანკი / ნაღდი</th>
                             <td>{{slcted.bankPayment == 1 ? 'ბანკი':'ნაღდი'}}</td>
                         </tr>
@@ -216,8 +213,16 @@
                             <td>{{slcted.abonent.personalNumber}}</td>
                         </tr>
                         <tr>
-                            <th class="text-right">თანხა</th>
+                            <th class="text-right">მიღებული თანხა</th>
                             <td>{{slcted.amount}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right">ავანსის წილი</th>
+                            <td>{{slcted.avans}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right">დავალიანების წილი</th>
+                            <td>{{slcted.daval}}</td>
                         </tr>
                         <tr>
                             <th class="text-right">ქვითრის N</th>
@@ -307,7 +312,7 @@
                             </tr>
                             <tr>
                                 <th class="text-right">ბალანსი</th>
-                                <td>{{founded.balance}}</td>
+                                <td>{{founded.balance * -1}}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">გადასახადი</th>
@@ -324,17 +329,6 @@
                                 </td>
                             </tr>
                         </table>
-                        <div class="form-group col-sm-10">
-                            <label class="control-label col-sm-3">დავალიანების დაფარვა</label>
-                            <div class="col-xs-9 btn-group">
-                                <div class="radio col-xs-6">
-                                    <label><input type="radio" ng-model="request.isCredit" value="2"
-                                                  class="input-sm">არა</label>&nbsp;
-                                    <label><input type="radio" ng-model="request.isCredit" value="1"
-                                                  class="input-sm">კი</label>
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group col-sm-10">
                             <label class="control-label col-sm-3">ბანკით ჩარიცხვა</label>
                             <div class="col-xs-9 btn-group">
@@ -450,10 +444,10 @@
                                             ng-change="loadMainData()">
                                         <option value="" selected="selected">დავალიანება</option>
                                         <option ng-value="1">
-                                            დავალიანების დაფარვა
+                                            დავალიანების გადახდა
                                         </option>
                                         <option ng-value="2">
-                                            დისტრიბუციის დაფარვა
+                                            სტანდარტული გადახდა
                                         </option>
                                     </select>
                                 </div>
@@ -518,8 +512,10 @@
                         <tr>
                             <th>ID</th>
                             <th>აბონ. N</th>
-                            <th>აბონენტი</th>
+                            <th>აბონენტი(ტარიფი)</th>
                             <th>თანხა</th>
+                            <th>ავანსი</th>
+                            <th>დავალ.</th>
                             <th>ქვითრის N</th>
                             <th>გადახდის თარიღი</th>
                             <th class="col-md-2 text-center">Action</th>
@@ -529,8 +525,10 @@
                         <tr ng-repeat="r in list" ng-dblclick="handleDoubleClick(r.id)">
                             <td>{{r.id}}</td>
                             <td>{{r.abonent.id}}</td>
-                            <td>{{r.abonent.name}}&nbsp;{{r.abonent.lastname}}</td>
+                            <td>{{r.abonent.name}}&nbsp;{{r.abonent.lastname}} ({{r.abonent.bill}}₾)</td>
                             <td>{{r.amount}}</td>
+                            <td>{{r.avans}}</td>
+                            <td>{{r.daval}}</td>
                             <td>{{r.checkNumber}}</td>
                             <td>{{r.payDate}}</td>
                             <td class="text-center">
@@ -553,6 +551,8 @@
                         <tfoot>
                         <th colspan="3"></th>
                         <th>სულ: {{total}}</th>
+                        <th>სულ: {{avansTotal}}</th>
+                        <th>სულ: {{davalTotal}}</th>
                         <th colspan="3"></th>
                         </tfoot>
                     </table>

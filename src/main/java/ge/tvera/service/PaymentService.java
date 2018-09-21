@@ -26,29 +26,50 @@ public class PaymentService {
   }
 
   @Transactional(rollbackFor = Throwable.class)
-  public Payment savePayment(PaymentDTO request) {
+  public Payment savePayment(PaymentDTO request) throws Exception {
 
+    Abonent abonent = (Abonent) paymentDAO.find(Abonent.class, request.getAbonentId());
+    if (abonent == null) {
+      throw new Exception("Can't find abonent");
+    }
     Payment obj = new Payment();
     obj.setAmount(request.getAmount());
     obj.setCheckNumber(request.getCheckNumber());
     obj.setPayDate(new java.sql.Date(request.getPayDate().getTime()));
     obj.setUser((Users) paymentDAO.find(Users.class, request.getUserId()));
-    obj.setAbonent((Abonent) paymentDAO.find(Abonent.class, request.getAbonentId()));
-    obj.setIsCredit(request.getIsCredit());
+    obj.setAbonent(abonent);
     obj.setBankPayment(request.getBankPayment());
 
-    if (request.getId() != null) {
-      obj.setId(request.getId());
-      obj = (Payment) paymentDAO.update(obj);
-    } else {
-      obj = (Payment) paymentDAO.create(obj);
-      if (obj != null) {
-        Abonent abonent = (Abonent) paymentDAO.find(Abonent.class, request.getAbonentId());
-        if (abonent != null) {
-          abonent.setBalance(abonent.getBalance() - request.getAmount());
-          abonent = (Abonent) paymentDAO.update(abonent);
+    if (abonent.getBalance() > abonent.getBill()) { //როცა დავალიანება აქვს აბონენტს თვეზე მეტის
+      if (request.getAmount() > (abonent.getBalance() - abonent.getBill())) {
+        obj.setDaval(abonent.getBalance() - abonent.getBill());
+        Double darchenili = request.getAmount() - (abonent.getBalance() - abonent.getBill());
+        if (darchenili > abonent.getBill()) {
+          obj.setAvans(darchenili - abonent.getBill());
         }
       }
+      if (request.getAmount() == (abonent.getBalance() - abonent.getBill())) {
+        obj.setDaval(request.getAmount());
+      }
+      if (request.getAmount() < (abonent.getBalance() - abonent.getBill())) {
+        obj.setDaval(request.getAmount());
+      }
+    }
+
+    if (abonent.getBalance() > 0.0 && abonent.getBalance() <= abonent.getBill()) { //ერთი თვის აქვს გადასახდელი ან უფრო ნაკლები
+      if (request.getAmount() > abonent.getBalance()) {
+        obj.setAvans(request.getAmount() - abonent.getBalance());
+      }
+    }
+
+    if (abonent.getBalance() <= 0.0) { // პლიუსშია ისედაც და კიდე მოიტანა მაყუთი
+      obj.setAvans(request.getAmount());
+    }
+
+    obj = (Payment) paymentDAO.create(obj);
+    if (obj != null) {
+      abonent.setBalance(abonent.getBalance() - request.getAmount());
+      abonent = (Abonent) paymentDAO.update(abonent);
     }
     return obj;
   }

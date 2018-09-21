@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by ME.
@@ -29,10 +28,15 @@ public class PaymentDAO extends AbstractDAO {
 
   public HashMap<String, Object> getPayments(int start, int limit, PaymentDTO srchRequest) {
 
-      SimpleDateFormat dtfrmt = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat dtfrmt = new SimpleDateFormat("yyyy-MM-dd");
+
+    String countQuery = "Select count(e.id) From ";
+    String totalQuery = "Select sum(e.amount) From ";
+    String avansQuery = "Select sum(e.avans) From ";
+    String davalQuery = "Select sum(e.daval) From ";
 
     StringBuilder q = new StringBuilder();
-    q.append("Select e From ").append(Payment.class.getSimpleName()).append(" e Where 1=1 ");
+    q.append(Payment.class.getSimpleName()).append(" e Where 1=1 ");
 
     if (srchRequest.getId() != null && srchRequest.getId() > 0) {
       q.append(" and e.id ='").append(srchRequest.getId()).append("'");
@@ -59,7 +63,11 @@ public class PaymentDAO extends AbstractDAO {
       q.append(" and e.abonent.district.incasator.id ='").append(srchRequest.getIncasatorId()).append("'");
     }
     if (srchRequest.getIsCredit() != null) {
-      q.append(" and e.isCredit ='").append(srchRequest.getIsCredit()).append("'");
+      if (srchRequest.getIsCredit() == 1) {
+        q.append(" and e.daval > 0");
+      } else {
+        q.append(" and e.avans > 0");
+      }
     }
     if (srchRequest.getBankPayment() != null) {
       q.append(" and e.bankPayment ='").append(srchRequest.getBankPayment()).append("'");
@@ -69,22 +77,16 @@ public class PaymentDAO extends AbstractDAO {
       c.setTime(srchRequest.getCreateDateTo());
       c.add(Calendar.DATE, 1);
       srchRequest.setCreateDateTo(c.getTime());
-        q.append(" and e.payDate between '").append(dtfrmt.format(srchRequest.getCreateDateFrom())).append("' and '")
-                .append(dtfrmt.format(srchRequest.getCreateDateTo())).append("'");
+      q.append(" and e.payDate between '").append(dtfrmt.format(srchRequest.getCreateDateFrom())).append("' and '")
+          .append(dtfrmt.format(srchRequest.getCreateDateTo())).append("'");
     }
-
-//        TypedQuery<Payment> query = entityManager.createQuery(q.toString(), Payment.class);
-//        return query.setFirstResult(start).setMaxResults(limit).getResultList();
 
     HashMap<String, Object> resultMap = new HashMap();
-    List<Payment> allREslt = entityManager.createQuery(q.toString(), Payment.class).getResultList();
-    Double total = 0.0;
-    for (Payment p : allREslt) {
-      total += p.getAmount();
-    }
-    resultMap.put("total", total);
-    resultMap.put("size", allREslt.size());
-    resultMap.put("list", PaymentDTO.parseToList(entityManager.createQuery(q.toString() + " order by e.id desc", Payment.class).setFirstResult(start).setMaxResults(limit).getResultList()));
+    resultMap.put("total", entityManager.createQuery(totalQuery + q.toString()).getSingleResult());
+    resultMap.put("avansTotal", entityManager.createQuery(avansQuery + q.toString()).getSingleResult());
+    resultMap.put("davalTotal", entityManager.createQuery(davalQuery + q.toString()).getSingleResult());
+    resultMap.put("size", entityManager.createQuery(countQuery + q.toString()).getSingleResult());
+    resultMap.put("list", PaymentDTO.parseToList(entityManager.createQuery("Select e From " + q.toString() + " order by e.id desc", Payment.class).setFirstResult(start).setMaxResults(limit).getResultList()));
     return resultMap;
   }
 }
