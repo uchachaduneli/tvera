@@ -168,12 +168,12 @@
                                     <td>{{receivedBankAmount+receivedCashAmount}} ₾</td>
                                 </tr>
                                 <tr>
-                                    <th>ბანკით დარიცხული თანხა:</th>
+                                    <th>ბანკით შემოტანილი თანხა:</th>
                                     <td>{{receivedBankAmount}} ₾
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>სტანდარტულად დარიცხული თანხა:</th>
+                                    <th>სტანდარტულად შემოტანილი თანხა:</th>
                                     <td>{{receivedCashAmount}} ₾
                                     </td>
                                 </tr>
@@ -198,7 +198,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>დავალიანება ჯამში:</th>
+                                    <th>გადახდილი ძველი დავალიანება ჯამში:</th>
                                     <td>{{abonentDavalSum}} ₾&nbsp;|&nbsp; {{abonentDavalCount}} აბონენტი
                                     </td>
                                 </tr>

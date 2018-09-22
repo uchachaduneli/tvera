@@ -36,45 +36,51 @@ public class ReportDAO extends AbstractDAO {
     String abonentBalanceSumQuery = Payment.class.getSimpleName() + " a Where 1=1 ";
 
     StringBuilder q = new StringBuilder();
-    q.append("Select count(e.id) From ").append(Abonent.class.getSimpleName()).append(" e Where 1=1 ");
+    q.append(Abonent.class.getSimpleName()).append(" e Where 1=1 ");
 
     if (srchRequest.getId() != null && srchRequest.getId() > 0) {
       q.append(" and e.id ='").append(srchRequest.getId()).append("'");
       statusHistoryQuery += " and h.abonent.id ='" + srchRequest.getId() + "'";
       abonentBalanceSumQuery += " and a.abonent.id ='" + srchRequest.getId() + "'";
+      paymentQuery += " and p.abonent.id ='" + srchRequest.getId() + "'";
+
     }
     if (srchRequest.getDistrictId() != null) {
       q.append(" and e.district.id ='").append(srchRequest.getDistrictId()).append("'");
       statusHistoryQuery += " and h.abonent.district.id ='" + srchRequest.getDistrictId() + "'";
       abonentBalanceSumQuery += " and a.abonent.district.id ='" + srchRequest.getDistrictId() + "'";
+      paymentQuery += " and p.abonent.district.id ='" + srchRequest.getDistrictId() + "'";
     }
     if (srchRequest.getStatusId() != null) {
       q.append(" and e.status.id ='").append(srchRequest.getStatusId()).append("'");
       statusHistoryQuery += " and h.abonent.status.id ='" + srchRequest.getStatusId() + "'";
       abonentBalanceSumQuery += " and a.abonent.status.id ='" + srchRequest.getStatusId() + "'";
+      paymentQuery += " and p.abonent.status.id ='" + srchRequest.getStatusId() + "'";
     }
     if (srchRequest.getStreetId() != null) {
       q.append(" and e.street.id ='").append(srchRequest.getStreetId()).append("'");
       statusHistoryQuery += " and h.abonent.street.id ='" + srchRequest.getStreetId() + "'";
       abonentBalanceSumQuery += " and a.abonent.street.id ='" + srchRequest.getStreetId() + "'";
+      paymentQuery += " and p.abonent.street.id ='" + srchRequest.getStreetId() + "'";
     }
     if (srchRequest.getIncasatorId() != null) {
       q.append(" and e.district.incasator.id ='").append(srchRequest.getIncasatorId()).append("'");
       statusHistoryQuery += " and h.abonent.district.incasator.id ='" + srchRequest.getIncasatorId() + "'";
       abonentBalanceSumQuery += " and a.abonent.district.incasator.id ='" + srchRequest.getIncasatorId() + "'";
+      paymentQuery += " and p.abonent.district.incasator.id ='" + srchRequest.getIncasatorId() + "'";
     }
 
     if (srchRequest.getStatusId() == null) {
-      resultMap.put("activesCount", entityManager.createQuery(q.toString() + " and e.status.id = '1'").getSingleResult());
-      resultMap.put("inactivesCount", entityManager.createQuery(q.toString() + " and e.status.id = '2'").getSingleResult());
+      resultMap.put("activesCount", entityManager.createQuery("Select count(e.id) From " + q.toString() + " and e.status.id = '1'").getSingleResult());
+      resultMap.put("inactivesCount", entityManager.createQuery("Select count(e.id) From " + q.toString() + " and e.status.id = '2'").getSingleResult());
     } else {
       if (srchRequest.getStatusId() == 1) {
-        resultMap.put("activesCount", entityManager.createQuery(q.toString() + " and e.status.id = '1'").getSingleResult());
+        resultMap.put("activesCount", entityManager.createQuery("Select count(e.id) From " + q.toString() + " and e.status.id = '1'").getSingleResult());
         resultMap.put("inactivesCount", 0);
       }
       if (srchRequest.getStatusId() == 2) {
         resultMap.put("activesCount", 0);
-        resultMap.put("inactivesCount", entityManager.createQuery(q.toString() + " and e.status.id = '2'").getSingleResult());
+        resultMap.put("inactivesCount", entityManager.createQuery("Select count(e.id) From " + q.toString() + " and e.status.id = '2'").getSingleResult());
       }
     }
 
@@ -106,10 +112,10 @@ public class ReportDAO extends AbstractDAO {
     }
 
     resultMap.put("abonentAvansSum", entityManager.createQuery(" Select sum(a.avans) From " + abonentBalanceSumQuery).getSingleResult());
-    resultMap.put("abonentDavalSum", entityManager.createQuery(" Select sum(a.daval) From " + abonentBalanceSumQuery).getSingleResult());
+    resultMap.put("abonentDavalSum", entityManager.createQuery(" Select sum(e.balance) From " + q.toString() + " and e.balance > 0").getSingleResult());
 
     resultMap.put("abonentAvansCount", entityManager.createQuery(" Select count(distinct a.abonent.id) From " + abonentBalanceSumQuery + " and a.avans > 0").getSingleResult());
-    resultMap.put("abonentDavalCount", entityManager.createQuery(" Select count(distinct a.abonent.id) From " + abonentBalanceSumQuery + " and a.daval > 0").getSingleResult());
+    resultMap.put("abonentDavalCount", entityManager.createQuery(" Select count(e.id) From " + q.toString() + " and e.balance > 0").getSingleResult());
 
     return resultMap;
   }
