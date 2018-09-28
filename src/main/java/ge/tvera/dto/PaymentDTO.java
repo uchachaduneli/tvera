@@ -5,11 +5,15 @@ import ge.tvera.misc.JsonDateSerializeSupport;
 import ge.tvera.misc.JsonDateTimeSerializeSupport;
 import ge.tvera.model.Payment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class PaymentDTO {
+
+  static SimpleDateFormat dtfrmt = new SimpleDateFormat("MM-yyyy");
+
   private Integer id;
   private Double amount;
   private AbonentDTO abonent;
@@ -18,6 +22,9 @@ public class PaymentDTO {
   private Date createDate;
   @JsonSerialize(using = JsonDateSerializeSupport.class)
   private Date payDate;
+  private String strOperDate;
+  private Date operationDate;
+  private Date operationDateTo;
   private Date createDateFrom;
   private Date createDateTo;
   private String checkNumber;
@@ -51,6 +58,10 @@ public class PaymentDTO {
       dto.setBankPayment(record.getBankPayment());
       dto.setAvans(record.getAvans());
       dto.setDaval(record.getDaval());
+      dto.setOperationDate(record.getOperationDate());
+      if (dto.getOperationDate() != null) {
+        dto.setStrOperDate(dtfrmt.format(record.getOperationDate()));
+      }
       return dto;
     } else return null;
   }
@@ -61,6 +72,30 @@ public class PaymentDTO {
       list.add(PaymentDTO.parse(record));
     }
     return list;
+  }
+
+  public String getStrOperDate() {
+    return strOperDate;
+  }
+
+  public void setStrOperDate(String strOperDate) {
+    this.strOperDate = strOperDate;
+  }
+
+  public Date getOperationDateTo() {
+    return operationDateTo;
+  }
+
+  public void setOperationDateTo(Date operationDateTo) {
+    this.operationDateTo = operationDateTo;
+  }
+
+  public Date getOperationDate() {
+    return operationDate;
+  }
+
+  public void setOperationDate(Date operationDate) {
+    this.operationDate = operationDate;
   }
 
   public Integer getIsCredit() {

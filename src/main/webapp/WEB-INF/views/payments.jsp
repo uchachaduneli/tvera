@@ -17,7 +17,6 @@
     $scope.srchCase = {};
     $scope.founded = {};
     $scope.abonent = {};
-//        $scope.request.docs = [];
 
     $scope.loadMainData = function () {
       $('#loadingModal').modal('show');
@@ -32,10 +31,22 @@
       }
 
       if ($scope.srchCase.createDateFrom != undefined && $scope.srchCase.createDateFrom.includes('/')) {
-        $scope.srchCase.createDateFrom = $scope.srchCase.createDateFrom.split(/\//).reverse().join('-')
+        $scope.srchCase.createDateFrom = $scope.srchCase.createDateFrom.split(/\//).reverse().join('-');
       }
       if ($scope.srchCase.createDateTo != undefined && $scope.srchCase.createDateTo.includes('/')) {
-        $scope.srchCase.createDateTo = $scope.srchCase.createDateTo.split(/\//).reverse().join('-')
+        $scope.srchCase.createDateTo = $scope.srchCase.createDateTo.split(/\//).reverse().join('-');
+      }
+
+      if ($scope.tmpSrchOperDate != undefined && $scope.tmpSrchOperDate.length > 0) {
+        $scope.srchCase.operationDate = $scope.tmpSrchOperDate + '-01';
+      } else {
+        $scope.srchCase.operationDate = undefined;
+      }
+
+      if ($scope.tmpSrchOperDateTo != undefined && $scope.tmpSrchOperDateTo.length > 0) {
+        $scope.srchCase.operationDateTo = $scope.tmpSrchOperDateTo + '-16';
+      } else {
+        $scope.srchCase.operationDateTo = undefined;
       }
 
       ajaxCall($http, "payment/get-payments?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
@@ -133,6 +144,7 @@
       $scope.req.abonentId = $scope.founded.id;
       $scope.req.payDate = $scope.request.payDate;
       $scope.req.bankPayment = $scope.request.bankPayment;
+      $scope.req.operationDate = $scope.request.operationDate + '-15';
 
       console.log(angular.toJson($scope.req));
       ajaxCall($http, "payment/save-payment", angular.toJson($scope.req), resFunc);
@@ -231,6 +243,10 @@
                         <tr>
                             <th class="text-right">გადახდის თარიღი</th>
                             <td>{{slcted.payDate}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right">ოპერაციის თარიღი</th>
+                            <td>{{slcted.strOperDate}}</td>
                         </tr>
                         <tr>
                             <th class="text-right">რეგისტრ. დრო</th>
@@ -362,6 +378,14 @@
                                        class="form-control input-sm dateInput"/>
                             </div>
                         </div>
+                        <div class="form-group col-sm-10 ">
+                            <label class="control-label col-sm-3">ოპერაციის თარიღი</label>
+                            <div class="col-sm-9">
+                                <input type="text" ng-model="request.operationDate"
+                                       ng-disabled="founded.id === undefined"
+                                       class="form-control input-sm monthDate"/>
+                            </div>
+                        </div>
 
                         <div class="form-group col-sm-10"></div>
                         <div class="form-group col-sm-10"></div>
@@ -411,7 +435,7 @@
                     <div id="filter-panel" class="filter-panel">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-3">
                                     <input type="text" class="form-control srch" ng-model="srchCase.id"
                                            placeholder="ID">
                                 </div>
@@ -419,23 +443,23 @@
                                 <%--<input type="text" class="form-control srch" ng-model="srchCase.abonent.id"--%>
                                 <%--placeholder="აბონენტის ID">--%>
                                 <%--</div>--%>
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-3">
                                     <input type="text" class="form-control srch" ng-model="srchCase.abonentId"
                                            placeholder="აბ. N">
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <input type="text" class="form-control srch" ng-model="srchCase.personalNumber"
                                            placeholder="პირ. N">
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <input type="text" class="form-control srch" ng-model="srchCase.checkNumber"
                                            placeholder="ქვით. N">
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <input type="text" class="form-control srch" ng-model="srchCase.name"
                                            placeholder="სახელი">
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <input type="text" class="form-control srch" ng-model="srchCase.lastname"
                                            placeholder="გვარი">
                                 </div>
@@ -483,7 +507,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-4">
                                     <div class="input-group">
                                         <div class="input-append">
                                             <input type="text" class="form-control srch dateInput"
@@ -493,6 +517,19 @@
                                         <div class="input-append">
                                             <input type="text" class="form-control srch dateInput"
                                                    placeholder="მდე" ng-model="srchCase.createDateTo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <div class="input-group">
+                                        <div class="input-append">
+                                            <input type="text" class="form-control srch monthDate"
+                                                   placeholder="დან" ng-model="tmpSrchOperDate">
+                                        </div>
+                                        <span class="input-group-addon">ოპერაციის თარიღი</span>
+                                        <div class="input-append">
+                                            <input type="text" class="form-control srch monthDate"
+                                                   placeholder="მდე" ng-model="tmpSrchOperDateTo">
                                         </div>
                                     </div>
                                 </div>
@@ -518,6 +555,7 @@
                             <th>დავალ.</th>
                             <th>ქვითრის N</th>
                             <th>გადახდის თარიღი</th>
+                            <th>ოპ. თარ.</th>
                             <th class="col-md-2 text-center">Action</th>
                         </tr>
                         </thead>
@@ -531,6 +569,7 @@
                             <td>{{r.daval}}</td>
                             <td>{{r.checkNumber}}</td>
                             <td>{{r.payDate}}</td>
+                            <td>{{r.strOperDate}}</td>
                             <td class="text-center">
                                 <a ng-click="showDetails(r.id)" data-toggle="modal" title="Details"
                                    data-target="#detailModal" class="btn btn-xs">
@@ -553,7 +592,7 @@
                         <th>სულ: {{total}}</th>
                         <th>სულ: {{avansTotal}}</th>
                         <th>სულ: {{davalTotal}}</th>
-                        <th colspan="3"></th>
+                        <th colspan="4"></th>
                         </tfoot>
                     </table>
                     <div class="panel-footer">

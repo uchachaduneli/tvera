@@ -51,6 +51,13 @@
         orientation: 'bottom'
       })
 
+      $('.monthDate').datepicker({
+        format: "yyyy-mm",
+        minViewMode: "months",
+        autoclose: true,
+        orientation: 'bottom'
+      });
+
       $('.srch').keypress(function (e) {
         var key = e.which;
         if (key == 13) {

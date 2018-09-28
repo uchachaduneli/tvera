@@ -1481,175 +1481,180 @@ scheduler - დასვი 1 ზე ინსერტის დროს თ�
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="347" parent="257" name="bank_payment">
+    <column id="347" parent="257" name="operation_date">
       <Position>9</Position>
+      <DataType>date|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="348" parent="257" name="bank_payment">
+      <Position>10</Position>
       <Comment>1 ბანკის გადახდა / 2 ქეშით</Comment>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;2&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="348" parent="257" name="create_date">
-      <Position>10</Position>
+    <column id="349" parent="257" name="create_date">
+      <Position>11</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="349" parent="257" name="FK_payment_abonent">
+    <index id="350" parent="257" name="FK_payment_abonent">
       <ColNames>abonent_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="350" parent="257" name="FK_payment_users">
+    <index id="351" parent="257" name="FK_payment_users">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="351" parent="257" name="PRIMARY">
+    <key id="352" parent="257" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="352" parent="257" name="FK_payment_abonent">
+    <foreign-key id="353" parent="257" name="FK_payment_abonent">
       <ColNames>abonent_id</ColNames>
       <RefSchemaName>tvera</RefSchemaName>
       <RefTableName>abonent</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="353" parent="257" name="FK_payment_users">
+    <foreign-key id="354" parent="257" name="FK_payment_users">
       <ColNames>user_id</ColNames>
       <RefSchemaName>tvera</RefSchemaName>
       <RefTableName>users</RefTableName>
       <RefColNames>user_id</RefColNames>
     </foreign-key>
-    <column id="354" parent="258" name="id">
+    <column id="355" parent="258" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="355" parent="258" name="name">
+    <column id="356" parent="258" name="name">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="356" parent="258" name="PRIMARY">
+    <key id="357" parent="258" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="357" parent="259" name="id">
+    <column id="358" parent="259" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="358" parent="259" name="status_id">
+    <column id="359" parent="259" name="status_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="359" parent="259" name="abonent_id">
+    <column id="360" parent="259" name="abonent_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="360" parent="259" name="create_date">
+    <column id="361" parent="259" name="create_date">
       <Position>4</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="361" parent="259" name="disable_date">
+    <column id="362" parent="259" name="disable_date">
       <Position>5</Position>
       <Comment>გათიშვის თარიღი, მარტო გათიშულებს ექნებათ</Comment>
       <DataType>date|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="362" parent="259" name="PRIMARY">
+    <key id="363" parent="259" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="363" parent="260" name="id">
+    <column id="364" parent="260" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="364" parent="260" name="name">
+    <column id="365" parent="260" name="name">
       <Position>2</Position>
       <DataType>varchar(250)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="365" parent="260" name="PRIMARY">
+    <key id="366" parent="260" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="366" parent="261" name="user_type_id">
+    <column id="367" parent="261" name="user_type_id">
       <Position>1</Position>
       <DataType>int(5)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="367" parent="261" name="user_type_name">
+    <column id="368" parent="261" name="user_type_name">
       <Position>2</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="368" parent="261" name="PRIMARY">
+    <key id="369" parent="261" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_type_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="369" parent="262" name="user_id">
+    <column id="370" parent="262" name="user_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="370" parent="262" name="user_desc">
+    <column id="371" parent="262" name="user_desc">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="371" parent="262" name="user_name">
+    <column id="372" parent="262" name="user_name">
       <Position>3</Position>
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="372" parent="262" name="user_password">
+    <column id="373" parent="262" name="user_password">
       <Position>4</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="373" parent="262" name="type_id">
+    <column id="374" parent="262" name="type_id">
       <Position>5</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="374" parent="262" name="deleted">
+    <column id="375" parent="262" name="deleted">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="375" parent="262" name="create_date">
+    <column id="376" parent="262" name="create_date">
       <Position>7</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
@@ -1657,25 +1662,25 @@ scheduler - დასვი 1 ზე ინსერტის დროს თ�
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <index id="376" parent="262" name="user_name">
+    <index id="377" parent="262" name="user_name">
       <ColNames>user_name</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="377" parent="262" name="FK_users_config">
+    <index id="378" parent="262" name="FK_users_config">
       <ColNames>type_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="378" parent="262" name="PRIMARY">
+    <key id="379" parent="262" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="379" parent="262" name="user_name">
+    <key id="380" parent="262" name="user_name">
       <ColNames>user_name</ColNames>
       <UnderlyingIndexName>user_name</UnderlyingIndexName>
     </key>
-    <foreign-key id="380" parent="262" name="FK_users_config">
+    <foreign-key id="381" parent="262" name="FK_users_config">
       <ColNames>type_id</ColNames>
       <RefSchemaName>tvera</RefSchemaName>
       <RefTableName>user_types</RefTableName>

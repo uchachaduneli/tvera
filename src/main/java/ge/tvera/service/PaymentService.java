@@ -36,6 +36,7 @@ public class PaymentService {
     obj.setAmount(request.getAmount());
     obj.setCheckNumber(request.getCheckNumber());
     obj.setPayDate(new java.sql.Date(request.getPayDate().getTime()));
+    obj.setOperationDate(new java.sql.Date(request.getOperationDate().getTime()));
     obj.setUser((Users) paymentDAO.find(Users.class, request.getUserId()));
     obj.setAbonent(abonent);
     obj.setBankPayment(request.getBankPayment());

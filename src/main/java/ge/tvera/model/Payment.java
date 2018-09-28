@@ -3,7 +3,6 @@ package ge.tvera.model;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Entity
 public class Payment {
@@ -17,6 +16,7 @@ public class Payment {
   private Integer bankPayment;
   private double avans;
   private double daval;
+  private Date operationDate;
 
   @Id
   @Column(name = "id", nullable = false)
@@ -119,17 +119,13 @@ public class Payment {
     this.daval = daval;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Payment payment = (Payment) o;
-    return Double.compare(payment.avans, avans) == 0 &&
-        Double.compare(payment.daval, daval) == 0;
+  @Basic
+  @Column(name = "operation_date")
+  public Date getOperationDate() {
+    return operationDate;
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(avans, daval);
+  public void setOperationDate(Date operationDate) {
+    this.operationDate = operationDate;
   }
 }

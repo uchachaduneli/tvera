@@ -80,6 +80,14 @@ public class PaymentDAO extends AbstractDAO {
       q.append(" and e.payDate between '").append(dtfrmt.format(srchRequest.getCreateDateFrom())).append("' and '")
           .append(dtfrmt.format(srchRequest.getCreateDateTo())).append("'");
     }
+    if (srchRequest.getOperationDate() != null && srchRequest.getOperationDateTo() != null) {
+      Calendar c = Calendar.getInstance();
+      c.setTime(srchRequest.getOperationDateTo());
+      c.add(Calendar.MONTH, 1);
+      srchRequest.setOperationDateTo(c.getTime());
+      q.append(" and e.operationDate between '").append(dtfrmt.format(srchRequest.getOperationDate())).append("' and '")
+          .append(dtfrmt.format(srchRequest.getOperationDateTo())).append("'");
+    }
 
     HashMap<String, Object> resultMap = new HashMap();
     resultMap.put("total", entityManager.createQuery(totalQuery + q.toString()).getSingleResult());
