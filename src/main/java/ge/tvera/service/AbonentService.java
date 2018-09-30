@@ -37,102 +37,80 @@ public class AbonentService {
 
     @Transactional(rollbackFor = Throwable.class)
     public void abonentPackagesAction(AbonentPackagesRequest request) {
-//        Abonent abonent = (Abonent) abonentDAO.find(Abonent.class, request.getAbonendId());
-//        Users user = (Users) abonentDAO.find(Users.class, request.getUserId());
-//
-//        boolean isJuridical = abonent.getJuridicalOrPhisical() == AbonentDTO.JURIDICAL;
-//
-//        Double billSum = abonent == null || abonent.getBill() == null ? 0.0 : abonent.getBill();
-//        Double balance = abonent == null || abonent.getBalance() == null ? 0.0 : abonent.getBalance();
-//
-//        Integer servicePointsNumber = request.getAbonentPackages().isEmpty() ? 0 : 1;
-//
-//        List<Package> abonentExistingPackages = abonentDAO.getAbonentPackages(abonent.getId());
-//
-//        AbonentPackages abonentPack = null;
-//
-//        if (abonentExistingPackages.isEmpty()) {
-//            //ახალი აბონენტია და პირველი მიბმაა პაკეტების
-//            if (!request.getAbonentPackages().isEmpty()) {
-//                request.setPackageTypeId(request.getAbonentPackages().get(0).getType().getId());
-//            }
-//            for (PackageDTO pack : request.getAbonentPackages()) {
-//                switch (pack.getGroup().getId()) {
-//                    case PackageDTO.DISTRIBUTION:
-//                        if (isJuridical) {
-//                            billSum += pack.getJuridicalPrice();
-//                            balance += pack.getJuridicalPrice();
-//                        } else {
-//                            billSum += pack.getPersonalPrice();
-//                            balance += pack.getPersonalPrice();
-//                        }
-//                        break;
-//                    case PackageDTO.INSTALLATION:
-//                        if (isJuridical) {
-//                            balance += pack.getJuridicalPrice();
-//                        } else {
-//                            balance += pack.getPersonalPrice();
-//                        }
-//                        break;
-//                    case PackageDTO.DISTRIBUTION_ON_EXTRA_POINT:
-//                        if (pack.getExternalPointCount() == null || pack.getExternalPointCount() == 0) {
-//                            pack.setExternalPointCount(1);
-//                        }
-//                        if (isJuridical) {
-//                            billSum += pack.getJuridicalPrice() * pack.getExternalPointCount();
-//                            balance += pack.getJuridicalPrice() * pack.getExternalPointCount();
-//                        } else {
-//                            billSum += pack.getPersonalPrice() * pack.getExternalPointCount();
-//                            balance += pack.getPersonalPrice() * pack.getExternalPointCount();
-//                        }
-//                        break;
-//                    case PackageDTO.EXTRA_POINT_INSTALLATION:
-//                        if (pack.getExternalPointCount() == null || pack.getExternalPointCount() == 0) {
-//                            pack.setExternalPointCount(1);
-//                        }
-//                        if (isJuridical) {
-//                            balance += pack.getJuridicalPrice() * pack.getExternalPointCount();
-//                        } else {
-//                            balance += pack.getPersonalPrice() * pack.getExternalPointCount();
-//                        }
-//                        servicePointsNumber += pack.getExternalPointCount();
-//                        break;
-//                    default:
-//                        break;
-//                }
-//                abonentPack = new AbonentPackages(abonent, abonentDAO.getEntityManager().find(Package.class, pack.getId()),
-//                        isJuridical ? pack.getJuridicalPrice() : null, isJuridical ? null : pack.getPersonalPrice(), user);
-//                abonentDAO.create(abonentPack);
-//            }
-//        } else {
-//            //აბონენტის არსებული პაკეტების ედიტია, რედაქტირდება მარტო წერტილების დამატება თუ მოხდა მაგათი რაოდენობის მხედვით ედიტდება ბალანსები და სააბონენტოს თანხა
-//
-//            List<Integer> requestedPackageId = new ArrayList<>();
-//            for (PackageDTO pack : request.getAbonentPackages()) {
-//                requestedPackageId.add(pack.getId());
-//            }
-//
-//            List<Integer> existedPackageId = new ArrayList<>();
-//            for (Package pack : abonentExistingPackages) {
-//                requestedPackageId.add(pack.getId());
-//            }
-//            List<Integer> mergedIds = new ArrayList<>();
-//            if (requestedPackageId.size() != existedPackageId) {
-//
-//                if (requestedPackageId.size() > existedPackageId.size()) {
-//                    requestedPackageId.removeAll(existedPackageId);
-//                    mergedIds.addAll(requestedPackageId);
-//                } else {
-//                    existedPackageId.removeAll(requestedPackageId);
-//                    mergedIds.addAll(existedPackageId);
-//                }
-//
-//                List<Package> mergedPackages = abonentDAO.getAbonentPackagesByIdList(mergedIds);
-//
-//            }
+        Abonent abonent = (Abonent) abonentDAO.find(Abonent.class, request.getAbonendId());
+        Users user = (Users) abonentDAO.find(Users.class, request.getUserId());
 
-                /* aqedan dzvelia
-                for (PackageDTO pack : request.getAbonentPackages()) {
+        boolean isJuridical = abonent.getJuridicalOrPhisical() == AbonentDTO.JURIDICAL;
+
+        Double billSum = abonent == null ? 0.0 : abonent.getBill();
+        Double balance = abonent == null ? 0.0 : abonent.getBalance();
+        Double instalationBill = abonent == null ? 0.0 : abonent.getInstallationBill();
+        Double restoreBill = abonent == null ? 0.0 : abonent.getRestoreBill();
+
+        Integer servicePointsNumber = request.getAbonentPackages().isEmpty() ? 0 : 1;
+
+        List<Package> abonentExistingPackages = abonentDAO.getAbonentPackages(abonent.getId());
+
+        AbonentPackages abonentPack = null;
+
+        if (abonentExistingPackages.isEmpty()) {
+            //ახალი აბონენტია და პირველი მიბმაა პაკეტების
+
+            for (PackageDTO pack : request.getAbonentPackages()) {
+                switch (pack.getGroup().getId()) {
+                    case PackageDTO.DISTRIBUTION:
+                        if (isJuridical) {
+                            billSum += pack.getJuridicalPrice();
+                            balance += pack.getJuridicalPrice();
+                        } else {
+                            billSum += pack.getPersonalPrice();
+                            balance += pack.getPersonalPrice();
+                        }
+                        break;
+                    case PackageDTO.INSTALLATION:
+                        if (isJuridical) {
+                            balance += pack.getJuridicalPrice();
+                            instalationBill += pack.getJuridicalPrice();
+                        } else {
+                            balance += pack.getPersonalPrice();
+                            instalationBill += pack.getPersonalPrice();
+                        }
+                        break;
+                    case PackageDTO.DISTRIBUTION_ON_EXTRA_POINT:
+                        if (pack.getExternalPointCount() == null || pack.getExternalPointCount() == 0) {
+                            pack.setExternalPointCount(1);
+                        }
+                        if (isJuridical) {
+                            billSum += pack.getJuridicalPrice() * pack.getExternalPointCount();
+                            balance += pack.getJuridicalPrice() * pack.getExternalPointCount();
+                        } else {
+                            billSum += pack.getPersonalPrice() * pack.getExternalPointCount();
+                            balance += pack.getPersonalPrice() * pack.getExternalPointCount();
+                        }
+                        break;
+                    case PackageDTO.EXTRA_POINT_INSTALLATION:
+                        if (pack.getExternalPointCount() == null || pack.getExternalPointCount() == 0) {
+                            pack.setExternalPointCount(1);
+                        }
+                        if (isJuridical) {
+                            balance += pack.getJuridicalPrice() * pack.getExternalPointCount();
+                            instalationBill += pack.getJuridicalPrice() * pack.getExternalPointCount();
+                        } else {
+                            balance += pack.getPersonalPrice() * pack.getExternalPointCount();
+                            instalationBill += pack.getPersonalPrice() * pack.getExternalPointCount();
+                        }
+                        servicePointsNumber += pack.getExternalPointCount();
+                        break;
+                    default:
+                        break;
+                }
+                abonentPack = new AbonentPackages(abonent, abonentDAO.getEntityManager().find(Package.class, pack.getId()),
+                        isJuridical ? pack.getJuridicalPrice() : null, isJuridical ? null : pack.getPersonalPrice(), user);
+                abonentDAO.create(abonentPack);
+            }
+        } else {
+            //აბონენტის არსებული პაკეტების ედიტია, რედაქტირდება მარტო წერტილების დამატება თუ მოხდა მაგათი რაოდენობის მხედვით ედიტდება ბალანსები და სააბონენტოს თანხა
+            for (PackageDTO pack : request.getAbonentPackages()) {
                 switch (pack.getGroup().getId()) {
                     case PackageDTO.DISTRIBUTION_ON_EXTRA_POINT:
                         if (abonent.getServicePointsNumber() != pack.getExternalPointCount() && pack.getExternalPointCount() != null) {
@@ -144,43 +122,46 @@ public class AbonentService {
                                     billSum -= pack.getPersonalPrice() * (abonent.getServicePointsNumber() - pack.getExternalPointCount());
                                     balance -= pack.getPersonalPrice() * (abonent.getServicePointsNumber() - pack.getExternalPointCount());
                                 }
-                                servicePointsNumber = pack.getExternalPointCount();
                             } else { // თუ წერტილების რაოდენობა გაიზარდა
-                                if (isJuridical) {
-                                    billSum += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
-                                    balance += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
-                                } else {
-                                    billSum += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
-                                    balance += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                if (abonent.getServicePointsNumber() < pack.getExternalPointCount()) {
+                                    if (isJuridical) {
+                                        billSum += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                        balance += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                    } else {
+                                        billSum += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                        balance += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                    }
                                 }
-                                servicePointsNumber = pack.getExternalPointCount();
                             }
                         }
                         break;
                     case PackageDTO.EXTRA_POINT_INSTALLATION:
                         if (abonent.getServicePointsNumber() != pack.getExternalPointCount() && pack.getExternalPointCount() != null) {
+
                             if (abonent.getServicePointsNumber() > pack.getExternalPointCount()) {// თუ წერტილების რაოდენობა შემცირდა
                                 if (isJuridical) {
                                     balance -= pack.getJuridicalPrice() * (abonent.getServicePointsNumber() - pack.getExternalPointCount());
                                 } else {
                                     balance -= pack.getPersonalPrice() * (abonent.getServicePointsNumber() - pack.getExternalPointCount());
                                 }
-                                servicePointsNumber = pack.getExternalPointCount();
+                                servicePointsNumber = (abonent.getServicePointsNumber() - pack.getExternalPointCount());
                             } else { // თუ წერტილების რაოდენობა გაიზარდა
-                                if (isJuridical) {
-                                    balance += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
-                                } else {
-                                    balance += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                if (abonent.getServicePointsNumber() < pack.getExternalPointCount()) {
+                                    if (isJuridical) {
+                                        balance += pack.getJuridicalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                    } else {
+                                        balance += pack.getPersonalPrice() * (pack.getExternalPointCount() - abonent.getServicePointsNumber());
+                                    }
+                                    servicePointsNumber = (pack.getExternalPointCount() - abonent.getServicePointsNumber());
                                 }
-                                servicePointsNumber = pack.getExternalPointCount();
                             }
 
                         }
                         break;
                     default:
                         break;
-                }*/
-//        }
+                }
+            }
             /* თუ ახალი პაკეტებიც მიაბეს რო დაემატოს ბაზაში
             List<PackageDTO> newOnes = request.getAbonentPackages();
             newOnes.removeAll(abonentExistingPackages);
@@ -193,14 +174,15 @@ public class AbonentService {
                 }
             }
             */
-//    }
+        }
 
-//        abonent.setPackageType((PackageType)abonentDAO.find(PackageType.class,request.getPackageTypeId()));
-//        abonent.setBill(billSum);
-//        abonent.setBalance(balance);
-//        abonent.setServicePointsNumber(servicePointsNumber);
-//    abonent =(Abonent)abonentDAO.update(abonent);
-}
+        abonent.setPackageType((PackageType) abonentDAO.find(PackageType.class, request.getPackageTypeId()));
+        abonent.setBill(billSum);
+        abonent.setBalance(balance);
+        abonent.setServicePointsNumber(servicePointsNumber);
+        abonent.setInstallationBill(instalationBill);
+        abonent = (Abonent) abonentDAO.update(abonent);
+    }
 
 
     @Transactional(rollbackFor = Throwable.class)
