@@ -42,10 +42,10 @@ public class AbonentService {
 
         boolean isJuridical = abonent.getJuridicalOrPhisical() == AbonentDTO.JURIDICAL;
 
-        Double billSum = abonent == null ? 0.0 : abonent.getBill();
-        Double balance = abonent == null ? 0.0 : abonent.getBalance();
-        Double instalationBill = abonent == null ? 0.0 : abonent.getInstallationBill();
-        Double restoreBill = abonent == null ? 0.0 : abonent.getRestoreBill();
+        Double billSum = (abonent == null || abonent.getBill() == null) ? 0.0 : abonent.getBill();
+        Double balance = (abonent == null || abonent.getBalance() == null) ? 0.0 : abonent.getBalance();
+        Double instalationBill = (abonent == null || abonent.getInstallationBill() == null) ? 0.0 : abonent.getInstallationBill();
+        Double restoreBill = (abonent == null || abonent.getRestoreBill() == null) ? 0.0 : abonent.getRestoreBill();
 
         Integer servicePointsNumber = request.getAbonentPackages().isEmpty() ? 0 : 1;
 
@@ -74,6 +74,22 @@ public class AbonentService {
                         } else {
                             balance += pack.getPersonalPrice();
                             instalationBill += pack.getPersonalPrice();
+                        }
+                        break;
+                    case PackageDTO.RESTORATION:
+                        if (isJuridical) {
+                            balance += pack.getJuridicalPrice();
+                            restoreBill += pack.getJuridicalPrice();
+                        } else {
+                            balance += pack.getPersonalPrice();
+                            restoreBill += pack.getPersonalPrice();
+                        }
+                        break;
+                    case PackageDTO.PORTIREBA:
+                        if (isJuridical) {
+                            balance += pack.getJuridicalPrice();
+                        } else {
+                            balance += pack.getPersonalPrice();
                         }
                         break;
                     case PackageDTO.DISTRIBUTION_ON_EXTRA_POINT:
@@ -175,13 +191,16 @@ public class AbonentService {
             }
             */
         }
-
-        abonent.setPackageType((PackageType) abonentDAO.find(PackageType.class, request.getPackageTypeId()));
-        abonent.setBill(billSum);
-        abonent.setBalance(balance);
-        abonent.setServicePointsNumber(servicePointsNumber);
-        abonent.setInstallationBill(instalationBill);
-        abonent = (Abonent) abonentDAO.update(abonent);
+        if (!request.getAbonentPackages().isEmpty()) {
+            abonent.setPackageType((PackageType) abonentDAO.find(PackageType.class,
+                    request.getPackageTypeId() != null ? request.getPackageTypeId() : request.getAbonentPackages().get(0).getType().getId()));
+            abonent.setBill(billSum);
+            abonent.setBalance(balance);
+            abonent.setServicePointsNumber(servicePointsNumber);
+            abonent.setInstallationBill(instalationBill);
+            abonent.setRestoreBill(restoreBill);
+            abonent = (Abonent) abonentDAO.update(abonent);
+        }
     }
 
 
