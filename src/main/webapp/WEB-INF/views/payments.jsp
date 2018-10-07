@@ -9,7 +9,7 @@
 <%@include file="header.jsp" %>
 <script>
 
-  app.controller("angController", function ($scope, $http, $filter) {
+  app.controller("angController", function ($scope, $http, $filter, $window) {
     $scope.start = 0;
     $scope.page = 1;
     $scope.limit = "10";
@@ -50,6 +50,36 @@
       }
 
       ajaxCall($http, "payment/get-payments?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
+    }
+
+    $scope.downloadExcell = function () {
+      $('#loadingModal').modal('show');
+
+      if ($scope.srchCase.createDateFrom != undefined && $scope.srchCase.createDateFrom.includes('/')) {
+        $scope.srchCase.createDateFrom = $scope.srchCase.createDateFrom.split(/\//).reverse().join('-');
+      }
+      if ($scope.srchCase.createDateTo != undefined && $scope.srchCase.createDateTo.includes('/')) {
+        $scope.srchCase.createDateTo = $scope.srchCase.createDateTo.split(/\//).reverse().join('-');
+      }
+
+      if ($scope.tmpSrchOperDate != undefined && $scope.tmpSrchOperDate.length > 0) {
+        $scope.srchCase.operationDate = $scope.tmpSrchOperDate + '-01';
+      } else {
+        $scope.srchCase.operationDate = undefined;
+      }
+
+      if ($scope.tmpSrchOperDateTo != undefined && $scope.tmpSrchOperDateTo.length > 0) {
+        $scope.srchCase.operationDateTo = $scope.tmpSrchOperDateTo + '-16';
+      } else {
+        $scope.srchCase.operationDateTo = undefined;
+      }
+
+      function redirectToFile() {
+        $('#loadingModal').modal('hide');
+        $window.open("resources/excell/excel.xls", "_blank");
+      }
+
+      ajaxCall($http, "payment/download-excell", angular.toJson($scope.srchCase), redirectToFile);
     }
 
     $scope.loadMainData();
@@ -415,7 +445,14 @@
                     </button>
                     <%--</c:if>--%>
                 </div>
-                <div class="col-md-3 col-xs-offset-7">
+                <div class="col-md-2 col-xs-offset-5 text-right">
+                    <div class="btn-group">
+                        <a ng-click="downloadExcell()" title="ექსელში ექსპორტი" class="btn btn-default pull-right">
+                            <i class="fa fa-file-excel-o"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3">
                     <select ng-change="rowNumbersChange()" class="pull-right form-control" ng-model="limit"
                             id="rowCountSelectId">
                         <option value="10" selected>მაჩვენე 10</option>
@@ -550,11 +587,12 @@
                             <th>ID</th>
                             <th>აბონ. N</th>
                             <th>აბონენტი(ტარიფი)</th>
+                            <th>უბანი(ინკას.)</th>
                             <th>თანხა</th>
                             <th>ავანსი</th>
                             <th>დავალ.</th>
                             <th>ქვითრის N</th>
-                            <th>გადახდის თარიღი</th>
+                            <th>გადახ. თარ.</th>
                             <th>ოპ. თარ.</th>
                             <th class="col-md-2 text-center">Action</th>
                         </tr>
@@ -564,6 +602,9 @@
                             <td>{{r.id}}</td>
                             <td>{{r.abonent.id}}</td>
                             <td>{{r.abonent.name}}&nbsp;{{r.abonent.lastname}} ({{r.abonent.bill}}₾)</td>
+                            <td>{{r.abonent.district.name}}&nbsp;({{r.abonent.district.incasator.name}}
+                                {{r.abonent.district.incasator.lastname}})
+                            </td>
                             <td>{{r.amount}}</td>
                             <td>{{r.avans}}</td>
                             <td>{{r.daval}}</td>
@@ -588,7 +629,7 @@
                         </tr>
                         </tbody>
                         <tfoot>
-                        <th colspan="3"></th>
+                        <th colspan="4"></th>
                         <th>სულ: {{total}}</th>
                         <th>სულ: {{avansTotal}}</th>
                         <th>სულ: {{davalTotal}}</th>

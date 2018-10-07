@@ -517,7 +517,9 @@
                                 <td>{{r.bill}}</td>
                                 <td>{{r.restoreBill}}</td>
                                 <td>{{r.installationBill}}</td>
-                                <td>{{r.balance*-1}}</td>
+                                <td>{{r.balance > 0 ? ((r.balance*-1 )+r.bill):(r.balance < 0 ?
+                                    (r.bill-r.balance):r.balance)}}
+                                </td>
                             </tr>
                             <tr class="text-center">
                                 <th colspan="10">ამობეჭდვის თარიღი: <span id="dateDivId"></span></th>

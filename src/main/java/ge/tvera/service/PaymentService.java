@@ -48,11 +48,7 @@ public class PaymentService {
         if (darchenili > abonent.getBill()) {
           obj.setAvans(darchenili - abonent.getBill());
         }
-      }
-      if (request.getAmount() == (abonent.getBalance() - abonent.getBill())) {
-        obj.setDaval(request.getAmount());
-      }
-      if (request.getAmount() < (abonent.getBalance() - abonent.getBill())) {
+      } else {
         obj.setDaval(request.getAmount());
       }
     }
