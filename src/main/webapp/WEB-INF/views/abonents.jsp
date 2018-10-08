@@ -1023,7 +1023,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-3 col-xs-offset-5">
+                                <div class="form-group col-md-3 ">
                                     <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
                                         <span class="fa fa-search"></span> &nbsp; ძებნა
                                     </button>
