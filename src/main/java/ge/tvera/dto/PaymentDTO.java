@@ -33,10 +33,14 @@ public class PaymentDTO {
   private String lastname;
   private String personalNumber;
   private String deviceNumber;
+  private String streetNumber;
+  private String roomNumber;
   private UsersDTO user;
   private Integer userId;
   private Integer districtId;
+  private Integer streetId;
   private Integer incasatorId;
+  private Integer packageTypeId;
   private Integer bankPayment;
   private Integer isCredit;
   private double avans;
@@ -72,6 +76,46 @@ public class PaymentDTO {
       list.add(PaymentDTO.parse(record));
     }
     return list;
+  }
+
+  public static SimpleDateFormat getDtfrmt() {
+    return dtfrmt;
+  }
+
+  public static void setDtfrmt(SimpleDateFormat dtfrmt) {
+    PaymentDTO.dtfrmt = dtfrmt;
+  }
+
+  public Integer getPackageTypeId() {
+    return packageTypeId;
+  }
+
+  public void setPackageTypeId(Integer packageTypeId) {
+    this.packageTypeId = packageTypeId;
+  }
+
+  public String getStreetNumber() {
+    return streetNumber;
+  }
+
+  public void setStreetNumber(String streetNumber) {
+    this.streetNumber = streetNumber;
+  }
+
+  public String getRoomNumber() {
+    return roomNumber;
+  }
+
+  public void setRoomNumber(String roomNumber) {
+    this.roomNumber = roomNumber;
+  }
+
+  public Integer getStreetId() {
+    return streetId;
+  }
+
+  public void setStreetId(Integer streetId) {
+    this.streetId = streetId;
   }
 
   public String getStrOperDate() {

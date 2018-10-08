@@ -269,6 +269,12 @@
       }
     };
 
+    function getPackageTypes(res) {
+      $scope.packageTypes = res.data;
+    }
+
+    ajaxCall($http, "misc/get-package-types", null, getPackageTypes);
+
     $scope.isChecked = function (value) {
       var idx = $filter('filter')($scope.abonentPackagesBeforeSave, {id: value.id}, true);
       if (idx[0] != undefined) {
@@ -1006,6 +1012,16 @@
                                                    placeholder="მდე" ng-model="srchCase.billDateTo">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <select class="form-control" ng-model="srchCase.packageTypeId"
+                                            ng-change="loadMainData()">
+                                        <option value="" selected="selected">პაკეტი</option>
+                                        <option ng-repeat="v in packageTypes"
+                                                ng-selected="v.id === srchCase.packageTypeId"
+                                                value="{{v.id}}">{{v.name}}
+                                        </option>
+                                    </select>
                                 </div>
                                 <div class="form-group col-md-3 col-xs-offset-5">
                                     <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">

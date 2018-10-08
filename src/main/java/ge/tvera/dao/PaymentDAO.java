@@ -56,11 +56,23 @@ public class PaymentDAO extends AbstractDAO {
     if (srchRequest.getPersonalNumber() != null) {
       q.append(" and e.abonent.personalNumber like '%").append(srchRequest.getPersonalNumber()).append("%'");
     }
+    if (srchRequest.getStreetNumber() != null) {
+      q.append(" and e.abonent.streetNumber like '%").append(srchRequest.getStreetNumber()).append("%'");
+    }
+    if (srchRequest.getRoomNumber() != null) {
+      q.append(" and e.abonent.roomNumber like '%").append(srchRequest.getRoomNumber()).append("%'");
+    }
     if (srchRequest.getDistrictId() != null) {
       q.append(" and e.abonent.district.id ='").append(srchRequest.getDistrictId()).append("'");
     }
     if (srchRequest.getIncasatorId() != null) {
       q.append(" and e.abonent.district.incasator.id ='").append(srchRequest.getIncasatorId()).append("'");
+    }
+    if (srchRequest.getStreetId() != null) {
+      q.append(" and e.abonent.street.id ='").append(srchRequest.getStreetId()).append("'");
+    }
+    if (srchRequest.getPackageTypeId() != null) {
+      q.append(" and e.abonent.packageType.id ='").append(srchRequest.getPackageTypeId()).append("'");
     }
     if (srchRequest.getIsCredit() != null) {
       if (srchRequest.getIsCredit() == 1) {

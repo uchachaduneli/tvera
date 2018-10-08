@@ -54,6 +54,8 @@ public class PaymentController {
     rowhead.createCell(8).setCellValue("ქვითრის N");
     rowhead.createCell(9).setCellValue("გადახდის თარიღი");
     rowhead.createCell(10).setCellValue("ოპერაციის თარიღი");
+    rowhead.createCell(11).setCellValue("ქუჩა");
+    rowhead.createCell(12).setCellValue("ბინის N");
 
     HSSFCellStyle cellStyle = workbook.createCellStyle();
     cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
@@ -85,6 +87,9 @@ public class PaymentController {
       row.createCell(8).setCellValue(obj.getCheckNumber());
       row.createCell(9).setCellValue(dtfrmt.format(obj.getPayDate()));
       row.createCell(10).setCellValue(dtfrmt.format(obj.getOperationDate()));
+      row.createCell(11).setCellValue(obj.getAbonent().getStreet().getName() + " N" + obj.getAbonent().getStreetNumber());
+      row.createCell(12).setCellValue(obj.getAbonent().getRoomNumber());
+
     }
     row = sheet.createRow(exportList.size() + 1);
     row.createCell(0).setCellValue("");
@@ -98,6 +103,8 @@ public class PaymentController {
     row.createCell(8).setCellValue("");
     row.createCell(9).setCellValue("");
     row.createCell(10).setCellValue("");
+    row.createCell(11).setCellValue("");
+    row.createCell(12).setCellValue("");
 
     FileOutputStream fileOut = new FileOutputStream(realPath);
     workbook.write(fileOut);

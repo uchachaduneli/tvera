@@ -84,6 +84,12 @@
 
     $scope.loadMainData();
 
+    function getStreets(res) {
+      $scope.streets = res.data;
+    }
+
+    ajaxCall($http, "street/get-all-streets", null, getStreets);
+
     function getIncasators(res) {
       $scope.incasators = res.data.list;
     }
@@ -116,6 +122,12 @@
     }
 
     ajaxCall($http, "street/get-all-streets", null, getStreets);
+
+    function getPackageTypes(res) {
+      $scope.packageTypes = res.data;
+    }
+
+    ajaxCall($http, "misc/get-package-types", null, getPackageTypes);
 
     $scope.edit = function (id) {
       if (id != undefined) {
@@ -569,6 +581,33 @@
                                                    placeholder="მდე" ng-model="tmpSrchOperDateTo">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <select class="form-control" ng-model="srchCase.packageTypeId"
+                                            ng-change="loadMainData()">
+                                        <option value="" selected="selected">პაკეტი</option>
+                                        <option ng-repeat="v in packageTypes"
+                                                ng-selected="v.id === srchCase.packageTypeId"
+                                                value="{{v.id}}">{{v.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <select class="form-control" ng-model="srchCase.streetId"
+                                            ng-change="loadMainData()">
+                                        <option value="" selected="selected">ქუჩა</option>
+                                        <option ng-repeat="v in streets" ng-selected="v.id === srchCase.streetId"
+                                                value="{{v.id}}">{{v.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="text" class="form-control srch" ng-model="srchCase.streetNumber"
+                                           placeholder="ქუჩის N">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="text" class="form-control srch" ng-model="srchCase.roomNumber"
+                                           placeholder="ბინის N">
                                 </div>
                                 <div class="form-group col-md-2">
                                     <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
