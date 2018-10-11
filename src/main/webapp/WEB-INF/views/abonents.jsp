@@ -1055,7 +1055,7 @@
                             <td>{{r.street.name}}&nbsp;N{{r.streetNumber}}&nbsp;ბინა({{r.roomNumber}})</td>
                             <td>{{r.district.incasator.name + ' ' + r.district.incasator.lastname}}</td>
                             <td style="background-color: {{(r.balance < 0 ? '#c4e3f3':(r.balance > 0 ? '#ebcccc':''))}}">
-                                {{r.balance*-1}}
+                                {{r.balance*-1 | number: 2}}
                             </td>
                             <td>{{r.status.name}}</td>
                             <td class="text-center">

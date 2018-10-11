@@ -47,19 +47,29 @@ public class PaymentService {
         Double darchenili = request.getAmount() - (abonent.getBalance() - abonent.getBill());
         if (darchenili > abonent.getBill()) {
           obj.setAvans(darchenili - abonent.getBill());
+          obj.setMimdinare(abonent.getBill());
+        } else {
+          if (darchenili <= abonent.getBill()) {
+            obj.setMimdinare(darchenili);
+          }
         }
       } else {
         obj.setDaval(request.getAmount());
       }
     }
 
-    if (abonent.getBalance() > 0.0 && abonent.getBalance() <= abonent.getBill()) { //ერთი თვის აქვს გადასახდელი ან უფრო ნაკლები
+    if (abonent.getBalance() >= 0.0 && abonent.getBalance() <= abonent.getBill()) { //ერთი თვის აქვს გადასახდელი ან უფრო ნაკლები
       if (request.getAmount() > abonent.getBalance()) {
+        obj.setMimdinare(abonent.getBalance());
         obj.setAvans(request.getAmount() - abonent.getBalance());
       }
+      if (request.getAmount() <= abonent.getBalance()) {
+        obj.setMimdinare(request.getAmount());
+      }
+
     }
 
-    if (abonent.getBalance() <= 0.0) { // პლიუსშია ისედაც და კიდე მოიტანა მაყუთი
+    if (abonent.getBalance() < 0.0) { // პლიუსშია ისედაც და კიდე მოიტანა მაყუთი
       obj.setAvans(request.getAmount());
     }
 

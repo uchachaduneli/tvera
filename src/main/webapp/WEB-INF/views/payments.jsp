@@ -628,12 +628,13 @@
                             <th>აბონენტი(ტარიფი)</th>
                             <th>უბანი(ინკას.)</th>
                             <th>თანხა</th>
+                            <th>მიმდ.</th>
                             <th>ავანსი</th>
                             <th>დავალ.</th>
                             <th>ქვითრის N</th>
                             <th>გადახ. თარ.</th>
                             <th>ოპ. თარ.</th>
-                            <th class="col-md-2 text-center">Action</th>
+                            <th class="col-md-1 text-center">Action</th>
                         </tr>
                         </thead>
                         <tbody title="Double Click For Detailed Information">
@@ -645,12 +646,13 @@
                                 {{r.abonent.district.incasator.lastname}})
                             </td>
                             <td>{{r.amount}}</td>
-                            <td>{{r.avans}}</td>
-                            <td>{{r.daval}}</td>
+                            <td>{{r.mimdinare | number: 2}}</td>
+                            <td>{{r.avans | number: 2}}</td>
+                            <td>{{r.daval | number: 2}}</td>
                             <td>{{r.checkNumber}}</td>
                             <td>{{r.payDate}}</td>
                             <td>{{r.strOperDate}}</td>
-                            <td class="text-center">
+                            <td>
                                 <a ng-click="showDetails(r.id)" data-toggle="modal" title="Details"
                                    data-target="#detailModal" class="btn btn-xs">
                                     <i class="fa fa-sticky-note-o"></i>&nbsp; დეტალები
@@ -669,9 +671,10 @@
                         </tbody>
                         <tfoot>
                         <th colspan="4"></th>
-                        <th>სულ: {{total}}</th>
-                        <th>სულ: {{avansTotal}}</th>
-                        <th>სულ: {{davalTotal}}</th>
+                        <th> {{total | number: 2}}</th>
+                        <th></th>
+                        <th> {{avansTotal | number: 2}}</th>
+                        <th> {{davalTotal | number: 2}}</th>
                         <th colspan="4"></th>
                         </tfoot>
                     </table>

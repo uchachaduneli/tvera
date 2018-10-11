@@ -45,6 +45,7 @@ public class PaymentDTO {
   private Integer isCredit;
   private double avans;
   private double daval;
+  private double mimdinare;
 
   public static PaymentDTO parse(Payment record) {
     if (record != null) {
@@ -62,6 +63,7 @@ public class PaymentDTO {
       dto.setBankPayment(record.getBankPayment());
       dto.setAvans(record.getAvans());
       dto.setDaval(record.getDaval());
+      dto.setMimdinare(record.getMimdinare());
       dto.setOperationDate(record.getOperationDate());
       if (dto.getOperationDate() != null) {
         dto.setStrOperDate(dtfrmt.format(record.getOperationDate()));
@@ -76,6 +78,14 @@ public class PaymentDTO {
       list.add(PaymentDTO.parse(record));
     }
     return list;
+  }
+
+  public double getMimdinare() {
+    return mimdinare;
+  }
+
+  public void setMimdinare(double mimdinare) {
+    this.mimdinare = mimdinare;
   }
 
   public static SimpleDateFormat getDtfrmt() {
