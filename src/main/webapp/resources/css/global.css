@@ -55,8 +55,8 @@ input[type="radio"] {
     }
 }
 
-.modal-body {
-    position: relative;
-    max-height: 80vh;
-    overflow-y: scroll;
-}
+/*.modal-body {*/
+/*position: relative;*/
+/*max-height: 80vh;*/
+/*overflow-y: scroll;*/
+/*}*/

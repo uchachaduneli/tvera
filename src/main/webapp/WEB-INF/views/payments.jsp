@@ -217,7 +217,6 @@
       }
 
       function getAbonentData(res) {
-        $('#detailModal').modal('hide');
         if (res.data.list.length > 1) {
           errorMsg('ნაპოვნია ერთზე მეტი ჩანაწერი!!! გთხოვთ მიუთითოთ უნიკალური მახასიათებელი');
           return;
@@ -227,7 +226,6 @@
         $scope.founded = res.data.list[0];
       }
 
-      $('#detailModal').modal('show');
       ajaxCall($http, "abonent/get-abonents?start=0&limit=99999", angular.toJson($scope.abonent), getAbonentData);
     }
   })
