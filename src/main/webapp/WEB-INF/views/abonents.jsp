@@ -644,7 +644,7 @@
                             <td>{{slcted.collectedBill | number: 2}}</td>
                         </tr>
                         <tr>
-                            <th class="text-right">გადახდის თარიღი</th>
+                            <th class="text-right">რეგისტრაციის თარიღი</th>
                             <td>{{slcted.billDate}}</td>
                         </tr>
                         <tr>
@@ -871,7 +871,7 @@
                             </div>
                         </div>
                         <div class="form-group col-sm-10 ">
-                            <label class="control-label col-sm-3">გადახდის თარიღი</label>
+                            <label class="control-label col-sm-3">რეგისტრაციის თარიღი</label>
                             <div class="col-sm-9">
                                 <input type="text" ng-model="request.billDate" required
                                        class="form-control input-sm dateInput">
@@ -1026,7 +1026,7 @@
                                             <input type="text" class="form-control srch dateInput"
                                                    placeholder="დან" ng-model="srchCase.billDateFrom">
                                         </div>
-                                        <span class="input-group-addon">გადახდის თარიღი</span>
+                                        <span class="input-group-addon">რეგისტრაციის თარიღი</span>
                                         <div class="input-append">
                                             <input type="text" class="form-control srch dateInput"
                                                    placeholder="მდე" ng-model="srchCase.billDateTo">
@@ -1096,10 +1096,6 @@
                                 <a ng-click="showDetails(r.id)" data-toggle="modal"
                                    data-target="#statusDialog" title="სტატუსის შეცვლა" class="btn btn-xs">
                                     <i class="fa fa-cogs"></i>
-                                </a>&nbsp;&nbsp;
-                                <a ng-click="loadAbonentPackages(r.id)" data-toggle="modal"
-                                   data-target="#changePackageDialog" title="პაკეტის ცვლილება" class="btn btn-xs">
-                                    <i class="fa fa-wrench"></i>
                                 </a>&nbsp;&nbsp;
                                 <a ng-click="remove(r.id)" title="წაშლა" class="btn btn-xs">
                                     <i class="fa fa-trash-o"></i>

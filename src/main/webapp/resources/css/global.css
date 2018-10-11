@@ -54,3 +54,9 @@ input[type="radio"] {
         max-width: 1200px;
     }
 }
+
+.modal-body {
+    position: relative;
+    max-height: 80vh;
+    overflow-y: scroll;
+}

@@ -317,7 +317,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="editModalLabel">შეავსეთ ინფორმაცია</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: auto;">
                 <div class="row">
                     <form class="form-horizontal" name="ediFormName">
                         <div class="form-group col-sm-12 ">
