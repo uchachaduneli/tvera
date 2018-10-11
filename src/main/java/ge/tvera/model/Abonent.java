@@ -27,6 +27,7 @@ public class Abonent {
     private String roomNumber;
     private Double installationBill;
     private Double restoreBill;
+    private String phone;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -258,5 +259,15 @@ public class Abonent {
         int result = installationBill != null ? installationBill.hashCode() : 0;
         result = 31 * result + (restoreBill != null ? restoreBill.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "phone")
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

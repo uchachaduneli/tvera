@@ -171,6 +171,7 @@
       $scope.req.floor = $scope.request.floor;
       $scope.req.roomNumber = $scope.request.roomNumber;
       $scope.req.juridicalOrPhisical = $scope.request.juridicalOrPhisical;
+      $scope.req.phone = $scope.request.phone;
 
       console.log(angular.toJson($scope.req));
       ajaxCall($http, "abonent/save-abonent", angular.toJson($scope.req), resFunc);
@@ -615,6 +616,10 @@
                             <td>{{slcted.personalNumber}}</td>
                         </tr>
                         <tr>
+                            <th class="text-right">თელეფონი</th>
+                            <td>{{slcted.phone}}</td>
+                        </tr>
+                        <tr>
                             <th class="text-right">იურიდიული ფორმა</th>
                             <td>{{slcted.juridicalOrPhisical == 1 ? 'ფიზიკური პირი': 'იურიდიული პირი'}}</td>
                         </tr>
@@ -628,7 +633,15 @@
                         </tr>
                         <tr>
                             <th class="text-right">ბალანსი</th>
-                            <td>{{slcted.balance*-1}}</td>
+                            <td>{{slcted.balance*-1 | number: 2}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right">დღიური ღირებულება</th>
+                            <td>{{slcted.dailyBill | number: 2}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right">ყოველდღიურად დარიცხვული</th>
+                            <td>{{slcted.collectedBill | number: 2}}</td>
                         </tr>
                         <tr>
                             <th class="text-right">გადახდის თარიღი</th>
@@ -786,6 +799,13 @@
                             <label class="control-label col-sm-3">პირადი N</label>
                             <div class="col-sm-9">
                                 <input type="text" ng-model="request.personalNumber" name="name" required
+                                       class="form-control input-sm"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-10 ">
+                            <label class="control-label col-sm-3">ტელეფონი</label>
+                            <div class="col-sm-9">
+                                <input type="text" ng-model="request.phone" name="name" required
                                        class="form-control input-sm"/>
                             </div>
                         </div>

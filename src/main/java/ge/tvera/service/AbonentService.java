@@ -220,6 +220,7 @@ public class AbonentService {
         obj.setStreetNumber(request.getStreetNumber());
         obj.setRoomNumber(request.getRoomNumber());
         obj.setFloor(request.getFloor());
+        obj.setPhone(request.getPhone());
 
         if (request.getId() != null) {
             Abonent tmp = (Abonent) abonentDAO.find(Abonent.class, request.getId());
