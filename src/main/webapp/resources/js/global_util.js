@@ -8,7 +8,7 @@ function ajaxCall(http, url, data, sucessCallback, errorCallback) {
     }).success(function (data, status, headers, config) {
     if (data.errorCode && data.errorCode >= 700) {
       console.log(data);
-      if (data.data != null && data.data.rootCause.message.includes("foreign key constraint fails")) {
+      if (data.data != null && data.data.rootCause != undefined && data.data.rootCause.message.includes("foreign key constraint fails")) {
         errorMsg("ოპერაცია არ სრულდება!!!   ჩანაწერს გააჩნია ბმა");
       } else {
         if (data.errorCode == 700) {

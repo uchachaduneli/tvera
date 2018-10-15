@@ -29,6 +29,9 @@ public class GlobalExceptionHandler {
         } else if (exception instanceof org.springframework.dao.InvalidDataAccessApiUsageException) {
             rs.setMessage("ოპერაცია არ სრულდება");
             return rs;
+        } else if (exception instanceof IncorrectDateException) {
+            rs.setMessage("ოპერაცია არ სრულდება " + exception.getMessage());
+            return rs;
         } else {
             rs.setMessage("ოპერაცია არ სრულდება");
             return rs;

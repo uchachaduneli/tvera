@@ -2,6 +2,7 @@ package ge.tvera.controller;
 
 import ge.tvera.dto.AbonentDTO;
 import ge.tvera.dto.PackageDTO;
+import ge.tvera.misc.IncorrectDateException;
 import ge.tvera.misc.Response;
 import ge.tvera.request.AbonentPackagesRequest;
 import ge.tvera.service.AbonentService;
@@ -64,7 +65,7 @@ public class AbonentController {
 
   @RequestMapping({"/change-abonent-status"})
   @ResponseBody
-  public Response changeServiceStatus(@RequestParam int id, @RequestParam(value = "date", required = false) Date date, HttpServletRequest servletRequest) {
+  public Response changeServiceStatus(@RequestParam int id, @RequestParam(value = "date", required = false) Date date, HttpServletRequest servletRequest) throws IncorrectDateException {
 //    Calendar cal1 = Calendar.getInstance();
 //    Calendar cal2 = Calendar.getInstance();
 //
