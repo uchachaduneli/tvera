@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class AbonentDTO {
     public static Integer JURIDICAL = 2;
@@ -58,8 +57,9 @@ public class AbonentDTO {
             AbonentDTO dto = new AbonentDTO();
             if (record.getBillDate() != null && record.getBill() != null) {
                 dto.setDailyBill(record.getBill() / daysCount);
-                dto.setCollectedBill((TimeUnit.DAYS.convert(new Date().getTime() - record.getBillDate().getTime(), TimeUnit.MILLISECONDS)) * dto.getDailyBill());
+//                dto.setCollectedBill((TimeUnit.DAYS.convert(new Date().getTime() - record.getBillDate().getTime(), TimeUnit.MILLISECONDS)) * dto.getDailyBill());
             }
+            dto.setCollectedBill(record.getCollectedBill());
             dto.setId(record.getId());
             dto.setName(record.getName());
             dto.setBill(record.getBill());

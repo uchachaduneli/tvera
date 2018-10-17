@@ -28,6 +28,7 @@ public class Abonent {
     private Double installationBill;
     private Double restoreBill;
     private String phone;
+    private Double collectedBill;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -269,5 +270,15 @@ public class Abonent {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Basic
+    @Column(name = "collected_bill")
+    public Double getCollectedBill() {
+        return collectedBill;
+    }
+
+    public void setCollectedBill(Double collectedBill) {
+        this.collectedBill = collectedBill;
     }
 }

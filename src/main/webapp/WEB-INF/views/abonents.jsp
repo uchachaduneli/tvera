@@ -82,6 +82,8 @@
               successMsg('Operation Successfull');
               closeModal('statusDialog');
               $scope.loadMainData();
+            } else {
+              errorMsg(res.message);
             }
           }
 

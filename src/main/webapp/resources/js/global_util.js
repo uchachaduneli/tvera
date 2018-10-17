@@ -1,17 +1,21 @@
 function ajaxCall(http, url, data, sucessCallback, errorCallback) {
   http(
-      {
-        method: "POST",
-        url: url,
-        contentType: "application/json; charset=utf-8",
-        data: data
-      }).success(function (data, status, headers, config) {
+    {
+      method: "POST",
+      url: url,
+      contentType: "application/json; charset=utf-8",
+      data: data
+    }).success(function (data, status, headers, config) {
     if (data.errorCode && data.errorCode >= 700) {
       console.log(data);
-      if (data.data.rootCause.message.includes("foreign key constraint fails")) {
+      if (data.data != null && data.data.rootCause.message.includes("foreign key constraint fails")) {
         errorMsg("ოპერაცია არ სრულდება!!!   ჩანაწერს გააჩნია ბმა");
       } else {
-        errorMsg("ოპერაცია არ სრულდება!!!");
+        if (data.errorCode == 700) {
+          errorMsg(data.message);
+        } else {
+          errorMsg("ოპერაცია არ სრულდება!!!");
+        }
       }
       // alert(data.errorCode + ": " + data.message);
     } else {
@@ -31,14 +35,14 @@ function ajaxCall(http, url, data, sucessCallback, errorCallback) {
 
 function ajaxCallNotJsonContentType(http, url, data, sucessCallback, errorCallback) {
   http(
-      {
-        type: 'POST',
-        url: url,
-        dataType: 'text',
-        processData: false,
-        contentType: false,
-        data: data
-      }).success(function (data, status, headers, config) {
+    {
+      type: 'POST',
+      url: url,
+      dataType: 'text',
+      processData: false,
+      contentType: false,
+      data: data
+    }).success(function (data, status, headers, config) {
     sucessCallback(data);
   }).error(function (data, status, headers, config) {
     if (errorCallback)
