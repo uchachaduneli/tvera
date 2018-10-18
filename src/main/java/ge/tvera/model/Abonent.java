@@ -29,6 +29,7 @@ public class Abonent {
     private Double restoreBill;
     private String phone;
     private Double collectedBill;
+  private Date startPay;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -281,4 +282,14 @@ public class Abonent {
     public void setCollectedBill(Double collectedBill) {
         this.collectedBill = collectedBill;
     }
+
+  @Basic
+  @Column(name = "start_pay")
+  public Date getStartPay() {
+    return startPay;
+  }
+
+  public void setStartPay(Date startPay) {
+    this.startPay = startPay;
+  }
 }

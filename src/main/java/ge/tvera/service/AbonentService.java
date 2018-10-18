@@ -122,7 +122,7 @@ public class AbonentService {
             break;
         }
         abonentPack = new AbonentPackages(abonent, abonentDAO.getEntityManager().find(Package.class, pack.getId()),
-            isJuridical ? pack.getJuridicalPrice() : null, isJuridical ? null : pack.getPersonalPrice(), user);
+                isJuridical ? pack.getJuridicalPrice() : null, isJuridical ? null : pack.getPersonalPrice(), user);
         abonentDAO.create(abonentPack);
       }
     } else {
@@ -194,7 +194,7 @@ public class AbonentService {
     }
     if (!request.getAbonentPackages().isEmpty()) {
       abonent.setPackageType((PackageType) abonentDAO.find(PackageType.class,
-          request.getPackageTypeId() != null ? request.getPackageTypeId() : request.getAbonentPackages().get(0).getType().getId()));
+              request.getPackageTypeId() != null ? request.getPackageTypeId() : request.getAbonentPackages().get(0).getType().getId()));
       abonent.setBill(billSum);
       abonent.setBalance(balance);
       abonent.setServicePointsNumber(servicePointsNumber);
@@ -288,8 +288,8 @@ public class AbonentService {
           // მომავლის თარიღით თიშავს ანუ ბალანსს უნდა დაემატოს დღეიდან გათიშვის თარიღამდე რამდენი დღისაც იქნება
           if (obj.getBill() != null) {
             Double dailyBill = obj.getBill() / daysCountInMonth;
-            obj.setBalance(obj.getBalance() + (dailyBill * daysCountBetween));
-            obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * daysCountBetween));
+            obj.setBalance(obj.getBalance() + (dailyBill * daysCountBetween + 1));
+            obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * daysCountBetween + 1));
           }
         }
       }
@@ -297,6 +297,23 @@ public class AbonentService {
       abonentDAO.update(obj);
     } else {
       if (obj.getStatus().getId() == StatusDTO.STATUS_DISABLED) {
+
+        if (!isToday) {
+          if (oldDate) {
+            // ძველი თარიღით ააქტიურებს ანუ ბალანსიდან უნდა მოაკლდეს გათიშვის თარიღის მერე რა დღეებისაც დაერიცხა
+            if (obj.getBill() != null) {
+              obj.setStartPay(null);
+              Double dailyBill = obj.getBill() / daysCountInMonth;
+              obj.setBalance(obj.getBalance() + (dailyBill * daysCountBetween));
+              obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * daysCountBetween));
+            }
+          } else {
+            // მომავლის თარიღით ააქტიურებს ანუ ბალანსს უნდა დაემატოს დღეიდან გათიშვის თარიღამდე რამდენი დღისაც იქნება
+            obj.setStartPay(disableDate);
+            //სტატუსი ქვევით უაქტიურდება
+          }
+        }
+
         obj.setStatus((Status) abonentDAO.find(Status.class, StatusDTO.STATUS_ACTIVE));
         abonentDAO.update(obj);
       }
@@ -316,6 +333,6 @@ public class AbonentService {
   }
 
   public int daysBetween(java.util.Date d1, java.util.Date d2) {
-    return (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+    return Math.abs((int) (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
   }
 }
