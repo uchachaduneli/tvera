@@ -9,378 +9,519 @@
 <%@include file="header.jsp" %>
 <script>
 
-  app.controller("angController", function ($scope, $http, $filter, $window) {
-    $scope.start = 0;
-    $scope.page = 1;
-    $scope.limit = "10";
-    $scope.request = {};
-    $scope.srchCase = {};
-    $scope.packages = [];
-    $scope.abonentPackages = [];
-    $scope.abonentPackagesBeforeSave = [];
-    $scope.package = {};
+    app.controller("angController", function ($scope, $http, $filter, $window) {
+        $scope.start = 0;
+        $scope.page = 1;
+        $scope.limit = "10";
+        $scope.request = {};
+        $scope.srchCase = {};
+        $scope.packages = [];
+        $scope.abonentPackages = [];
+        $scope.abonentPackagesBeforeSave = [];
+        $scope.package = {};
 
-    $scope.loadMainData = function () {
-      $('#loadingModal').modal('show');
+        $scope.loadMainData = function () {
+            $('#loadingModal').modal('show');
 
-      function getMainData(res) {
-        $scope.list = res.data.list;
-        $scope.rowCount = res.data.size;
-        $('#loadingModal').modal('hide');
-        // console.log($scope.list);
-      }
-
-      if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
-        $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
-      }
-      if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
-        $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
-      }
-
-      ajaxCall($http, "abonent/get-abonents?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
-    }
-
-    $scope.loadMainData();
-
-    $scope.downloadExcell = function () {
-
-      if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
-        $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
-      }
-      if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
-        $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
-      }
-
-      function redirectToFile() {
-        $window.open("resources/excell/excel.xls", "_blank");
-      }
-
-      ajaxCall($http, "abonent/download-excell", angular.toJson($scope.srchCase), redirectToFile);
-    }
-
-    $scope.remove = function (id) {
-      if (confirm("Pleace confirm operation?")) {
-        if (id != undefined) {
-          function resFnc(res) {
-            if (res.errorCode == 0) {
-              successMsg('Operation Successfull');
-              $scope.loadMainData();
+            function getMainData(res) {
+                $scope.list = res.data.list;
+                $scope.rowCount = res.data.size;
+                $('#loadingModal').modal('hide');
+                // console.log($scope.list);
             }
-          }
 
-          ajaxCall($http, "abonent/delete-abonent?id=" + id, null, resFnc);
+            if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
+                $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
+            }
+            if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
+                $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
+            }
+
+            ajaxCall($http, "abonent/get-abonents?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
         }
-      }
-    };
 
-    $scope.changeStatus = function () {
-      if ($scope.slcted != undefined) {
+        $scope.loadMainData();
 
-        if (confirm("დაადასტურეთ აბონენტის სერვისის " + ($scope.slcted.status.id == 2 ? 'გააქტიურება' : 'გათიშვა'))) {
-          function resFnc(res) {
-            if (res.errorCode == 0) {
-              successMsg('Operation Successfull');
-              closeModal('statusDialog');
-              $scope.loadMainData();
+        $scope.downloadExcell = function () {
+
+            if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
+                $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
+            }
+            if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
+                $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
+            }
+
+            function redirectToFile() {
+                $window.open("resources/excell/excel.xls", "_blank");
+            }
+
+            ajaxCall($http, "abonent/download-excell", angular.toJson($scope.srchCase), redirectToFile);
+        }
+
+        $scope.remove = function (id) {
+            if (confirm("Pleace confirm operation?")) {
+                if (id != undefined) {
+                    function resFnc(res) {
+                        if (res.errorCode == 0) {
+                            successMsg('Operation Successfull');
+                            $scope.loadMainData();
+                        }
+                    }
+
+                    ajaxCall($http, "abonent/delete-abonent?id=" + id, null, resFnc);
+                }
+            }
+        };
+
+        $scope.changeStatus = function () {
+            if ($scope.slcted != undefined) {
+
+                if (confirm("დაადასტურეთ აბონენტის სერვისის " + ($scope.slcted.status.id == 2 ? 'გააქტიურება' : 'გათიშვა'))) {
+                    function resFnc(res) {
+                        if (res.errorCode == 0) {
+                            successMsg('Operation Successfull');
+                            closeModal('statusDialog');
+                            $scope.loadMainData();
+                        } else {
+                            errorMsg(res.message);
+                        }
+                    }
+
+                    if ($scope.disableDate != undefined && $scope.disableDate.includes('/')) {
+                        $scope.disableDate = $scope.disableDate.split(/\//).reverse().join('-')
+                    }
+                    if ($scope.disableDate == undefined || $scope.disableDate.length < 1) {
+                        errorMsg('თარიღის მითითება სავალდებულოა');
+                        return;
+                    }
+
+                    ajaxCall($http, "abonent/change-abonent-status?id=" + $scope.slcted.id + "&date=" + $scope.disableDate, null, resFnc);
+                }
+            }
+        };
+
+        $scope.edit = function (id) {
+            if (id != undefined) {
+                var selected = $filter('filter')($scope.list, {id: id}, true);
+                $scope.slcted = selected[0];
+                $scope.request = selected[0];
+                $scope.request.streetId = selected[0].street.id;
+            }
+        }
+
+        $scope.showDetails = function (id) {
+            if (id != undefined) {
+                var selected = $filter('filter')($scope.list, {id: id}, true);
+                $scope.slcted = selected[0];
+                $scope.loadObjectDetails($scope.slcted.id);
+
+                function getAbPackages(res) {
+                    $scope.slcted.abonentPackages = res.data;
+                }
+
+                ajaxCall($http, "abonent/get-abonent-packages?id=" + $scope.slcted.id, null, getAbPackages);
+
+            }
+        };
+
+        $scope.loadObjectDetails = function (id) {
+            function getStatuHistory(res) {
+                $scope.slcted.statusHistory = res.data;
+            }
+
+            ajaxCall($http, "abonent/get-status-history?id=" + id, null, getStatuHistory);
+        }
+
+        $scope.handleDoubleClick = function (id) {
+            $scope.showDetails(id);
+            $('#detailModal').modal('show');
+        };
+
+        $scope.init = function () {
+            $scope.request = {};
+        };
+
+        $scope.save = function () {
+
+            function resFunc(res) {
+                if (res.errorCode == 0) {
+                    successMsg('Operation Successfull');
+                    $scope.loadMainData();
+                    closeModal('editModal');
+                } else {
+                    errorMsg('Operation Failed');
+                }
+            }
+
+            if ($scope.request.billDate != undefined && $scope.request.billDate.includes('/')) {
+                $scope.request.billDate = $scope.request.billDate.split(/\//).reverse().join('-')
+            }
+
+            $scope.req = {};
+
+            $scope.req.id = $scope.request.id;
+            $scope.req.name = $scope.request.name;
+            $scope.req.lastname = $scope.request.lastname;
+            $scope.req.abonentNumber = $scope.request.abonentNumber;
+            $scope.req.personalNumber = $scope.request.personalNumber;
+            $scope.req.deviceNumber = $scope.request.deviceNumber;
+            $scope.req.comment = $scope.request.comment;
+            $scope.req.billDate = $scope.request.billDate;
+            $scope.req.streetId = $scope.request.streetId;
+            $scope.req.districtId = $scope.request.districtId;
+            $scope.req.streetNumber = $scope.request.streetNumber;
+            $scope.req.floor = $scope.request.floor;
+            $scope.req.roomNumber = $scope.request.roomNumber;
+            $scope.req.juridicalOrPhisical = $scope.request.juridicalOrPhisical;
+            $scope.req.phone = $scope.request.phone;
+
+            console.log(angular.toJson($scope.req));
+            ajaxCall($http, "abonent/save-abonent", angular.toJson($scope.req), resFunc);
+        };
+
+
+        $scope.rowNumbersChange = function () {
+            $scope.start = 0;
+            $scope.loadMainData();
+        };
+
+        $scope.handlePage = function (h) {
+            if (parseInt(h) >= 0) {
+                $scope.start = $scope.page * parseInt($scope.limit);
+                $scope.page += 1;
             } else {
-              errorMsg(res.message);
+                $scope.page -= 1;
+                $scope.start = ($scope.page * parseInt($scope.limit)) - parseInt($scope.limit);
             }
-          }
+            $scope.loadMainData();
+        };
 
-          if ($scope.disableDate != undefined && $scope.disableDate.includes('/')) {
-            $scope.disableDate = $scope.disableDate.split(/\//).reverse().join('-')
-          }
-          if ($scope.disableDate == undefined || $scope.disableDate.length < 1) {
-            errorMsg('თარიღის მითითება სავალდებულოა');
-            return;
-          }
-
-          ajaxCall($http, "abonent/change-abonent-status?id=" + $scope.slcted.id + "&date=" + $scope.disableDate, null, resFnc);
-        }
-      }
-    };
-
-    $scope.edit = function (id) {
-      if (id != undefined) {
-        var selected = $filter('filter')($scope.list, {id: id}, true);
-        $scope.slcted = selected[0];
-        $scope.request = selected[0];
-        $scope.request.streetId = selected[0].street.id;
-      }
-    }
-
-    $scope.showDetails = function (id) {
-      if (id != undefined) {
-        var selected = $filter('filter')($scope.list, {id: id}, true);
-        $scope.slcted = selected[0];
-        $scope.loadObjectDetails($scope.slcted.id);
-
-        function getAbPackages(res) {
-          $scope.slcted.abonentPackages = res.data;
+        function getStreets(res) {
+            $scope.streets = res.data;
         }
 
-        ajaxCall($http, "abonent/get-abonent-packages?id=" + $scope.slcted.id, null, getAbPackages);
+        ajaxCall($http, "street/get-all-streets", null, getStreets);
 
-      }
-    };
-
-    $scope.loadObjectDetails = function (id) {
-      function getStatuHistory(res) {
-        $scope.slcted.statusHistory = res.data;
-      }
-
-      ajaxCall($http, "abonent/get-status-history?id=" + id, null, getStatuHistory);
-    }
-
-    $scope.handleDoubleClick = function (id) {
-      $scope.showDetails(id);
-      $('#detailModal').modal('show');
-    };
-
-    $scope.init = function () {
-      $scope.request = {};
-    };
-
-    $scope.save = function () {
-
-      function resFunc(res) {
-        if (res.errorCode == 0) {
-          successMsg('Operation Successfull');
-          $scope.loadMainData();
-          closeModal('editModal');
-        } else {
-          errorMsg('Operation Failed');
+        function getIncasators(res) {
+            $scope.incasators = res.data.list;
         }
-      }
 
-      if ($scope.request.billDate != undefined && $scope.request.billDate.includes('/')) {
-        $scope.request.billDate = $scope.request.billDate.split(/\//).reverse().join('-')
-      }
+        ajaxCall($http, "misc/get-incasators?start=0&limit=99999", {}, getIncasators);
 
-      $scope.req = {};
+        function getDistricts(res) {
+            $scope.districts = res.data;
+        }
 
-      $scope.req.id = $scope.request.id;
-      $scope.req.name = $scope.request.name;
-      $scope.req.lastname = $scope.request.lastname;
-      $scope.req.abonentNumber = $scope.request.abonentNumber;
-      $scope.req.personalNumber = $scope.request.personalNumber;
-      $scope.req.deviceNumber = $scope.request.deviceNumber;
-      $scope.req.comment = $scope.request.comment;
-      $scope.req.billDate = $scope.request.billDate;
-      $scope.req.streetId = $scope.request.streetId;
-      $scope.req.districtId = $scope.request.districtId;
-      $scope.req.streetNumber = $scope.request.streetNumber;
-      $scope.req.floor = $scope.request.floor;
-      $scope.req.roomNumber = $scope.request.roomNumber;
-      $scope.req.juridicalOrPhisical = $scope.request.juridicalOrPhisical;
-      $scope.req.phone = $scope.request.phone;
+        ajaxCall($http, "misc/get-districts", null, getDistricts);
 
-      console.log(angular.toJson($scope.req));
-      ajaxCall($http, "abonent/save-abonent", angular.toJson($scope.req), resFunc);
-    };
+        $scope.getPackages = function () {
+            function setPackages(res) {
+                $scope.packages = res.data;
+            }
 
+            ajaxCall($http, "package/get-packages", null, setPackages);
+        };
 
-    $scope.rowNumbersChange = function () {
-      $scope.start = 0;
-      $scope.loadMainData();
-    };
+        $scope.getPackages();
 
-    $scope.handlePage = function (h) {
-      if (parseInt(h) >= 0) {
-        $scope.start = $scope.page * parseInt($scope.limit);
-        $scope.page += 1;
-      } else {
-        $scope.page -= 1;
-        $scope.start = ($scope.page * parseInt($scope.limit)) - parseInt($scope.limit);
-      }
-      $scope.loadMainData();
-    };
+        $scope.saveAbonentPackages = function () {
 
-    function getStreets(res) {
-      $scope.streets = res.data;
-    }
-
-    ajaxCall($http, "street/get-all-streets", null, getStreets);
-
-    function getIncasators(res) {
-      $scope.incasators = res.data.list;
-    }
-
-    ajaxCall($http, "misc/get-incasators?start=0&limit=99999", {}, getIncasators);
-
-    function getDistricts(res) {
-      $scope.districts = res.data;
-    }
-
-    ajaxCall($http, "misc/get-districts", null, getDistricts);
-
-    $scope.getPackages = function () {
-      function setPackages(res) {
-        $scope.packages = res.data;
-      }
-
-      ajaxCall($http, "package/get-packages", null, setPackages);
-    };
-
-    $scope.getPackages();
-
-    $scope.saveAbonentPackages = function () {
-
-      function resFunc(res) {
-        if (res.errorCode == 0) {
-          successMsg('Operation Successfull');
+            function resFunc(res) {
+                if (res.errorCode == 0) {
+                    successMsg('Operation Successfull');
 //          $scope.loadMainData();
-          closeModal('packages');
+                    closeModal('packages');
 
-        } else {
-          errorMsg('Operation Failed');
-        }
-      }
+                } else {
+                    errorMsg('Operation Failed');
+                }
+            }
 
-      $scope.req = {};
+            $scope.req = {};
 
-      $scope.req.packageTypeId = $scope.request.packageTypeId;
-      $scope.req.abonendId = $scope.request.id;
-      $scope.req.abonentPackages = $scope.abonentPackages;
+            $scope.req.packageTypeId = $scope.request.packageTypeId;
+            $scope.req.abonendId = $scope.request.id;
+            $scope.req.abonentPackages = $scope.abonentPackages;
 
-      console.log(angular.toJson($scope.req));
-      ajaxCall($http, "abonent/save-abonent-packages", angular.toJson($scope.req), resFunc);
-    };
+            console.log(angular.toJson($scope.req));
+            ajaxCall($http, "abonent/save-abonent-packages", angular.toJson($scope.req), resFunc);
+        };
 
-    $scope.loadAbonentPackages = function (id) {
+        $scope.loadAbonentPackages = function (id) {
 //      $scope.getPackages();
-      $scope.abonentPackages = [];
-      if (id != undefined) {
+            $scope.abonentPackages = [];
+            if (id != undefined) {
 
-        var selected = $filter('filter')($scope.list, {id: id}, true);
-        $scope.request = selected[0];
-        $scope.package.packageTypeId = $scope.request.packageTypeId;
+                var selected = $filter('filter')($scope.list, {id: id}, true);
+                $scope.request = selected[0];
+                $scope.package.packageTypeId = $scope.request.packageTypeId;
 
-        function getAbonentPackages(res) {
-          $scope.abonentPackages = res.data;
-          $scope.abonentPackagesBeforeSave = angular.copy($scope.abonentPackages);
-          console.log($scope.abonentPackages);
-          angular.forEach($scope.abonentPackages, function (v) {
-            if (v.group.id == 6 || v.group.id == 7) {
-              v.externalPointCount = $scope.request.servicePointsNumber;
-              $filter('filter')($scope.packages, {id: v.id}, true)[0].externalPointCount = $scope.request.servicePointsNumber;
+                function getAbonentPackages(res) {
+                    $scope.abonentPackages = res.data;
+                    $scope.abonentPackagesBeforeSave = angular.copy($scope.abonentPackages);
+                    console.log($scope.abonentPackages);
+                    angular.forEach($scope.abonentPackages, function (v) {
+                        if (v.group.id == 6 || v.group.id == 7) {
+                            v.externalPointCount = $scope.request.servicePointsNumber;
+                            $filter('filter')($scope.packages, {id: v.id}, true)[0].externalPointCount = $scope.request.servicePointsNumber;
+                        }
+                    });
+                }
+
+                ajaxCall($http, "abonent/get-abonent-packages?id=" + $scope.request.id, null, getAbonentPackages);
             }
-          });
+        };
+
+        function getPackageTypes(res) {
+            $scope.packageTypes = res.data;
         }
 
-        ajaxCall($http, "abonent/get-abonent-packages?id=" + $scope.request.id, null, getAbonentPackages);
-      }
-    };
+        ajaxCall($http, "misc/get-package-types", null, getPackageTypes);
 
-    function getPackageTypes(res) {
-      $scope.packageTypes = res.data;
-    }
-
-    ajaxCall($http, "misc/get-package-types", null, getPackageTypes);
-
-    $scope.isChecked = function (value) {
-      var idx = $filter('filter')($scope.abonentPackagesBeforeSave, {id: value.id}, true);
-      if (idx[0] != undefined) {
-        return true;
-      } else {
-        return false;
-      }
-    };
-
-    $scope.printTickets = function () {
-      $scope.srchCase.forTickets = 1;
-      if ($scope.srchCase == undefined || $scope.srchCase == null || $scope.srchCase.districtId == undefined || $scope.srchCase.districtId == 0) {
-        errorMsg('გთხოვთ ფილტრში მიუთითოთ კონკრეტული უბანი');
-      } else {
-        var now = new Date();
-        var currentDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes();
-        $('#dateDivId').text(currentDate);
-
-        var selected = $filter('filter')($scope.districts, {id: parseInt($scope.srchCase.districtId)}, true);
-        $scope.receiptDistrict = selected[0];
-
-
-        function getReceiptData(res) {
-          $scope.receiptlist = res.data.list;
-          $scope.receiptBalanceSum = 0.0;
-          angular.forEach($scope.receiptlist, function (v) {
-            $scope.receiptBalanceSum += v.balance * -1;
-          });
-
-          $('#receiptModal').modal('show');
-          $('#loadingModal').modal('hide');
-        }
-
-        if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
-          $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
-        }
-        if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
-          $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
-        }
-
-        ajaxCall($http, "abonent/get-abonents?start=0&limit=999999999", angular.toJson($scope.srchCase), getReceiptData);
-
-
-      }
-    };
-
-    $scope.printHistory = function () {
-      if ($scope.srchCase == undefined || $scope.srchCase == null || $scope.srchCase.districtId == undefined || $scope.srchCase.districtId == 0) {
-        errorMsg('გთხოვთ ფილტრში მიუთითოთ კონკრეტული უბანი');
-      } else {
-        var now = new Date();
-        var currentDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes();
-        $('#dateDivId2').text(currentDate);
-
-        var selected = $filter('filter')($scope.districts, {id: parseInt($scope.srchCase.districtId)}, true);
-        $scope.receiptDistrict = selected[0];
-
-        function getHistoryData(res) {
-          $scope.historylist = res.data;
-          $scope.uniqAbonentsHistory = [];
-          angular.forEach($scope.historylist, function (v) {
-            if ($scope.uniqAbonentsHistory.indexOf(v.abonent.id) === -1) {
-              $scope.uniqAbonentsHistory.push(v.abonent.id);
+        $scope.isChecked = function (value) {
+            var idx = $filter('filter')($scope.abonentPackagesBeforeSave, {id: value.id}, true);
+            if (idx[0] != undefined) {
+                return true;
+            } else {
+                return false;
             }
-          });
-          console.log($scope.receiptDistrict);
-          $('#historyModal').modal('show');
-          $('#loadingModal').modal('hide');
-        }
+        };
 
-        if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
-          $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
-        }
-        if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
-          $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
-        }
+        $scope.printTickets = function () {
+            $scope.srchCase.forTickets = 1;
+            if ($scope.srchCase == undefined || $scope.srchCase == null || $scope.srchCase.districtId == undefined || $scope.srchCase.districtId == 0) {
+                errorMsg('გთხოვთ ფილტრში მიუთითოთ კონკრეტული უბანი');
+            } else {
+                var now = new Date();
+                var currentDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes();
+                $('#dateDivId').text(currentDate);
 
-        ajaxCall($http, "abonent/get-balance-history", angular.toJson($scope.srchCase), getHistoryData);
-      }
-    };
-  });
+                var selected = $filter('filter')($scope.districts, {id: parseInt($scope.srchCase.districtId)}, true);
+                $scope.receiptDistrict = selected[0];
 
-  $(document).ready(function () {
 
-    $('#packages').on('hidden.bs.modal', function () {
-      // $(this).find('form')[0].reset();
-//      window.location.reload();
-      // angular.$scope.$apply();
-      window.location.reload();
+                function getReceiptData(res) {
+                    $scope.receiptlist = res.data.list;
+                    $scope.receiptBalanceSum = 0.0;
+                    angular.forEach($scope.receiptlist, function (v) {
+                        $scope.receiptBalanceSum += v.balance * -1;
+                    });
+
+                    $('#receiptModal').modal('show');
+                    $('#loadingModal').modal('hide');
+                }
+
+                if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
+                    $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
+                }
+                if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
+                    $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
+                }
+
+                ajaxCall($http, "abonent/get-abonents?start=0&limit=999999999", angular.toJson($scope.srchCase), getReceiptData);
+
+
+            }
+        };
+
+        $scope.printHistory = function () {
+            if ($scope.srchCase == undefined || $scope.srchCase == null || $scope.srchCase.districtId == undefined || $scope.srchCase.districtId == 0) {
+                errorMsg('გთხოვთ ფილტრში მიუთითოთ კონკრეტული უბანი');
+            } else {
+                var now = new Date();
+                var currentDate = now.getDate() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes();
+                $('#dateDivId2').text(currentDate);
+
+                var selected = $filter('filter')($scope.districts, {id: parseInt($scope.srchCase.districtId)}, true);
+                $scope.receiptDistrict = selected[0];
+
+                function getHistoryData(res) {
+                    $scope.historylist = res.data;
+                    $scope.uniqAbonentsHistory = [];
+                    angular.forEach($scope.historylist, function (v) {
+                        if ($scope.uniqAbonentsHistory.indexOf(v.abonent.id) === -1) {
+                            $scope.uniqAbonentsHistory.push(v.abonent.id);
+                        }
+                    });
+                    console.log($scope.receiptDistrict);
+                    $('#historyModal').modal('show');
+                    $('#loadingModal').modal('hide');
+                }
+
+                if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
+                    $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
+                }
+                if ($scope.srchCase.billDateTo != undefined && $scope.srchCase.billDateTo.includes('/')) {
+                    $scope.srchCase.billDateTo = $scope.srchCase.billDateTo.split(/\//).reverse().join('-')
+                }
+
+                ajaxCall($http, "abonent/get-balance-history", angular.toJson($scope.srchCase), getHistoryData);
+            }
+        };
+
+        $scope.savePayment = function () {
+
+            if ($scope.slcted == undefined || $scope.slcted.id == undefined) {
+                errorMsg('აბონენტის ID ვერ მოიძებნა');
+            }
+            $('#loadingModal').modal('show');
+
+            function resFunc(res) {
+                if (res.errorCode == 0) {
+                    $scope.loadMainData();
+                    successMsg('Operation Successfull');
+                    $('#loadingModal').modal('hide');
+                    closeModal('payModal');
+                } else {
+                    errorMsg('Operation Failed');
+                }
+            }
+
+            if ($scope.payment.payDate != undefined && $scope.payment.payDate.includes('/')) {
+                $scope.payment.payDate = $scope.payment.payDate.split(/\//).reverse().join('-')
+            }
+
+            $scope.req = {};
+
+            $scope.req.amount = $scope.payment.amount;
+            $scope.req.checkNumber = $scope.payment.checkNumber;
+            $scope.req.abonentId = $scope.slcted.id;
+            $scope.req.payDate = $scope.payment.payDate;
+            $scope.req.bankPayment = $scope.payment.bankPayment;
+            $scope.req.operationDate = $scope.payment.operationDate + '-15';
+
+            console.log(angular.toJson($scope.req));
+            ajaxCall($http, "payment/save-payment", angular.toJson($scope.req), resFunc);
+        };
     });
-  });
 
-  function print(contentId) {
-    var printContents = document.getElementById(contentId).innerHTML;
-    var popupWin = window.open('', '_blank', 'width=1200,height=700');
-    popupWin.document.open();
-    popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" ' +
-      'href="/tvera/resources/css/bootstrap.css" />' +
-      '<link rel="stylesheet" type="text/css" </head>' +
-      '<body onload="window.print()">' + printContents + '</html>');
-    popupWin.document.close();
-  }
+    $(document).ready(function () {
+
+        $('#packages').on('hidden.bs.modal', function () {
+            // $(this).find('form')[0].reset();
+//      window.location.reload();
+            // angular.$scope.$apply();
+            window.location.reload();
+        });
+    });
+
+    function print(contentId) {
+        var printContents = document.getElementById(contentId).innerHTML;
+        var popupWin = window.open('', '_blank', 'width=1200,height=700');
+        popupWin.document.open();
+        popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" ' +
+            'href="/tvera/resources/css/bootstrap.css" />' +
+            '<link rel="stylesheet" type="text/css" </head>' +
+            '<body onload="window.print()">' + printContents + '</html>');
+        popupWin.document.close();
+    };
 </script>
+
+<div class="modal fade bs-example-modal-lg not-printable" id="payModal" role="dialog"
+     aria-labelledby="editPayModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="editPayModalLabel">შეავსეთ ინფორმაცია</h4>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;">
+                <div class="row">
+                    <form class="form-horizontal" name="ediFormName">
+                        <table class="table table-striped">
+                            <tr>
+                                <th class="col-md-4 text-right">აბონენტის N</th>
+                                <td>{{slcted.id}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">აბონენტი</th>
+                                <td>{{slcted.name}} &nbsp; {{slcted.lastname}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">პირადი N</th>
+                                <td>{{slcted.personalNumber}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">პაკეტი</th>
+                                <td>{{slcted.packageType.name}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">ბალანსი</th>
+                                <td>{{slcted.balance * -1}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">გადასახადი</th>
+                                <td>{{slcted.bill}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">ინკასატორი</th>
+                                <td>{{slcted.district.incasator.name + ' '+ slcted.district.incasator.lastname}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">ძველი დავალიანება</th>
+                                <td>{{(slcted.balance > 0 && (slcted.balance - slcted.bill)> 0)? (slcted.balance -
+                                    slcted.bill):'0'}}
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="form-group col-sm-10">
+                            <label class="control-label col-sm-5">ბანკით ჩარიცხვა</label>
+                            <div class="col-xs-7 btn-group">
+                                <div class="radio col-xs-6">
+                                    <label><input type="radio" ng-model="payment.bankPayment" value="2"
+                                                  class="input-sm">არა</label>&nbsp;
+                                    <label><input type="radio" ng-model="payment.bankPayment" value="1"
+                                                  class="input-sm">კი</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-10 ">
+                            <label class="control-label col-sm-5">თანხა</label>
+                            <div class="col-sm-7">
+                                <input type="text" ng-model="payment.amount" name="name"
+                                       ng-disabled="slcted.id === undefined"
+                                       class="form-control input-sm"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-10 ">
+                            <label class="control-label col-sm-5">ჩეკის N</label>
+                            <div class="col-sm-7">
+                                <input type="text" ng-model="payment.checkNumber" ng-disabled="slcted.id === undefined"
+                                       class="form-control input-sm"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-10 ">
+                            <label class="control-label col-sm-5">გადახდის თარიღი</label>
+                            <div class="col-sm-7">
+                                <input type="text" ng-model="payment.payDate" ng-disabled="slcted.id === undefined"
+                                       class="form-control input-sm dateInput"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-10 ">
+                            <label class="control-label col-sm-5">ოპერაციის თარიღი</label>
+                            <div class="col-sm-7">
+                                <input type="text" ng-model="payment.operationDate"
+                                       ng-disabled="slcted.id === undefined"
+                                       class="form-control input-sm monthDate"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-10"></div>
+                        <div class="form-group col-sm-10"></div>
+                        <div class="form-group col-sm-12 text-center">
+                            <a class="btn btn-app" ng-click="savePayment()" ng-disabled="slcted.id === undefined">
+                                <i class="fa fa-save"></i> შენახვა
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade bs-example-modal-lg" id="historyModal" tabindex="-1" role="dialog"
      aria-labelledby="historyModalLabel" aria-hidden="true">
@@ -1098,6 +1239,10 @@
                                 <a ng-click="showDetails(r.id)" data-toggle="modal"
                                    data-target="#statusDialog" title="სტატუსის შეცვლა" class="btn btn-xs">
                                     <i class="fa fa-cogs"></i>
+                                </a>&nbsp;&nbsp;
+                                <a ng-click="showDetails(r.id)" data-toggle="modal"
+                                   data-target="#payModal" title="გადახდა" class="btn btn-xs">
+                                    <i class="fa fa-dollar"></i>
                                 </a>&nbsp;&nbsp;
                                 <a ng-click="remove(r.id)" title="წაშლა" class="btn btn-xs">
                                     <i class="fa fa-trash-o"></i>
