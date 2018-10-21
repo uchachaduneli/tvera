@@ -12,8 +12,10 @@ public class StatusHistoryDTO {
 
     private AbonentDTO abonent;
     private Integer abonentId;
+    private Integer id;
     private StatusDTO status;
     private Integer statusId;
+    private UsersDTO user;
     @JsonSerialize(using = JsonDateSerializeSupport.class)
     private Date createDate;
     @JsonSerialize(using = JsonDateSerializeSupport.class)
@@ -28,6 +30,8 @@ public class StatusHistoryDTO {
         dto.setStatusId(record.getStatus().getId());
         dto.setCreateDate(record.getCreateDate());
         dto.setDisableDate(record.getDisableDate());
+        dto.setUser(UsersDTO.parse(record.getUser()));
+        dto.setId(record.getId());
         return dto;
     }
 
@@ -38,6 +42,22 @@ public class StatusHistoryDTO {
             list.add(StatusHistoryDTO.parse(record));
         }
         return list;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public UsersDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UsersDTO user) {
+        this.user = user;
     }
 
     public Date getDisableDate() {

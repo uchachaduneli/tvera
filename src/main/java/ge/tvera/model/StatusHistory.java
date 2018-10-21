@@ -5,13 +5,14 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "status_history", schema = "tvera")
+@Table(name = "status_history")
 public class StatusHistory {
     private Integer id;
     private Status status;
     private Abonent abonent;
     private Timestamp createDate;
     private Date disableDate;
+    private Users user;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -62,5 +63,32 @@ public class StatusHistory {
 
     public void setDisableDate(Date disableDate) {
         this.disableDate = disableDate;
+    }
+
+    @JoinColumn(name = "user_id", nullable = true)
+    @OneToOne
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StatusHistory that = (StatusHistory) o;
+
+        if (user != null ? !user.equals(that.user) : that.user != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return user != null ? user.hashCode() : 0;
     }
 }

@@ -80,6 +80,13 @@ public class AbonentController {
     }
   }
 
+  @RequestMapping({"/change-status-history"})
+  @ResponseBody
+  public Response changeStatusHistory(@RequestParam int id, @RequestParam(value = "date", required = false) Date date, HttpServletRequest servletRequest) {
+    abonentService.changeStatusHistoryDate(id, date, ((Integer) servletRequest.getSession().getAttribute("userId")));
+    return Response.withSuccess(true);
+  }
+
   @RequestMapping({"/get-status-history"})
   @ResponseBody
   public Response getStatusHistory(@RequestParam int id) {
