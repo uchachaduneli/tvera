@@ -35,8 +35,8 @@ public class PaymentController {
   @ResponseBody
   public Response downlodExcell(@RequestBody PaymentDTO request, HttpServletResponse response) throws IOException {
 //        String realPath = "C:\\Users\\ucha\\IdeaProjects\\tvera\\src\\main\\webapp\\resources\\excell\\excel.xls"; //leptopi
-    String realPath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\tvera\\resources\\excell\\excel.xls";
-//    String realPath = "C:\\Program Files\\Apache Software Foundation\\Apache Tomcat 8.0.27\\webapps\\ROOT\\excel.xls";
+    String realPath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ROOT\\excel.xls";
+//    String realPath = "C:\\Users\\home\\IdeaProjects\\tvera\\src\\main\\webapp\\resources\\excell\\excell.xls";
     //ექსელის ფაილის შექმნა
 
     HSSFWorkbook workbook = new HSSFWorkbook();
@@ -91,7 +91,7 @@ public class PaymentController {
       row.createCell(12).setCellValue(obj.getAbonent().getRoomNumber());
 
     }
-    row = sheet.createRow(exportList.size() + 1);
+    row = sheet.createRow(exportList.size() + 2);
     row.createCell(0).setCellValue("");
     row.createCell(1).setCellValue("");
     row.createCell(2).setCellValue("");
