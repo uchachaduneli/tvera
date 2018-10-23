@@ -229,6 +229,8 @@ public class AbonentService {
         if (request.getId() != null) {
             Abonent tmp = (Abonent) abonentDAO.find(Abonent.class, request.getId());
             obj.setBalance(tmp.getBalance());
+          obj.setCollectedBill(tmp.getCollectedBill());
+          obj.setStartPay(tmp.getStartPay());
             obj.setBill(tmp.getBill());
             obj.setInstallationBill(tmp.getInstallationBill());
             obj.setRestoreBill(tmp.getRestoreBill());
@@ -239,6 +241,7 @@ public class AbonentService {
             obj = (Abonent) abonentDAO.update(obj);
         } else {
             obj.setBalance(0.0);
+          obj.setCollectedBill(0.0);
             obj.setStatus((Status) abonentDAO.find(Status.class, StatusDTO.STATUS_ACTIVE));
             obj = (Abonent) abonentDAO.create(obj);
         }
