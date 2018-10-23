@@ -2,13 +2,13 @@ package ge.tvera.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import ge.tvera.misc.JsonDateTimeSerializeSupport;
-import ge.tvera.model.EverydayBills;
+import ge.tvera.model.MonthlyBills;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EverydayBillsDTO {
+public class MonthlyBillsDTO {
 
   private Integer id;
   private AbonentDTO abonent;
@@ -16,17 +16,17 @@ public class EverydayBillsDTO {
   @JsonSerialize(using = JsonDateTimeSerializeSupport.class)
   private Timestamp createDate;
 
-  public static EverydayBillsDTO parse(EverydayBills record) {
-    EverydayBillsDTO dto = new EverydayBillsDTO();
+  public static MonthlyBillsDTO parse(MonthlyBills record) {
+    MonthlyBillsDTO dto = new MonthlyBillsDTO();
     dto.setId(record.getId());
     dto.setAbonent(AbonentDTO.parse(record.getAbonent()));
     return dto;
   }
 
-  public static List<EverydayBillsDTO> parseToList(List<EverydayBills> records) {
-    ArrayList<EverydayBillsDTO> list = new ArrayList<EverydayBillsDTO>();
-    for (EverydayBills record : records) {
-      list.add(EverydayBillsDTO.parse(record));
+  public static List<MonthlyBillsDTO> parseToList(List<MonthlyBills> records) {
+    ArrayList<MonthlyBillsDTO> list = new ArrayList<MonthlyBillsDTO>();
+    for (MonthlyBills record : records) {
+      list.add(MonthlyBillsDTO.parse(record));
     }
     return list;
   }
