@@ -129,6 +129,13 @@ public class PaymentController {
     return Response.withSuccess(PaymentDTO.parse(paymentService.savePayment(request)));
   }
 
+  @RequestMapping({"/update-payment"})
+  @ResponseBody
+  public Response updatePayment(@RequestBody PaymentDTO request, HttpServletRequest servletRequest) throws Exception {
+    request.setUserId((Integer) servletRequest.getSession().getAttribute("userId"));
+    return Response.withSuccess(PaymentDTO.parse(paymentService.updatePayment(request)));
+  }
+
   @RequestMapping({"/delete-payment"})
   @ResponseBody
   public Response deletePayment(@RequestParam int id) {

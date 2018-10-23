@@ -22,7 +22,9 @@ public class GlobalExceptionHandler {
         rs.setData(exception);
         rs.setErrorCode(700);
         if (exception instanceof org.springframework.dao.DataIntegrityViolationException) {
-            rs.setMessage("ოპერაცია არ სრულდება, ჩანაწერი გამოყენებულია სხვა ობიექტების მიერ");
+            if (exception.getCause() != null && exception.getCause().getCause() != null) {
+                rs.setMessage("ოპერაცია არ სრულდება (" + exception.getCause().getCause().getLocalizedMessage() + ")");
+            }
             return rs;
         } else if (exception instanceof org.springframework.dao.InvalidDataAccessApiUsageException) {
             rs.setMessage("ოპერაცია არ სრულდება");

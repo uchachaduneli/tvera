@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="tvera@212.72.143.212" uuid="a9b8bc55-c7c2-4e55-943b-e88954c5dd5a">
+    <data-source source="LOCAL" name="tvera@127.0.0.1" uuid="a9b8bc55-c7c2-4e55-943b-e88954c5dd5a">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://212.72.143.212:15816/tvera</jdbc-url>
+      <jdbc-url>jdbc:mysql://127.0.0.1:3306/tvera</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />

@@ -26,7 +26,23 @@ public class PaymentService {
   }
 
   @Transactional(rollbackFor = Throwable.class)
+  public Payment updatePayment(PaymentDTO request) throws Exception {
+
+    if (request.getId() == 0) return null;
+
+    Payment obj = (Payment) paymentDAO.find(Payment.class, request.getId());
+    obj.setCheckNumber(request.getCheckNumber());
+    obj.setPayDate(new java.sql.Date(request.getPayDate().getTime()));
+    obj.setOperationDate(new java.sql.Date(request.getOperationDate().getTime()));
+    obj.setUser((Users) paymentDAO.find(Users.class, request.getUserId()));
+    obj.setBankPayment(request.getBankPayment());
+    paymentDAO.update(obj);
+    return obj;
+  }
+
+  @Transactional(rollbackFor = Throwable.class)
   public Payment savePayment(PaymentDTO request) throws Exception {
+    if (request.getId() > 0) return null;
 
     Abonent abonent = (Abonent) paymentDAO.find(Abonent.class, request.getAbonentId());
     if (abonent == null) {

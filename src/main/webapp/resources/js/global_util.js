@@ -28,7 +28,8 @@ function ajaxCall(http, url, data, sucessCallback, errorCallback) {
     if (errorCallback) {
       errorCallback(data);
     } else {
-      alert(data);
+        errorMsg("ოპერაცია არ სრულდება!!!");
+        console.log(data);
     }
   });
 }
