@@ -76,7 +76,7 @@
 
             function redirectToFile() {
                 $('#loadingModal').modal('hide');
-                $window.open("resources/excell/excel.xls", "_blank");
+              $window.open("/excel.xls", "_blank");
             }
 
             ajaxCall($http, "payment/download-excell", angular.toJson($scope.srchCase), redirectToFile);
