@@ -42,7 +42,7 @@ public class PaymentService {
 
   @Transactional(rollbackFor = Throwable.class)
   public Payment savePayment(PaymentDTO request) throws Exception {
-    if (request.getId() > 0) return null;
+    if (request.getId() != null && request.getId() > 0) return null;
 
     Abonent abonent = (Abonent) paymentDAO.find(Abonent.class, request.getAbonentId());
     if (abonent == null) {
