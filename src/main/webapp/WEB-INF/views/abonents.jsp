@@ -19,6 +19,7 @@
         $scope.abonentPackages = [];
         $scope.abonentPackagesBeforeSave = [];
         $scope.package = {};
+        $scope.extPoints = [];
 
         $scope.loadMainData = function () {
             $('#loadingModal').modal('show');
@@ -242,6 +243,10 @@
                 }
             }
 
+            angular.forEach($scope.extPoints, function (v) {
+                $filter('filter')($scope.abonentPackages, {id: v.id}, true)[0].externalPointCount = v.count;
+            });
+
             $scope.req = {};
 
             $scope.req.packageTypeId = $scope.request.packageTypeId;
@@ -255,6 +260,7 @@
         $scope.loadAbonentPackages = function (id) {
 //      $scope.getPackages();
             $scope.abonentPackages = [];
+            $scope.extPoints = [];
             if (id != undefined) {
 
                 var selected = $filter('filter')($scope.list, {id: id}, true);
@@ -265,10 +271,11 @@
                     $scope.abonentPackages = res.data;
                     $scope.abonentPackagesBeforeSave = angular.copy($scope.abonentPackages);
                     console.log($scope.abonentPackages);
-                    angular.forEach($scope.abonentPackages, function (v) {
+                    angular.forEach($scope.abonentPackages, function (v, k) {
                         if (v.group.id == 6 || v.group.id == 7) {
-                            v.externalPointCount = $scope.request.servicePointsNumber;
-                            $filter('filter')($scope.packages, {id: v.id}, true)[0].externalPointCount = $scope.request.servicePointsNumber;
+                            $scope.extPoints[v.id].count = v.pointsNumber;
+                            // v.externalPointCount = $scope.request.servicePointsNumber;
+                            // $filter('filter')($scope.packages, {id: v.id}, true)[0].externalPointCount = $scope.request.servicePointsNumber;
                         }
                     });
                 }
@@ -745,7 +752,7 @@
                                            checklist-model="abonentPackages" checklist-value="t">&nbsp; {{t.type.name}}
                                     -
                                     {{t.name}}&nbsp;(იურ:{{t.juridicalPrice}}ლ. / ფიზ:{{t.personalPrice}}ლ.)
-                                    <input type="number" ng-model="t.externalPointCount" class="pull-right text-center"
+                                    <input type="number" ng-model="extPoints[t.id].count" class="pull-right text-center"
                                            placeholder="რაოდენობა"
                                            ng-show="t.group.id == 7 || t.group.id == 6">
                                 </label>

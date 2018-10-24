@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
-import java.util.Calendar;
 import java.util.List;
 
 
@@ -66,18 +65,18 @@ public class AbonentController {
   @RequestMapping({"/change-abonent-status"})
   @ResponseBody
   public Response changeServiceStatus(@RequestParam int id, @RequestParam(value = "date", required = false) Date date, HttpServletRequest servletRequest) {
-    Calendar cal1 = Calendar.getInstance();
-    Calendar cal2 = Calendar.getInstance();
-
-    cal1.setTime(date);
-    cal2.setTime(new java.util.Date());
-
-    if (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)) {
+//    Calendar cal1 = Calendar.getInstance();
+//    Calendar cal2 = Calendar.getInstance();
+//
+//    cal1.setTime(date);
+//    cal2.setTime(new java.util.Date());
+//
+//    if (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)) {
       abonentService.changeServiceStatus(id, date, ((Integer) servletRequest.getSession().getAttribute("userId")));
       return Response.withSuccess(true);
-    } else {
-      return Response.withError("ცვლილება შესაძლებელია მხოლოდ მიმდინარე თვის ჭრილში, გთხოვთ შეცვალოთ თარიღი");
-    }
+//    } else {
+//      return Response.withError("ცვლილება შესაძლებელია მხოლოდ მიმდინარე თვის ჭრილში, გთხოვთ შეცვალოთ თარიღი");
+//    }
   }
 
   @RequestMapping({"/change-status-history"})

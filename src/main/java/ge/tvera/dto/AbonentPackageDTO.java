@@ -18,6 +18,7 @@ public class AbonentPackageDTO {
     private Date createDate;
     private Double juridicalPrice;
     private Double phisicalPrice;
+  private Integer pointsNumber;
 
     public static AbonentPackageDTO parse(AbonentPackages record) {
         if (record != null) {
@@ -30,6 +31,7 @@ public class AbonentPackageDTO {
             dto.setPackageId(record.getPackages().getId());
             dto.setJuridicalPrice(record.getJuridicalPrice());
             dto.setPhisicalPrice(record.getPhisicalPrice());
+          dto.setPointsNumber(record.getPointsNumber());
             return dto;
         } else return null;
     }
@@ -41,6 +43,14 @@ public class AbonentPackageDTO {
         }
         return list;
     }
+
+  public Integer getPointsNumber() {
+    return pointsNumber;
+  }
+
+  public void setPointsNumber(Integer pointsNumber) {
+    this.pointsNumber = pointsNumber;
+  }
 
     public Double getJuridicalPrice() {
         return juridicalPrice;
