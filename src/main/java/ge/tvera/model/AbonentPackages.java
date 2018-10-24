@@ -15,12 +15,13 @@ public class AbonentPackages {
   private Users user;
   private Integer pointsNumber;
 
-  public AbonentPackages(Abonent abonent, Package packages, Double juridicalPrice, Double phisicalPrice, Users user) {
+  public AbonentPackages(Abonent abonent, Package packages, Double juridicalPrice, Double phisicalPrice, Users user, Integer pointsNumber) {
     this.abonent = abonent;
     this.packages = packages;
     this.juridicalPrice = juridicalPrice;
     this.phisicalPrice = phisicalPrice;
     this.user = user;
+    this.pointsNumber = pointsNumber;
   }
 
   public AbonentPackages() {
