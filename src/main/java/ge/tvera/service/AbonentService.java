@@ -139,17 +139,13 @@ public class AbonentService {
     if (!abonentExistingPackages.isEmpty()) {
       // არსებული აბონენტია კალკულაცია კეთდება ბაზიდან წამოღებული აბონენტის პაკეტების ჯამების ცალკე და რექუესთიდან მოსულის ცალკე და მეტია თუ ნაკლები ირკვევა
 
-      // თუ ახალი პაკეტებიც მიაბეს რო დაემატოს ბაზაში
-      List<PackageDTO> newOnes = request.getAbonentPackages();
-      newOnes.removeAll(abonentExistingPackages);
-      if (!newOnes.isEmpty()) {
-        for (PackageDTO pack : newOnes) {
-          abonentPack = new AbonentPackages(abonent, abonentDAO.getEntityManager().find(Package.class, pack.getId()),
-              isJuridical ? pack.getJuridicalPrice() : null, isJuridical ? null : pack.getPersonalPrice(), user, pack.getExternalPointCount());
-          abonentDAO.create(abonentPack);
-        }
-      }
+      abonentDAO.deleteAbonentPackages(abonent.getId());// არსებული პაკეტების დადისეიბლება ბაზაში deleted=2
 
+      for (PackageDTO pack : request.getAbonentPackages()) {// ხელახლა ინსერტი შესაძლო ცვლილიებებიანა
+        abonentPack = new AbonentPackages(abonent, abonentDAO.getEntityManager().find(Package.class, pack.getId()),
+            isJuridical ? pack.getJuridicalPrice() : null, isJuridical ? null : pack.getPersonalPrice(), user, pack.getExternalPointCount());
+        abonentDAO.create(abonentPack);
+      }
 
       // ახლად მოსულების კალკულაცია
       resultMap = calculateBills(request.getAbonentPackages(), abonent.getJuridicalOrPhisical() == AbonentDTO.JURIDICAL);

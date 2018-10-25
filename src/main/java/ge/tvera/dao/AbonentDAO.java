@@ -135,6 +135,10 @@ public class AbonentDAO extends AbstractDAO {
     return query.getResultList();
   }
 
+  public void deleteAbonentPackages(Integer abonentId) {
+    entityManager.createQuery("UPDATE " + AbonentPackages.class.getSimpleName() + " e set e.deleted=2 WHERE e.deleted=1 AND e.abonent.id=" + abonentId).executeUpdate();
+  }
+
   public List<Package> getAbonentPackages(int id) {
     StringBuilder q = new StringBuilder();
     q.append("Select e From ").append(AbonentPackages.class.getSimpleName()).append(" e Where e.deleted=1 and e.abonent.id='").append(id).append("'");

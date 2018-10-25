@@ -14,7 +14,7 @@ public class AbonentPackages {
   private Double phisicalPrice;
   private Users user;
   private Integer pointsNumber;
-  private Integer deleted;
+  private Integer deleted = 1;
 
   public AbonentPackages(Abonent abonent, Package packages, Double juridicalPrice, Double phisicalPrice, Users user, Integer pointsNumber) {
     this.abonent = abonent;
