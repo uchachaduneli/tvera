@@ -748,7 +748,7 @@
                             <label class="control-label col-sm-1"></label>
                             <div class="col-sm-11 list-group">
                                 <label ng-repeat="t in packages" class="col-sm-12 list-group-item">
-                                    <input type="checkbox" id="typechecks{{t.id}}" ng-disabled="isChecked(t)"
+                                    <input type="checkbox" id="typechecks{{t.id}}" ng-checked="isChecked(t)"
                                            checklist-model="abonentPackages" checklist-value="t">&nbsp; {{t.type.name}}
                                     -
                                     {{t.name}}&nbsp;(იურ:{{t.juridicalPrice}}ლ. / ფიზ:{{t.personalPrice}}ლ.)

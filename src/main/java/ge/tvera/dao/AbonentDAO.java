@@ -137,7 +137,7 @@ public class AbonentDAO extends AbstractDAO {
 
   public List<Package> getAbonentPackages(int id) {
     StringBuilder q = new StringBuilder();
-    q.append("Select e From ").append(AbonentPackages.class.getSimpleName()).append(" e Where e.abonent.id='").append(id).append("'");
+    q.append("Select e From ").append(AbonentPackages.class.getSimpleName()).append(" e Where e.deleted=1 and e.abonent.id='").append(id).append("'");
     TypedQuery<AbonentPackages> query = entityManager.createQuery(q.toString(), AbonentPackages.class);
 
     List<Package> packages = new ArrayList<>();
@@ -149,14 +149,6 @@ public class AbonentDAO extends AbstractDAO {
       packages.add(pack);
     }
     return packages;
-  }
-
-  public List<Package> getAbonentPackagesByIdList(List<Integer> ids) {
-    StringBuilder q = new StringBuilder();
-    q.append("Select e From ").append(Package.class.getSimpleName()).append(" e Where e.id in :idList");
-    TypedQuery<Package> query = entityManager.createQuery(q.toString(), Package.class);
-    query.setParameter("idList", ids);
-    return query.getResultList();
   }
 
 }

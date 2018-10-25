@@ -14,6 +14,7 @@ public class AbonentPackages {
   private Double phisicalPrice;
   private Users user;
   private Integer pointsNumber;
+  private Integer deleted;
 
   public AbonentPackages(Abonent abonent, Package packages, Double juridicalPrice, Double phisicalPrice, Users user, Integer pointsNumber) {
     this.abonent = abonent;
@@ -106,6 +107,16 @@ public class AbonentPackages {
 
   public void setPointsNumber(Integer pointsNumber) {
     this.pointsNumber = pointsNumber;
+  }
+
+  @Basic
+  @Column(name = "deleted")
+  public Integer getDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(Integer deleted) {
+    this.deleted = deleted;
   }
 
 }
