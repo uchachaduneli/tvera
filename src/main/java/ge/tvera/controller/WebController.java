@@ -55,6 +55,11 @@ public class WebController {
         return "statistics";
     }
 
+    @RequestMapping("/monthlybills")
+    public String monthlybills() {
+        return "monthlybills";
+    }
+
     @RequestMapping("/")
     public String defaultFnc() {
         return "";

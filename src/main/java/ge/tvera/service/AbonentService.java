@@ -35,6 +35,10 @@ public class AbonentService {
     return abonentDAO.getAbonents(start, limit, srchRequest);
   }
 
+  public HashMap<String, Object> getMonthlyBills(int start, int limit, MonthlyBillsDTO srchRequest) {
+    return abonentDAO.getMonthlyBills(start, limit, srchRequest);
+  }
+
   public HashMap<String, Object> calculateBills(List<PackageDTO> list, boolean isJuridical) {
     HashMap<String, Object> resultMap = new HashMap();
 

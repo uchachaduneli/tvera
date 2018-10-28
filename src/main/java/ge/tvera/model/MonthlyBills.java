@@ -1,6 +1,7 @@
 package ge.tvera.model;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -10,6 +11,7 @@ public class MonthlyBills {
   private Abonent abonent;
   private Double amount;
   private Timestamp createDate;
+  private Date operDate;
 
   @Id
   @Column(name = "id")
@@ -50,5 +52,15 @@ public class MonthlyBills {
 
   public void setCreateDate(Timestamp createDate) {
     this.createDate = createDate;
+  }
+
+  @Basic
+  @Column(name = "oper_date")
+  public Date getOperDate() {
+    return operDate;
+  }
+
+  public void setOperDate(Date operDate) {
+    this.operDate = operDate;
   }
 }

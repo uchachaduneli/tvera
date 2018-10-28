@@ -74,7 +74,9 @@
       if (url.pathname.indexOf("requests") > -1) {
         $('#selected_item').text("Requests");
       } else if (url.pathname.indexOf("contacts") > -1) {
-        $('#selected_item').text("Contacts Database");
+        $('#selected_item').text("");
+      } else if (url.pathname.indexOf("monthlybills") > -1) {
+        $('#selected_item').text("დეკლარაცია");
       }
 
     });
@@ -178,6 +180,12 @@
               <span>გადახდა</span>
             </a>
           </li>
+            <li>
+                <a href="monthlybills">
+                    <i class="fa fa-history"></i>
+                    <span>დეკლარაცია</span>
+                </a>
+            </li>
           <li>
             <a href="packages">
               <i class="fa fa-tasks"></i>

@@ -3,6 +3,7 @@ package ge.tvera.dao;
 
 import ge.tvera.dto.AbonentDTO;
 import ge.tvera.dto.BalanceHistoryDTO;
+import ge.tvera.dto.MonthlyBillsDTO;
 import ge.tvera.model.*;
 import ge.tvera.model.Package;
 import org.springframework.stereotype.Repository;
@@ -30,8 +31,11 @@ public class AbonentDAO extends AbstractDAO {
   }
 
   public HashMap<String, Object> getAbonents(int start, int limit, AbonentDTO srchRequest) {
+
+    String countQuery = "Select count(e.id) From ";
+
     StringBuilder q = new StringBuilder();
-    q.append("Select e From ").append(Abonent.class.getSimpleName()).append(" e Where 1=1 ");
+    q.append(Abonent.class.getSimpleName()).append(" e Where 1=1 ");
 
     if (srchRequest.getId() != null && srchRequest.getId() > 0) {
       q.append(" and e.id ='").append(srchRequest.getId()).append("'");
@@ -83,8 +87,51 @@ public class AbonentDAO extends AbstractDAO {
 
 //        TypedQuery<Abonent> query = entityManager.createQuery(q.toString(), Abonent.class);
     HashMap<String, Object> resultMap = new HashMap();
-    resultMap.put("size", entityManager.createQuery(q.toString(), Abonent.class).getResultList().size());
-    resultMap.put("list", AbonentDTO.parseToList(entityManager.createQuery(q.toString() + orderByStr, Abonent.class).setFirstResult(start).setMaxResults(limit).getResultList()));
+    resultMap.put("size", entityManager.createQuery(countQuery + q.toString()).getSingleResult());
+    resultMap.put("list", AbonentDTO.parseToList(entityManager.createQuery("Select e From " + q.toString() + orderByStr, Abonent.class).setFirstResult(start).setMaxResults(limit).getResultList()));
+    return resultMap;
+  }
+
+  public HashMap<String, Object> getMonthlyBills(int start, int limit, MonthlyBillsDTO srchRequest) {
+
+    String countQuery = "Select count(e.id) From ";
+    String totalQuery = "Select sum(e.amount) From ";
+
+    StringBuilder q = new StringBuilder();
+    q.append(MonthlyBills.class.getSimpleName()).append(" e Where 1=1 ");
+
+    if (srchRequest.getAbonent() != null) {
+      if (srchRequest.getAbonent().getId() != null && srchRequest.getAbonent().getId() > 0) {
+        q.append(" and e.abonent.id ='").append(srchRequest.getAbonent().getId()).append("'");
+      }
+      if (srchRequest.getAbonent().getName() != null) {
+        q.append(" and e.abonent.name like '%").append(srchRequest.getAbonent().getName()).append("%'");
+      }
+      if (srchRequest.getAbonent().getLastname() != null) {
+        q.append(" and e.abonent.lastname like '%").append(srchRequest.getAbonent().getLastname()).append("%'");
+      }
+      if (srchRequest.getAbonent().getPersonalNumber() != null) {
+        q.append(" and e.abonent.personalNumber ='").append(srchRequest.getAbonent().getPersonalNumber()).append("'");
+      }
+      if (srchRequest.getAbonent().getDistrictId() != null) {
+        q.append(" and e.abonent.district.id ='").append(srchRequest.getAbonent().getDistrictId()).append("'");
+      }
+      if (srchRequest.getAbonent().getStreetId() != null) {
+        q.append(" and e.abonent.street.id ='").append(srchRequest.getAbonent().getStreetId()).append("'");
+      }
+      if (srchRequest.getAbonent().getIncasatorId() != null) {
+        q.append(" and e.abonent.district.incasator.id ='").append(srchRequest.getAbonent().getIncasatorId()).append("'");
+      }
+    }
+    if (srchRequest.getOperDate() != null && srchRequest.getOperDateTo() != null) {
+      q.append(" and e.operDate between '").append(new java.sql.Date(srchRequest.getOperDate().getTime())).append("' and '")
+          .append(new java.sql.Date(srchRequest.getOperDateTo().getTime())).append("'");
+    }
+
+    HashMap<String, Object> resultMap = new HashMap();
+    resultMap.put("total", entityManager.createQuery(totalQuery + q.toString()).getSingleResult());
+    resultMap.put("size", entityManager.createQuery(countQuery + q.toString()).getSingleResult());
+    resultMap.put("list", MonthlyBillsDTO.parseToList(entityManager.createQuery("Select e From " + q.toString() + " order by e.id desc", MonthlyBills.class).setFirstResult(start).setMaxResults(limit).getResultList()));
     return resultMap;
   }
 
