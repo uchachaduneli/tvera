@@ -711,7 +711,7 @@
                                 <td>{{r.restoreBill}}</td>
                                 <td>{{r.installationBill}}</td>
                                 <td>{{r.balance > 0 ? ((r.balance*-1 )+r.bill):(r.balance < 0 ?
-                                    (r.bill-r.balance):r.balance)}}
+                                    (r.bill-r.balance):r.balance) | number: 2}}
                                 </td>
                             </tr>
                             <tr class="text-center">

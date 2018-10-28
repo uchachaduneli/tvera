@@ -9,239 +9,245 @@
 <%@include file="header.jsp" %>
 <script>
 
-    app.controller("angController", function ($scope, $http, $filter, $window) {
-        $scope.start = 0;
-        $scope.page = 1;
-        $scope.limit = "10";
-        $scope.request = {isCredit: 2, bankPayment: 2};
-        $scope.srchCase = {};
-        $scope.founded = {};
-        $scope.abonent = {};
+  app.controller("angController", function ($scope, $http, $filter, $window) {
+    $scope.start = 0;
+    $scope.page = 1;
+    $scope.limit = "10";
+    $scope.request = {isCredit: 2, bankPayment: 2};
+    $scope.srchCase = {};
+    $scope.founded = {};
+    $scope.abonent = {};
 
-        $scope.loadMainData = function () {
-            $('#loadingModal').modal('show');
+    $scope.loadMainData = function () {
+      $('#loadingModal').modal('show');
 
-            function getMainData(res) {
-                $scope.list = res.data.list;
-                $scope.rowCount = res.data.size;
-                $scope.total = res.data.total;
-                $scope.davalTotal = res.data.davalTotal;
-                $scope.avansTotal = res.data.avansTotal;
-                $('#loadingModal').modal('hide');
+      function getMainData(res) {
+        $scope.list = res.data.list;
+        $scope.rowCount = res.data.size;
+        $scope.total = res.data.total;
+        $scope.davalTotal = res.data.davalTotal;
+        $scope.avansTotal = res.data.avansTotal;
+        $('#loadingModal').modal('hide');
+      }
+
+      if ($scope.srchCase.createDateFrom != undefined && $scope.srchCase.createDateFrom.includes('/')) {
+        $scope.srchCase.createDateFrom = $scope.srchCase.createDateFrom.split(/\//).reverse().join('-');
+      }
+      if ($scope.srchCase.createDateTo != undefined && $scope.srchCase.createDateTo.includes('/')) {
+        $scope.srchCase.createDateTo = $scope.srchCase.createDateTo.split(/\//).reverse().join('-');
+      }
+
+      if ($scope.tmpSrchOperDate != undefined && $scope.tmpSrchOperDate.length > 0) {
+        $scope.srchCase.operationDate = $scope.tmpSrchOperDate + '-01';
+      } else {
+        $scope.srchCase.operationDate = undefined;
+      }
+
+      if ($scope.tmpSrchOperDateTo != undefined && $scope.tmpSrchOperDateTo.length > 0) {
+        $scope.srchCase.operationDateTo = $scope.tmpSrchOperDateTo + '-16';
+      } else {
+        $scope.srchCase.operationDateTo = undefined;
+      }
+
+      ajaxCall($http, "payment/get-payments?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
+    }
+
+    $scope.downloadExcell = function () {
+      $('#loadingModal').modal('show');
+
+      if ($scope.srchCase.createDateFrom != undefined && $scope.srchCase.createDateFrom.includes('/')) {
+        $scope.srchCase.createDateFrom = $scope.srchCase.createDateFrom.split(/\//).reverse().join('-');
+      }
+      if ($scope.srchCase.createDateTo != undefined && $scope.srchCase.createDateTo.includes('/')) {
+        $scope.srchCase.createDateTo = $scope.srchCase.createDateTo.split(/\//).reverse().join('-');
+      }
+
+      if ($scope.tmpSrchOperDate != undefined && $scope.tmpSrchOperDate.length > 0) {
+        $scope.srchCase.operationDate = $scope.tmpSrchOperDate + '-01';
+      } else {
+        $scope.srchCase.operationDate = undefined;
+      }
+
+      if ($scope.tmpSrchOperDateTo != undefined && $scope.tmpSrchOperDateTo.length > 0) {
+        $scope.srchCase.operationDateTo = $scope.tmpSrchOperDateTo + '-16';
+      } else {
+        $scope.srchCase.operationDateTo = undefined;
+      }
+
+      function redirectToFile() {
+        $('#loadingModal').modal('hide');
+        $window.open("/excel.xls", "_blank");
+      }
+
+      ajaxCall($http, "payment/download-excell", angular.toJson($scope.srchCase), redirectToFile);
+    }
+
+    $scope.loadMainData();
+
+    function getStreets(res) {
+      $scope.streets = res.data;
+    }
+
+    ajaxCall($http, "street/get-all-streets", null, getStreets);
+
+    function getIncasators(res) {
+      $scope.incasators = res.data.list;
+    }
+
+    ajaxCall($http, "misc/get-incasators?start=0&limit=99999", {}, getIncasators);
+
+    function getDistricts(res) {
+      $scope.districts = res.data;
+    }
+
+    ajaxCall($http, "misc/get-districts", null, getDistricts);
+
+    $scope.remove = function (id) {
+      if (confirm("Pleace confirm operation?")) {
+        if (id != undefined) {
+          function resFnc(res) {
+            if (res.errorCode == 0) {
+              successMsg('Operation Successfull');
+              $scope.loadMainData();
             }
+          }
 
-            if ($scope.srchCase.createDateFrom != undefined && $scope.srchCase.createDateFrom.includes('/')) {
-                $scope.srchCase.createDateFrom = $scope.srchCase.createDateFrom.split(/\//).reverse().join('-');
-            }
-            if ($scope.srchCase.createDateTo != undefined && $scope.srchCase.createDateTo.includes('/')) {
-                $scope.srchCase.createDateTo = $scope.srchCase.createDateTo.split(/\//).reverse().join('-');
-            }
+          ajaxCall($http, "payment/delete-payment?id=" + id, null, resFnc);
+        }
+      }
+    };
 
-            if ($scope.tmpSrchOperDate != undefined && $scope.tmpSrchOperDate.length > 0) {
-                $scope.srchCase.operationDate = $scope.tmpSrchOperDate + '-01';
-            } else {
-                $scope.srchCase.operationDate = undefined;
-            }
+    function getStreets(res) {
+      $scope.streets = res.data;
+    }
 
-            if ($scope.tmpSrchOperDateTo != undefined && $scope.tmpSrchOperDateTo.length > 0) {
-                $scope.srchCase.operationDateTo = $scope.tmpSrchOperDateTo + '-16';
-            } else {
-                $scope.srchCase.operationDateTo = undefined;
-            }
+    ajaxCall($http, "street/get-all-streets", null, getStreets);
 
-            ajaxCall($http, "payment/get-payments?start=" + $scope.start + "&limit=" + $scope.limit, angular.toJson($scope.srchCase), getMainData);
+    function getPackageTypes(res) {
+      $scope.packageTypes = res.data;
+    }
+
+    ajaxCall($http, "misc/get-package-types", null, getPackageTypes);
+
+    $scope.edit = function (id) {
+      if (id != undefined) {
+        var selected = $filter('filter')($scope.list, {id: id}, true);
+        $scope.tmpAbo = {id: selected[0].abonent.id};
+
+        function getAbData(res) {
+
+          $scope.founded = res.data.list[0];
+
+          if ($scope.founded != undefined)
+            $scope.request = selected[0];
         }
 
-        $scope.downloadExcell = function () {
-            $('#loadingModal').modal('show');
+        ajaxCall($http, "abonent/get-abonents?start=0&limit=99999", angular.toJson($scope.tmpAbo), getAbData);
+      }
+    }
 
-            if ($scope.srchCase.createDateFrom != undefined && $scope.srchCase.createDateFrom.includes('/')) {
-                $scope.srchCase.createDateFrom = $scope.srchCase.createDateFrom.split(/\//).reverse().join('-');
-            }
-            if ($scope.srchCase.createDateTo != undefined && $scope.srchCase.createDateTo.includes('/')) {
-                $scope.srchCase.createDateTo = $scope.srchCase.createDateTo.split(/\//).reverse().join('-');
-            }
+    $scope.showDetails = function (id) {
+      if (id != undefined) {
+        var selected = $filter('filter')($scope.list, {id: id}, true);
+        $scope.slcted = selected[0];
+      }
+    };
 
-            if ($scope.tmpSrchOperDate != undefined && $scope.tmpSrchOperDate.length > 0) {
-                $scope.srchCase.operationDate = $scope.tmpSrchOperDate + '-01';
-            } else {
-                $scope.srchCase.operationDate = undefined;
-            }
+    $scope.handleDoubleClick = function (id) {
+      $scope.showDetails(id);
+      $('#detailModal').modal('show');
+    };
 
-            if ($scope.tmpSrchOperDateTo != undefined && $scope.tmpSrchOperDateTo.length > 0) {
-                $scope.srchCase.operationDateTo = $scope.tmpSrchOperDateTo + '-16';
-            } else {
-                $scope.srchCase.operationDateTo = undefined;
-            }
+    $scope.init = function () {
+      $scope.request = {isCredit: 2, bankPayment: 2};
+      $scope.founded = {};
+      $scope.abonent = {};
+    };
 
-            function redirectToFile() {
-                $('#loadingModal').modal('hide');
-              $window.open("/excel.xls", "_blank");
-            }
+    $scope.save = function () {
 
-            ajaxCall($http, "payment/download-excell", angular.toJson($scope.srchCase), redirectToFile);
+      if ($scope.founded == undefined || $scope.founded.id == undefined) {
+        errorMsg('აბონენტის ID ვერ მოიძებნა');
+      }
+      $('#loadingModal').modal('show');
+
+      function resFunc(res) {
+        if (res.errorCode == 0) {
+          successMsg('Operation Successfull');
+          $scope.loadMainData();
+          $('#loadingModal').modal('hide');
+          $scope.request.isCredit = 2;
+          $scope.request.bankPayment = 2;
+          $scope.request.amount = undefined;
+          $scope.request.operationDate = undefined;
+          $scope.founded = {};
+          $scope.abonent = {};
+          // closeModal('editModal');
+        } else {
+          errorMsg('Operation Failed');
         }
+      }
 
-        $scope.loadMainData();
+      if ($scope.request.payDate != undefined && $scope.request.payDate.includes('/')) {
+        $scope.request.payDate = $scope.request.payDate.split(/\//).reverse().join('-')
+      }
 
-        function getStreets(res) {
-            $scope.streets = res.data;
+      $scope.req = {};
+
+      $scope.req.id = $scope.request.id;
+      $scope.req.amount = $scope.request.amount;
+      $scope.req.checkNumber = $scope.request.checkNumber;
+      $scope.req.abonentId = $scope.founded.id;
+      $scope.req.payDate = $scope.request.payDate;
+      $scope.req.bankPayment = $scope.request.bankPayment;
+      $scope.req.operationDate = $scope.request.operationDate + ($scope.request.operationDate.includes('-15') ? '' : '-15');
+
+      console.log(angular.toJson($scope.req));
+      if ($scope.request.id != undefined && parseInt($scope.request.id) > 0) {
+        ajaxCall($http, "payment/update-payment", angular.toJson($scope.req), resFunc);
+      } else {
+        ajaxCall($http, "payment/save-payment", angular.toJson($scope.req), resFunc);
+      }
+    };
+
+
+    $scope.rowNumbersChange = function () {
+      $scope.start = 0;
+      $scope.loadMainData();
+    }
+
+    $scope.handlePage = function (h) {
+      if (parseInt(h) >= 0) {
+        $scope.start = $scope.page * parseInt($scope.limit);
+        $scope.page += 1;
+      } else {
+        $scope.page -= 1;
+        $scope.start = ($scope.page * parseInt($scope.limit)) - parseInt($scope.limit);
+      }
+      $scope.loadMainData();
+    }
+
+    $scope.loadAbonent = function () {
+
+      if ($scope.abonent.streetId > 0 && ($scope.abonent.roomNumber == '' || $scope.abonent.roomNumber == undefined)) {
+        errorMsg('ბინის ნომრის მითითება აუცილებელია');
+        return;
+      }
+
+      function getAbonentData(res) {
+        if (res.data.list.length > 1) {
+          errorMsg('ნაპოვნია ერთზე მეტი ჩანაწერი!!! გთხოვთ მიუთითოთ უნიკალური მახასიათებელი');
+          return;
+        } else if (res.data.list == undefined || res.data.list.length == 0) {
+          errorMsg('მითითებული მონაცემით აბონენტი ვერ მოიძებნა');
         }
+        $scope.founded = res.data.list[0];
+      }
 
-        ajaxCall($http, "street/get-all-streets", null, getStreets);
-
-        function getIncasators(res) {
-            $scope.incasators = res.data.list;
-        }
-
-        ajaxCall($http, "misc/get-incasators?start=0&limit=99999", {}, getIncasators);
-
-        function getDistricts(res) {
-            $scope.districts = res.data;
-        }
-
-        ajaxCall($http, "misc/get-districts", null, getDistricts);
-
-        $scope.remove = function (id) {
-            if (confirm("Pleace confirm operation?")) {
-                if (id != undefined) {
-                    function resFnc(res) {
-                        if (res.errorCode == 0) {
-                            successMsg('Operation Successfull');
-                            $scope.loadMainData();
-                        }
-                    }
-
-                    ajaxCall($http, "payment/delete-payment?id=" + id, null, resFnc);
-                }
-            }
-        };
-
-        function getStreets(res) {
-            $scope.streets = res.data;
-        }
-
-        ajaxCall($http, "street/get-all-streets", null, getStreets);
-
-        function getPackageTypes(res) {
-            $scope.packageTypes = res.data;
-        }
-
-        ajaxCall($http, "misc/get-package-types", null, getPackageTypes);
-
-        $scope.edit = function (id) {
-            if (id != undefined) {
-                var selected = $filter('filter')($scope.list, {id: id}, true);
-                $scope.tmpAbo = {id: selected[0].abonent.id};
-
-                function getAbData(res) {
-
-                    $scope.founded = res.data.list[0];
-
-                    if ($scope.founded != undefined)
-                        $scope.request = selected[0];
-                }
-
-                ajaxCall($http, "abonent/get-abonents?start=0&limit=99999", angular.toJson($scope.tmpAbo), getAbData);
-            }
-        }
-
-        $scope.showDetails = function (id) {
-            if (id != undefined) {
-                var selected = $filter('filter')($scope.list, {id: id}, true);
-                $scope.slcted = selected[0];
-            }
-        };
-
-        $scope.handleDoubleClick = function (id) {
-            $scope.showDetails(id);
-            $('#detailModal').modal('show');
-        };
-
-        $scope.init = function () {
-            $scope.request = {isCredit: 2, bankPayment: 2};
-            $scope.founded = {};
-            $scope.abonent = {};
-        };
-
-        $scope.save = function () {
-
-            if ($scope.founded == undefined || $scope.founded.id == undefined) {
-                errorMsg('აბონენტის ID ვერ მოიძებნა');
-            }
-            $('#loadingModal').modal('show');
-
-            function resFunc(res) {
-                if (res.errorCode == 0) {
-                    successMsg('Operation Successfull');
-                    $scope.loadMainData();
-                    $('#loadingModal').modal('hide');
-                    closeModal('editModal');
-                } else {
-                    errorMsg('Operation Failed');
-                }
-            }
-
-            if ($scope.request.payDate != undefined && $scope.request.payDate.includes('/')) {
-                $scope.request.payDate = $scope.request.payDate.split(/\//).reverse().join('-')
-            }
-
-            $scope.req = {};
-
-            $scope.req.id = $scope.request.id;
-            $scope.req.amount = $scope.request.amount;
-            $scope.req.checkNumber = $scope.request.checkNumber;
-            $scope.req.abonentId = $scope.founded.id;
-            $scope.req.payDate = $scope.request.payDate;
-            $scope.req.bankPayment = $scope.request.bankPayment;
-            $scope.req.operationDate = $scope.request.operationDate + ($scope.request.operationDate.includes('-15') ? '' : '-15');
-
-            console.log(angular.toJson($scope.req));
-            if ($scope.request.id != undefined && parseInt($scope.request.id) > 0) {
-                ajaxCall($http, "payment/update-payment", angular.toJson($scope.req), resFunc);
-            } else {
-                ajaxCall($http, "payment/save-payment", angular.toJson($scope.req), resFunc);
-            }
-        };
-
-
-        $scope.rowNumbersChange = function () {
-            $scope.start = 0;
-            $scope.loadMainData();
-        }
-
-        $scope.handlePage = function (h) {
-            if (parseInt(h) >= 0) {
-                $scope.start = $scope.page * parseInt($scope.limit);
-                $scope.page += 1;
-            } else {
-                $scope.page -= 1;
-                $scope.start = ($scope.page * parseInt($scope.limit)) - parseInt($scope.limit);
-            }
-            $scope.loadMainData();
-        }
-
-        $scope.loadAbonent = function () {
-
-            if ($scope.abonent.streetId > 0 && ($scope.abonent.roomNumber == '' || $scope.abonent.roomNumber == undefined)) {
-                errorMsg('ბინის ნომრის მითითება აუცილებელია');
-                return;
-            }
-
-            function getAbonentData(res) {
-                if (res.data.list.length > 1) {
-                    errorMsg('ნაპოვნია ერთზე მეტი ჩანაწერი!!! გთხოვთ მიუთითოთ უნიკალური მახასიათებელი');
-                    return;
-                } else if (res.data.list == undefined || res.data.list.length == 0) {
-                    errorMsg('მითითებული მონაცემით აბონენტი ვერ მოიძებნა');
-                }
-                $scope.founded = res.data.list[0];
-            }
-
-            ajaxCall($http, "abonent/get-abonents?start=0&limit=99999", angular.toJson($scope.abonent), getAbonentData);
-        }
-    })
-    ;
+      ajaxCall($http, "abonent/get-abonents?start=0&limit=99999", angular.toJson($scope.abonent), getAbonentData);
+    }
+  })
+  ;
 </script>
 
 <div class="modal fade bs-example-modal-lg" id="detailModal" tabindex="-1" role="dialog"
