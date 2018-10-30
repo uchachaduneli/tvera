@@ -226,8 +226,8 @@ public class AbonentService {
           // ძველი თარიღით არის დამატებული და გამაზულია იმ დღეების დარიცხვები და ერთიანად უნდა დავამატოთ ახლა
           if (billSum != null) {
             Double dailyBill = billSum / daysCountInMonth;
-            balance += (dailyBill * daysCountBetween);
-            abonent.setCollectedBill(abonent.getCollectedBill() + (dailyBill * daysCountBetween));
+            balance += (dailyBill * (daysCountBetween - 1 == 0 ? 1 : daysCountBetween));
+            abonent.setCollectedBill(abonent.getCollectedBill() + (dailyBill * (daysCountBetween - 1 == 0 ? 1 : daysCountBetween)));
           }
         } else {
           // მომავლის თარიღით არის დარეგისტრირებული ანუ არაფერს ვუშვებით ბალანსს მხოლოდ startPay -ში ვუწერთ billDate-ს
