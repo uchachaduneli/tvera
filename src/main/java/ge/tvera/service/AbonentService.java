@@ -210,7 +210,7 @@ public class AbonentService {
         abonentDAO.create(abonentPack);
       }
       billSum = (Double) resultMap.get("billSum");
-      balance = (Double) resultMap.get("balance");
+//      balance = (Double) resultMap.get("balance");
       instalationBill = (Double) resultMap.get("instalationBill");
       restoreBill = (Double) resultMap.get("restoreBill");
 
@@ -365,7 +365,9 @@ public class AbonentService {
     int daysCountBetween = daysBetween(new java.util.Date(), disableDate);
     boolean oldDate = new java.util.Date().after(disableDate);
     boolean isToday = new java.util.Date().compareTo(disableDate) == 0;
-    int daysCountInMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+    Calendar tmpCal = Calendar.getInstance();
+    tmpCal.setTime(disableDate);
+    int daysCountInMonth = tmpCal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
     if (obj.getStatus().getId() == StatusDTO.STATUS_ACTIVE) {
       if (!isToday) {
@@ -380,8 +382,8 @@ public class AbonentService {
           // მომავლის თარიღით თიშავს ანუ ბალანსს უნდა დაემატოს დღეიდან გათიშვის თარიღამდე რამდენი დღისაც იქნება
           if (obj.getBill() != null) {
             Double dailyBill = obj.getBill() / daysCountInMonth;
-            obj.setBalance(obj.getBalance() + (dailyBill * daysCountBetween + 1));
-            obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * daysCountBetween + 1));
+            obj.setBalance(obj.getBalance() + (dailyBill * (daysCountBetween + 1)));
+            obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * (daysCountBetween + 1)));
           }
         }
       }
