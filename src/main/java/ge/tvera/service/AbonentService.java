@@ -210,9 +210,32 @@ public class AbonentService {
         abonentDAO.create(abonentPack);
       }
       billSum = (Double) resultMap.get("billSum");
-//      balance = (Double) resultMap.get("balance");
       instalationBill = (Double) resultMap.get("instalationBill");
       restoreBill = (Double) resultMap.get("restoreBill");
+
+//      *******************************  თუ დამატების თარიღი და ამათი მითითებული რეგისტრაციის თარიღი არ ემთხვევა ერთმანეთს  ***************************************
+
+      int daysCountBetween = daysBetween(new java.util.Date(), abonent.getBillDate());
+      boolean oldDate = new java.util.Date().after(abonent.getBillDate());
+      Calendar tmpCal = Calendar.getInstance();
+      tmpCal.setTime(abonent.getBillDate());
+      int daysCountInMonth = tmpCal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+      if (abonent.getStatus().getId() == StatusDTO.STATUS_ACTIVE) {
+        if (oldDate) {
+          // ძველი თარიღით არის დამატებული და გამაზულია იმ დღეების დარიცხვები და ერთიანად უნდა დავამატოთ ახლა
+          if (billSum != null) {
+            Double dailyBill = billSum / daysCountInMonth;
+            balance += (dailyBill * daysCountBetween);
+            abonent.setCollectedBill(abonent.getCollectedBill() + (dailyBill * daysCountBetween));
+          }
+        } else {
+          // მომავლის თარიღით არის დარეგისტრირებული ანუ არაფერს ვუშვებით ბალანსს მხოლოდ startPay -ში ვუწერთ billDate-ს
+          abonent.setStartPay(abonent.getBillDate());
+        }
+      }
+
+//      ******************************************************************************************************************
 
     }
     //ფინალური სეივი ბაზაში
