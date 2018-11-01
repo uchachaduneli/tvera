@@ -14,7 +14,7 @@
         $scope.page = 1;
         $scope.limit = "10";
         $scope.request = {};
-      $scope.srchCase = {lastname: 'zzzz'};
+      $scope.srchCase = {};
         $scope.packages = [];
         $scope.abonentPackages = [];
         $scope.abonentPackagesBeforeSave = [];
