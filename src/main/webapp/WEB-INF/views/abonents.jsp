@@ -14,7 +14,7 @@
         $scope.page = 1;
         $scope.limit = "10";
         $scope.request = {};
-        $scope.srchCase = {};
+        $scope.srchCase = {name: 'zaza'};
         $scope.packages = [];
         $scope.abonentPackages = [];
         $scope.abonentPackagesBeforeSave = [];
@@ -1295,7 +1295,6 @@
                         <thead>
                         <tr>
                             <th>აბონ. N</th>
-                            <th>პაკეტი</th>
                             <th>სახელი</th>
                             <th>ქუჩა</th>
                             <th>ინკასატორი</th>
@@ -1307,7 +1306,6 @@
                         <tbody title="Double Click For Detailed Information">
                         <tr ng-repeat="r in list" ng-dblclick="handleDoubleClick(r.id)">
                             <td>{{r.id}}</td>
-                            <td>{{r.packageType.name}}</td>
                             <td>{{r.name}}&nbsp;{{r.lastname}}</td>
                             <td>{{r.street.name}}&nbsp;N{{r.streetNumber}}&nbsp;ბინა({{r.roomNumber}})</td>
                             <td>{{r.district.incasator.name + ' ' + r.district.incasator.lastname}}</td>

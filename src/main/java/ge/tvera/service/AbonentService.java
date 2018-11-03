@@ -128,6 +128,17 @@ public class AbonentService {
         return abonentDAO.getAbonentBalanceHistory(srchRequest);
     }
 
+    private static java.util.Date getZeroTimeDate(java.util.Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        date = calendar.getTime();
+        return date;
+    }
+
     @Transactional(rollbackFor = Throwable.class)
     public void abonentPackagesAction(AbonentPackagesRequest request) {
 
@@ -225,7 +236,7 @@ public class AbonentService {
 
 //      *******************************  თუ დამატების თარიღი და ამათი მითითებული რეგისტრაციის თარიღი არ ემთხვევა ერთმანეთს  ***************************************
 
-            int daysCountBetween = daysBetween(new java.util.Date(), abonent.getBillDate());
+            int daysCountBetween = daysBetween(getZeroTimeDate(new java.util.Date()), getZeroTimeDate(abonent.getBillDate()));
             boolean oldDate = new java.util.Date().after(abonent.getBillDate());
             Calendar tmpCal = Calendar.getInstance();
             tmpCal.setTime(abonent.getBillDate());
@@ -260,7 +271,6 @@ public class AbonentService {
             abonent = (Abonent) abonentDAO.update(abonent);
         }
     }
-
 
     @Transactional(rollbackFor = Throwable.class)
     public Abonent saveAbonent(AbonentDTO request) {
@@ -338,8 +348,8 @@ public class AbonentService {
 
         if (stHistory != null && stHistory.getDisableDate() != null) {
             Abonent obj = (Abonent) abonentDAO.find(Abonent.class, stHistory.getAbonent().getId());
-            int daysCountBetween = daysBetween(stHistory.getDisableDate(), disableDate);
-            int daysCountBeforeToday = daysBetween(new java.util.Date(), disableDate);
+            int daysCountBetween = daysBetween(getZeroTimeDate(stHistory.getDisableDate()), getZeroTimeDate(disableDate));
+            int daysCountBeforeToday = daysBetween(getZeroTimeDate(new java.util.Date()), getZeroTimeDate(disableDate));
             boolean oldDate = stHistory.getDisableDate().after(disableDate);
             Calendar tmpCal = Calendar.getInstance();
             tmpCal.setTime(disableDate);
@@ -404,7 +414,7 @@ public class AbonentService {
             throw new IncorrectDateException("არასწორი თარიღი, დაარედაქტირეთ სტატუსის ისტორია !!!");
         }
         Abonent obj = (Abonent) abonentDAO.find(Abonent.class, id);
-        int daysCountBetween = daysBetween(new java.util.Date(), disableDate);
+        int daysCountBetween = daysBetween(getZeroTimeDate(new java.util.Date()), getZeroTimeDate(disableDate));
         boolean oldDate = new java.util.Date().after(disableDate);
         Calendar tmpCal = Calendar.getInstance();
         tmpCal.setTime(disableDate);
@@ -469,6 +479,16 @@ public class AbonentService {
     }
 
     public int daysBetween(java.util.Date d1, java.util.Date d2) {
-        return Math.abs((int) (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+        int res;
+        Long sxvaoba;
+        Long mult = Long.valueOf(1000 * 60 * 60 * 24);
+        if (d1.after(d2)) {
+            sxvaoba = (d1.getTime() - d2.getTime());
+            res = Math.toIntExact(sxvaoba / mult);
+        } else {
+            sxvaoba = (d2.getTime() - d1.getTime());
+            res = Math.toIntExact(sxvaoba / mult);
+        }
+        return res;
     }
 }
