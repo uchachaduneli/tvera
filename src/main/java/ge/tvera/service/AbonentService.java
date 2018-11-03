@@ -47,6 +47,8 @@ public class AbonentService {
         Double balance = 0.0;
         Double instalationBill = 0.0;
         Double restoreBill = 0.0;
+        // პაკეტის რედაქტირებისას ბალანსიც უნდა განახლდეს თუ არა. ახლად დამატებისას არ მუშსაობს ეს ველი
+        boolean changeBalanseOnUpdate = false;
 
         for (PackageDTO pack : list) {
             switch (pack.getGroup().getId()) {
@@ -78,6 +80,7 @@ public class AbonentService {
                     }
                     break;
                 case PackageDTO.PORTIREBA:
+                    changeBalanseOnUpdate = true;
                     if (isJuridical) {
                         balance += pack.getJuridicalPrice();
                     } else {
@@ -85,6 +88,7 @@ public class AbonentService {
                     }
                     break;
                 case PackageDTO.DISTRIBUTION_ON_EXTRA_POINT:
+                    changeBalanseOnUpdate = true;
                     if (pack.getExternalPointCount() == null || pack.getExternalPointCount() == 0) {
                         pack.setExternalPointCount(1);
                     }
@@ -116,6 +120,7 @@ public class AbonentService {
         resultMap.put("balance", balance);
         resultMap.put("instalationBill", instalationBill);
         resultMap.put("restoreBill", restoreBill);
+        resultMap.put("changeBalanseOnUpdate", changeBalanseOnUpdate);
         return resultMap;
     }
 
@@ -159,11 +164,13 @@ public class AbonentService {
             Double newBalance = (Double) resultMap.get("balance");
             Double newInstalationBill = (Double) resultMap.get("instalationBill");
             Double newRestoreBill = (Double) resultMap.get("restoreBill");
+            boolean newChangeBalanseOnUpdate = (boolean) resultMap.get("changeBalanseOnUpdate");
 
             Double existBillSum = 0.0;
             Double existBalance = 0.0;
             Double existInstalationBill = 0.0;
             Double existRestoreBill = 0.0;
+            boolean existChangeBalanseOnUpdate = false;
             //უკვე არსებულების კალკულაცია
             resultMap = calculateBills(PackageDTO.parseToList(abonentExistingPackages), abonent.getJuridicalOrPhisical() == AbonentDTO.JURIDICAL);
 
@@ -171,6 +178,7 @@ public class AbonentService {
             existBalance = (Double) resultMap.get("balance");
             existInstalationBill = (Double) resultMap.get("instalationBill");
             existRestoreBill = (Double) resultMap.get("restoreBill");
+            existChangeBalanseOnUpdate = (boolean) resultMap.get("changeBalanseOnUpdate");
 
             if (existBillSum != null && newBillSum != null && existBillSum != newBillSum) {
                 if (existBillSum > newBillSum) {
@@ -179,7 +187,8 @@ public class AbonentService {
                     billSum += Math.abs((existBillSum - newBillSum));
                 }
             }
-            if (existBalance != null && newBalance != null && existBalance != newBalance) {
+            if (existChangeBalanseOnUpdate == false && newChangeBalanseOnUpdate == true &&
+                    existBalance != null && newBalance != null && existBalance != newBalance) {
                 if (existBalance > newBalance) {
                     balance -= Math.abs((existBalance - newBalance));
                 } else {

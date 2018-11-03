@@ -46,6 +46,7 @@
     ajaxCall($http, "misc/get-districts", null, getDistricts);
 
     $scope.loadMainData = function () {
+        $scope.page = 1;
       $('#loadingModal').modal('show');
 
       function getMainData(res) {
