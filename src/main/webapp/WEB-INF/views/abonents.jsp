@@ -426,7 +426,7 @@
           $('#loadingModal').modal('hide');
           closeModal('payModal');
         } else {
-          errorMsg('Operation Failed');
+          errorMsg('Operation Failed!!!');
         }
       }
 
