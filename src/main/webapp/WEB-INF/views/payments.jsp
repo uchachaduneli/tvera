@@ -169,8 +169,10 @@
 
       if ($scope.founded == undefined || $scope.founded.id == undefined) {
         errorMsg('აბონენტის ID ვერ მოიძებნა');
+          return;
       }
       $('#loadingModal').modal('show');
+        $scope.payClicked = true;
 
       function resFunc(res) {
         if (res.errorCode == 0) {
@@ -187,6 +189,7 @@
         } else {
           errorMsg('Operation Failed');
         }
+          $scope.payClicked = false;
       }
 
       if ($scope.request.payDate != undefined && $scope.request.payDate.includes('/')) {
@@ -434,7 +437,7 @@
                             <label class="control-label col-sm-3">გადახდის თარიღი</label>
                             <div class="col-sm-9">
                                 <input type="text" ng-model="request.payDate" ng-disabled="founded.id === undefined"
-                                       class="form-control input-sm dateInput"/>
+                                       class="form-control input-sm dateInputUp"/>
                             </div>
                         </div>
                         <div class="form-group col-sm-10 ">
@@ -442,14 +445,15 @@
                             <div class="col-sm-9">
                                 <input type="text" ng-model="request.operationDate"
                                        ng-disabled="founded.id === undefined"
-                                       class="form-control input-sm monthDate"/>
+                                       class="form-control input-sm monthDateUp"/>
                             </div>
                         </div>
 
                         <div class="form-group col-sm-10"></div>
                         <div class="form-group col-sm-10"></div>
                         <div class="form-group col-sm-12 text-center">
-                            <a class="btn btn-app" ng-click="save()" ng-disabled="founded.id === undefined">
+                            <a class="btn btn-app" ng-click="save()" ng-disabled="founded.id === undefined"
+                               ng-if="!payClicked">
                                 <i class="fa fa-save"></i> შენახვა
                             </a>
                         </div>

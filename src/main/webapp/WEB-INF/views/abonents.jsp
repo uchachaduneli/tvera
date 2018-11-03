@@ -14,7 +14,7 @@
         $scope.page = 1;
         $scope.limit = "10";
         $scope.request = {};
-        $scope.srchCase = {name: 'zaza'};
+        $scope.srchCase = {};
         $scope.packages = [];
         $scope.abonentPackages = [];
         $scope.abonentPackagesBeforeSave = [];
@@ -414,6 +414,7 @@
         }
 
         $scope.savePayment = function () {
+            $scope.payClicked = true;
 
             if ($scope.slcted == undefined || $scope.slcted.id == undefined) {
                 errorMsg('აბონენტის ID ვერ მოიძებნა');
@@ -429,6 +430,7 @@
                 } else {
                     errorMsg('Operation Failed !');
                 }
+                $scope.payClicked = false;
             }
 
             if ($scope.payment.payDate != undefined && $scope.payment.payDate.includes('/')) {
@@ -550,7 +552,7 @@
                             <label class="control-label col-sm-5">გადახდის თარიღი</label>
                             <div class="col-sm-7">
                                 <input type="text" ng-model="payment.payDate" ng-disabled="slcted.id === undefined"
-                                       class="form-control input-sm dateInput"/>
+                                       class="form-control input-sm dateInputUp"/>
                             </div>
                         </div>
                         <div class="form-group col-sm-10 ">
@@ -558,14 +560,15 @@
                             <div class="col-sm-7">
                                 <input type="text" ng-model="payment.operationDate"
                                        ng-disabled="slcted.id === undefined"
-                                       class="form-control input-sm monthDate"/>
+                                       class="form-control input-sm monthDateUp"/>
                             </div>
                         </div>
 
                         <div class="form-group col-sm-10"></div>
                         <div class="form-group col-sm-10"></div>
                         <div class="form-group col-sm-12 text-center">
-                            <a class="btn btn-app" ng-click="savePayment()" ng-disabled="slcted.id === undefined">
+                            <a class="btn btn-app" ng-click="savePayment()" ng-disabled="slcted.id === undefined"
+                               ng-if="!payClicked">
                                 <i class="fa fa-save"></i> შენახვა
                             </a>
                         </div>
@@ -704,8 +707,6 @@
                                 <th>სართული</th>
                                 <th>ბინა</th>
                                 <th>ტარიფი</th>
-                                <th>აღდგენა</th>
-                                <th>მონტაჟი</th>
                                 <th>გადასახდელი</th>
                             </tr>
                             </thead>
@@ -719,15 +720,12 @@
                                 <td>{{r.floor}}</td>
                                 <td>{{r.roomNumber}}</td>
                                 <td>{{r.bill}}</td>
-                                <td>{{r.restoreBill}}</td>
-                                <td>{{r.installationBill}}</td>
-                                <td>{{r.balance > 0 ? ((r.balance*-1 )+r.bill):(r.balance < 0 ?
-                                    (r.bill-r.balance):r.balance) | number: 2}}
+                                <td>{{r.balance < 0 ? 0.0:((r.balance*-1) | number: 2)}}
                                 </td>
                             </tr>
                             <tr class="text-center">
                                 <th colspan="10">ამობეჭდვის თარიღი: <span id="dateDivId"></span></th>
-                                <th>სულ: {{receiptBalanceSum}}</th>
+                                <th>სულ: {{receiptBalanceSum | number: 2}}</th>
                             </tr>
                             </tbody>
                         </table>
