@@ -17,8 +17,12 @@
     $scope.srchCase = {};
 //        $scope.request.docs = [];
 
+      $scope.srchBtnClicked = function () {
+          $scope.page = 1;
+          $scope.loadMainData();
+      }
+
     $scope.loadMainData = function () {
-        $scope.page = 1;
       $('#loadingModal').modal('show');
       function getMainData(res) {
         $scope.list = res.data.list;
@@ -246,7 +250,7 @@
                          placeholder="Name">
                 </div>
                 <div class="form-group col-md-4">
-                  <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
+                  <button class="btn btn-default col-md-11" ng-click="srchBtnClicked()" id="srchBtnId">
                     <span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;
                   </button>
                 </div>

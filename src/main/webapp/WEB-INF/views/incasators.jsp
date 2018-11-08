@@ -16,8 +16,13 @@
     $scope.request = {};
     $scope.srchCase = {};
 
+
+      $scope.srchBtnClicked = function () {
+          $scope.page = 1;
+          $scope.loadMainData();
+      }
+
     $scope.loadMainData = function () {
-        $scope.page = 1;
       $('#loadingModal').modal('show');
 
       function getMainData(res) {
@@ -232,7 +237,7 @@
                          placeholder="გვარი">
                 </div>
                 <div class="form-group col-md-3">
-                  <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
+                  <button class="btn btn-default col-md-11" ng-click="srchBtnClicked()" id="srchBtnId">
                     <span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;
                   </button>
                 </div>

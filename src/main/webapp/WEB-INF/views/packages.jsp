@@ -18,7 +18,6 @@
 //        $scope.request.docs = [];
 
     $scope.loadMainData = function () {
-        $scope.page = 1;
       $('#loadingModal').modal('show');
       function getMainData(res) {
         $scope.list = res.data;

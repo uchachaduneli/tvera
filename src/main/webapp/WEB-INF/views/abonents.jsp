@@ -21,8 +21,13 @@
         $scope.package = {};
         $scope.extPoints = [];
 
-        $scope.loadMainData = function () {
+        $scope.srchBtnClicked = function () {
             $scope.page = 1;
+            $scope.loadMainData();
+        }
+
+        $scope.loadMainData = function () {
+
             $('#loadingModal').modal('show');
 
             function getMainData(res) {
@@ -1191,7 +1196,7 @@
                                 <div class="form-group col-md-2">
                                     <label class="col-sm-12" title="დავალიანების მქონე აბონენტები">
                                         <input type="checkbox" class="srch" ng-true-value="-1"
-                                               ng-change="loadMainData()"
+                                               ng-change="srchBtnClicked()"
                                                ng-false-value="0" ng-init="0" ng-model="srchCase.hasBill">&nbsp; დავ.
                                     </label>
                                 </div>
@@ -1221,7 +1226,7 @@
                                 </div>
                                 <div class="form-group col-md-2">
                                     <select class="form-control" ng-model="srchCase.statusId"
-                                            ng-change="loadMainData()">
+                                            ng-change="srchBtnClicked()">
                                         <option value="" selected="selected">სტატუსი</option>
                                         <option ng-selected="1 === srchCase.statusId" value="{{1}}">აქტიური</option>
                                         <option ng-selected="2 === srchCase.statusId" value="{{2}}">გათიშული</option>
@@ -1229,7 +1234,7 @@
                                 </div>
                                 <div class="form-group col-md-2">
                                     <select class="form-control" ng-model="srchCase.districtId"
-                                            ng-change="loadMainData()">
+                                            ng-change="srchBtnClicked()">
                                         <option value="" selected="selected">უბანი</option>
                                         <option ng-repeat="v in districts" ng-selected="v.id === srchCase.districtId"
                                                 value="{{v.id}}">{{v.name +' ('+ v.incasator.name +' '+
@@ -1239,7 +1244,7 @@
                                 </div>
                                 <div class="form-group col-md-2">
                                     <select class="form-control" ng-model="srchCase.streetId"
-                                            ng-change="loadMainData()">
+                                            ng-change="srchBtnClicked()">
                                         <option value="" selected="selected">ქუჩა</option>
                                         <option ng-repeat="v in streets" ng-selected="v.id === srchCase.streetId"
                                                 value="{{v.id}}">{{v.name}}
@@ -1248,7 +1253,7 @@
                                 </div>
                                 <div class="form-group col-md-2">
                                     <select class="form-control" ng-model="srchCase.incasatorId"
-                                            ng-change="loadMainData()">
+                                            ng-change="srchBtnClicked()">
                                         <option value="" selected="selected">ინკასატორი</option>
                                         <option ng-repeat="v in incasators" ng-selected="v.id === srchCase.incasatorId"
                                                 value="{{v.id}}">{{v.name +' '+ v.lastname}}
@@ -1270,7 +1275,7 @@
                                 </div>
                                 <div class="form-group col-md-2">
                                     <select class="form-control" ng-model="srchCase.packageTypeId"
-                                            ng-change="loadMainData()">
+                                            ng-change="srchBtnClicked()">
                                         <option value="" selected="selected">პაკეტი</option>
                                         <option ng-repeat="v in packageTypes"
                                                 ng-selected="v.id === srchCase.packageTypeId"
@@ -1279,7 +1284,8 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3 ">
-                                    <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
+                                    <button class="btn btn-default col-md-11" ng-click="srchBtnClicked()"
+                                            id="srchBtnId">
                                         <span class="fa fa-search"></span> &nbsp; ძებნა
                                     </button>
                                 </div>

@@ -18,8 +18,12 @@
     $scope.founded = {};
     $scope.abonent = {};
 
+      $scope.srchBtnClicked = function () {
+          $scope.page = 1;
+          $scope.loadMainData();
+      }
+
     $scope.loadMainData = function () {
-        $scope.page = 1;
       $('#loadingModal').modal('show');
 
       function getMainData(res) {
@@ -535,7 +539,7 @@
                                 </div>
                                 <div class="form-group col-md-2">
                                     <select class="form-control" ng-model="srchCase.isCredit"
-                                            ng-change="loadMainData()">
+                                            ng-change="srchBtnClicked()">
                                         <option value="" selected="selected">დავალიანება</option>
                                         <option ng-value="1">
                                             დავალიანების გადახდა
@@ -547,7 +551,7 @@
                                 </div>
                                 <div class="form-group col-md-2">
                                     <select class="form-control" ng-model="srchCase.bankPayment"
-                                            ng-change="loadMainData()">
+                                            ng-change="srchBtnClicked()">
                                         <option value="" selected="selected">ტიპი</option>
                                         <option ng-value="1">
                                             ბანკი
@@ -560,7 +564,7 @@
 
                                 <div class="form-group col-md-2">
                                     <select class="form-control" ng-model="srchCase.districtId"
-                                            ng-change="loadMainData()">
+                                            ng-change="srchBtnClicked()">
                                         <option value="" selected="selected">უბანი</option>
                                         <option ng-repeat="s in districts" ng-selected="s.id === srchCase.districtId"
                                                 ng-value="s.id">
@@ -570,7 +574,7 @@
                                 </div>
                                 <div class="form-group col-md-2">
                                     <select class="form-control" ng-model="srchCase.incasatorId"
-                                            ng-change="loadMainData()">
+                                            ng-change="srchBtnClicked()">
                                         <option value="" selected="selected">ინკასატორი</option>
                                         <option ng-repeat="v in incasators" ng-selected="v.id === srchCase.incasatorId"
                                                 value="{{v.id}}">{{v.name +' '+ v.lastname}}
@@ -605,7 +609,7 @@
                                 </div>
                                 <div class="form-group col-md-2">
                                     <select class="form-control" ng-model="srchCase.packageTypeId"
-                                            ng-change="loadMainData()">
+                                            ng-change="srchBtnClicked()">
                                         <option value="" selected="selected">პაკეტი</option>
                                         <option ng-repeat="v in packageTypes"
                                                 ng-selected="v.id === srchCase.packageTypeId"
@@ -615,7 +619,7 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <select class="form-control" ng-model="srchCase.streetId"
-                                            ng-change="loadMainData()">
+                                            ng-change="srchBtnClicked()">
                                         <option value="" selected="selected">ქუჩა</option>
                                         <option ng-repeat="v in streets" ng-selected="v.id === srchCase.streetId"
                                                 value="{{v.id}}">{{v.name}}
@@ -631,7 +635,8 @@
                                            placeholder="ბინის N">
                                 </div>
                                 <div class="form-group col-md-2">
-                                    <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
+                                    <button class="btn btn-default col-md-11" ng-click="srchBtnClicked()"
+                                            id="srchBtnId">
                                         <span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;
                                     </button>
                                 </div>

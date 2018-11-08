@@ -15,6 +15,11 @@
     $scope.limit = "10";
     $scope.srchCase = {abonent: {}};
 
+      $scope.srchBtnClicked = function () {
+          $scope.page = 1;
+          $scope.loadMainData();
+      }
+
     $scope.loadMainData = function () {
       $('#loadingModal').modal('show');
 
@@ -148,7 +153,7 @@
                 </div>
                 <div class="form-group col-md-2">
                   <select class="form-control" ng-model="srchCase.abonent.districtId"
-                          ng-change="loadMainData()">
+                          ng-change="srchBtnClicked()">
                     <option value="" selected="selected">უბანი</option>
                     <option ng-repeat="s in districts" ng-selected="s.id === srchCase.districtId"
                             ng-value="s.id">
@@ -158,7 +163,7 @@
                 </div>
                 <div class="form-group col-md-2">
                   <select class="form-control" ng-model="srchCase.abonent.incasatorId"
-                          ng-change="loadMainData()">
+                          ng-change="srchBtnClicked()">
                     <option value="" selected="selected">ინკასატორი</option>
                     <option ng-repeat="v in incasators" ng-selected="v.id === srchCase.incasatorId"
                             value="{{v.id}}">{{v.name +' '+ v.lastname}}
@@ -171,7 +176,7 @@
                 </div>
                 <div class="form-group col-md-3">
                   <select class="form-control" ng-model="srchCase.abonent.streetId"
-                          ng-change="loadMainData()">
+                          ng-change="srchBtnClicked()">
                     <option value="" selected="selected">ქუჩა</option>
                     <option ng-repeat="v in streets" ng-selected="v.id === srchCase.streetId"
                             value="{{v.id}}">{{v.name}}
@@ -179,7 +184,7 @@
                   </select>
                 </div>
                 <div class="form-group col-md-2">
-                  <button class="btn btn-default col-md-11" ng-click="loadMainData()" id="srchBtnId">
+                  <button class="btn btn-default col-md-11" ng-click="srchBtnClicked()" id="srchBtnId">
                     <span class="fa fa-search"></span> &nbsp; &nbsp;ძებნა &nbsp; &nbsp;
                   </button>
                 </div>
