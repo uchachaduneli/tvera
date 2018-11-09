@@ -27,6 +27,7 @@
         }
 
         $scope.loadMainData = function () {
+          console.log($scope.srchCase);
 
             $('#loadingModal').modal('show');
 
