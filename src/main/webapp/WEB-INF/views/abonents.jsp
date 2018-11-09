@@ -872,7 +872,7 @@
                             <td>{{slcted.district.incasator.name}}&nbsp;{{slcted.district.incasator.lastname}}</td>
                         </tr>
                         <tr>
-                            <th class="text-right">რეგისტრაცია</th>
+                            <th class="text-right">ბაზაში დამატების დრო</th>
                             <td>{{slcted.createDate}}</td>
                         </tr>
                         <tr>
