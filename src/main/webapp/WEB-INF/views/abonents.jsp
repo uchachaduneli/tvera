@@ -1339,10 +1339,11 @@
                                 <a ng-click="initPayment(r.id)" data-toggle="modal"
                                    data-target="#payModal" title="გადახდა" class="btn btn-xs">
                                     <i class="fa fa-dollar"></i>
-                                </a>&nbsp;&nbsp;
-                                <a ng-click="remove(r.id)" title="წაშლა" class="btn btn-xs">
-                                    <i class="fa fa-trash-o"></i>
                                 </a>
+                                <%--&nbsp;&nbsp;--%>
+                                <%--<a ng-click="remove(r.id)" title="წაშლა" class="btn btn-xs">--%>
+                                <%--<i class="fa fa-trash-o"></i>--%>
+                                <%--</a>--%>
                                 <%--</c:if>--%>
                             </td>
                         </tr>
