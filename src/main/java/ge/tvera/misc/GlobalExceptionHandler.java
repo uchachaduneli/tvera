@@ -30,11 +30,14 @@ public class GlobalExceptionHandler {
             rs.setMessage("ოპერაცია არ სრულდება");
             return rs;
         } else if (exception instanceof IncorrectDateException) {
-            rs.setMessage("ოპერაცია არ სრულდება " + exception.getMessage());
-            return rs;
+          rs.setMessage("ოპერაცია არ სრულდება " + exception.getMessage());
+          return rs;
+        } else if (exception instanceof HasNoBillException) {
+          rs.setMessage("ოპერაცია არ სრულდება " + exception.getMessage());
+          return rs;
         } else {
-            rs.setMessage("ოპერაცია არ სრულდება");
-            return rs;
+          rs.setMessage("ოპერაცია არ სრულდება");
+          return rs;
         }
 //        return "asdasd";
     }

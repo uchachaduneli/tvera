@@ -7,6 +7,7 @@
           <element id="module-output" name="tvera" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: joda-time:joda-time:2.10.1" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml:3.8-beta5" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi:3.8-beta5" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml-schemas:3.8-beta5" />

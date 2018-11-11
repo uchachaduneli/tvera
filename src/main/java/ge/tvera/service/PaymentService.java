@@ -1,8 +1,10 @@
 package ge.tvera.service;
 
 
+import ge.tvera.dao.AbonentDAO;
 import ge.tvera.dao.PaymentDAO;
 import ge.tvera.dto.PaymentDTO;
+import ge.tvera.misc.HasNoBillException;
 import ge.tvera.model.Abonent;
 import ge.tvera.model.Payment;
 import ge.tvera.model.Users;
@@ -20,6 +22,9 @@ public class PaymentService {
 
   @Autowired
   private PaymentDAO paymentDAO;
+
+  @Autowired
+  private AbonentDAO abonentDAO;
 
   public HashMap<String, Object> getPayments(int start, int limit, PaymentDTO srchRequest) {
     return paymentDAO.getPayments(start, limit, srchRequest);
@@ -47,6 +52,10 @@ public class PaymentService {
     Abonent abonent = (Abonent) paymentDAO.find(Abonent.class, request.getAbonentId());
     if (abonent == null) {
       throw new Exception("Can't find abonent");
+    } else {
+      if (!abonentDAO.getAbonentHasPackage(abonent.getId())) {
+        throw new HasNoBillException(" გთხოვთ მიაბათ აბონენტზე პაკეტი(ები)");
+      }
     }
     Payment obj = new Payment();
     obj.setAmount(request.getAmount());
