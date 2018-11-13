@@ -97,8 +97,77 @@
       $scope.loadMainData();
     }
 
+    $scope.edit = function (id) {
+      if (id != undefined) {
+        var selected = $filter('filter')($scope.list, {id: id}, true);
+        $scope.slcted = selected[0];
+        $scope.request = selected[0];
+      }
+    }
+
+    $scope.save = function () {
+
+      function resFunc(res) {
+        if (res.errorCode == 0) {
+          successMsg('Operation Successfull');
+          $scope.srchBtnClicked();
+          closeModal('editModal');
+        } else {
+          errorMsg('Operation Failed');
+        }
+      }
+
+      $scope.req = {};
+
+      $scope.req.id = $scope.request.id;
+      $scope.req.amount = $scope.request.amount;
+
+      console.log(angular.toJson($scope.req));
+      ajaxCall($http, "mobthlybills/save", angular.toJson($scope.req), resFunc);
+    };
+
   });
 </script>
+
+<div class="modal fade bs-example-modal-lg not-printable" id="editModal" role="dialog" aria-labelledby="editModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="editModalLabel">მიუთითეთ შეცვლილი</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <form class="form-horizontal" name="ediFormName">
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">აბონენტის N</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="slcted.abonent.id" disabled="true"
+                       class="form-control input-sm">
+              </div>
+            </div>
+            <div class="form-group col-sm-10 ">
+              <label class="control-label col-sm-3">დეკლარაციის თანხა</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="request.amount" class="form-control input-sm">
+              </div>
+            </div>
+            <div class="form-group col-sm-10"></div>
+            <div class="form-group col-sm-10"></div>
+            <div class="form-group col-sm-12 text-center">
+              <a class="btn btn-app" ng-click="save()">
+                <i class="fa fa-save"></i> შენახვა
+              </a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="row not-printable">
   <div class="col-xs-12">
@@ -204,6 +273,7 @@
               <th>ქუჩა</th>
               <th>თანხა</th>
               <th>ოპ. თარ.</th>
+              <th>Action</th>
             </tr>
             </thead>
             <tbody title="Double Click For Detailed Information">
@@ -217,11 +287,18 @@
               <td>{{r.abonent.street.name}}&nbsp;N{{r.abonent.streetNumber}}&nbsp;ბინა({{r.abonent.roomNumber}})</td>
               <td>{{r.amount | number: 2}}</td>
               <td>{{r.strOperDate}}</td>
+              <td class="text-center">
+                <a ng-click="edit(r.id)" data-toggle="modal" data-target="#editModal"
+                   class="btn btn-xs">
+                  <i class="fa fa-pencil"></i>&nbsp;რედაქტირება
+                </a>
+              </td>
             </tr>
             </tbody>
             <tfoot>
             <th colspan="5"></th>
             <th> {{total | number: 2}}</th>
+            <th></th>
             <th></th>
             </tfoot>
           </table>

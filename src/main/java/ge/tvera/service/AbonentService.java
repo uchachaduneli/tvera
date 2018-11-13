@@ -275,6 +275,17 @@ public class AbonentService {
   }
 
   @Transactional(rollbackFor = Throwable.class)
+  public MonthlyBills updateMonthlyBill(MonthlyBillsDTO request, Integer userId) {
+    MonthlyBills monthlyBills = (MonthlyBills) abonentDAO.find(MonthlyBills.class, request.getId());
+    if (monthlyBills != null) {
+      monthlyBills.setAmount(request.getAmount());
+      monthlyBills.setActionUser(userId);
+      abonentDAO.update(monthlyBills);
+    }
+    return monthlyBills;
+  }
+
+  @Transactional(rollbackFor = Throwable.class)
   public Abonent saveAbonent(AbonentDTO request) {
 
     Abonent obj = new Abonent();

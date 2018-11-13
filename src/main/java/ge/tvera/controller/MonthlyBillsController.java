@@ -32,6 +32,13 @@ public class MonthlyBillsController {
   @Autowired
   private AbonentService abonentService;
 
+  @RequestMapping({"/save"})
+  @ResponseBody
+  public Response saveStreet(@RequestBody MonthlyBillsDTO request, HttpServletRequest servletRequest) throws Exception {
+
+    return Response.withSuccess(MonthlyBillsDTO.parse(abonentService.updateMonthlyBill(request, ((Integer) servletRequest.getSession().getAttribute("userId")))));
+  }
+
   @RequestMapping("/download-excell")
   @ResponseBody
   public Response downlodExcell(@RequestBody MonthlyBillsDTO request, HttpServletResponse response) throws IOException {

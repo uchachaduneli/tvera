@@ -12,6 +12,7 @@ public class MonthlyBills {
   private Double amount;
   private Timestamp createDate;
   private Date operDate;
+  private Integer actionUser;
 
   @Id
   @Column(name = "id")
@@ -63,4 +64,15 @@ public class MonthlyBills {
   public void setOperDate(Date operDate) {
     this.operDate = operDate;
   }
+
+  @Basic
+  @Column(name = "action_user")
+  public Integer getActionUser() {
+    return actionUser;
+  }
+
+  public void setActionUser(Integer actionUser) {
+    this.actionUser = actionUser;
+  }
+
 }
