@@ -215,7 +215,7 @@ public class AbonentDAO extends AbstractDAO {
     StringBuilder q = new StringBuilder();
     q.append("Select count(e.id) From ");
     q.append(AbonentPackages.class.getSimpleName()).append(" e Where e.deleted=1 and e.abonent.id='").append(id).append("'");
-    return (Integer) entityManager.createQuery(q.toString()).getSingleResult() > 0 ? true : false;
+    return (Long) entityManager.createQuery(q.toString()).getSingleResult() > 0 ? true : false;
   }
 
 }
