@@ -2,6 +2,7 @@ package ge.tvera.service;
 
 
 import ge.tvera.dao.PackageDAO;
+import ge.tvera.dao.ParamValuePair;
 import ge.tvera.dto.PackageDTO;
 import ge.tvera.model.Package;
 import ge.tvera.model.PackageGroup;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,9 +22,11 @@ public class PackageService {
 
     @Autowired
     private PackageDAO packageDAO;
+    List<ParamValuePair> orderBy = new ArrayList<>();
+    ParamValuePair pr = new ParamValuePair("group.id", "ASC");
 
     public List<Package> getPackages() {
-        return packageDAO.getAll(Package.class);
+        return packageDAO.getAllByParamValue(Package.class, null, orderBy);
     }
 
     @Transactional(rollbackFor = Throwable.class)
