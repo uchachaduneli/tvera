@@ -36,10 +36,11 @@ public abstract class AbstractDAO<T> {
         q.append("Select tbl From ").append(clazz.getSimpleName()).append("  tbl Where 1 = 1 ");
 
         // build dynamic query
-        for (ParamValuePair pair : paramValues) {
-            q.append(" and  tbl.").append(pair.getParamName()).append("  = :").append(pair.getParamName());
+        if (paramValues != null) {
+            for (ParamValuePair pair : paramValues) {
+                q.append(" and  tbl.").append(pair.getParamName()).append("  = :").append(pair.getParamName());
+            }
         }
-
         // build dynamic order clause
         if (orderValues != null && !orderValues.isEmpty()) {
             q.append(" order by ");
@@ -55,8 +56,10 @@ public abstract class AbstractDAO<T> {
         TypedQuery<T> query = getEntityManager().createQuery(q.toString(), clazz);
 
         // set dynamic query values
-        for (ParamValuePair pair : paramValues) {
-            query.setParameter(pair.getParamName(), pair.getParamValue());
+        if (paramValues != null) {
+            for (ParamValuePair pair : paramValues) {
+                query.setParameter(pair.getParamName(), pair.getParamValue());
+            }
         }
 
         return query.getResultList();
