@@ -27,6 +27,12 @@ public class PackageController {
         return Response.withSuccess(PackageDTO.parseToList(packageService.getPackages()));
     }
 
+    @RequestMapping("/get-grouped-packages")
+    @ResponseBody
+    private Response getGroupedPackages() throws Exception {
+        return Response.withSuccess(packageService.getGroupedPackages());
+    }
+
     @RequestMapping({"/save-package"})
     @ResponseBody
     public Response savePackage(@RequestBody PackageDTO request) throws Exception {
