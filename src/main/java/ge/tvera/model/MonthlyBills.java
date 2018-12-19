@@ -7,72 +7,82 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "monthly_bills")
 public class MonthlyBills {
-  private Integer id;
-  private Abonent abonent;
-  private Double amount;
-  private Timestamp createDate;
-  private Date operDate;
-  private Integer actionUser;
+    private Integer id;
+    private Abonent abonent;
+    private Double amount;
+    private Timestamp createDate;
+    private Date operDate;
+    private Integer actionUser;
+    private String purpose;
 
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  public Integer getId() {
-    return id;
-  }
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer getId() {
+        return id;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  @JoinColumn(name = "abonent_id")
-  @OneToOne
-  public Abonent getAbonent() {
-    return abonent;
-  }
+    @JoinColumn(name = "abonent_id")
+    @OneToOne
+    public Abonent getAbonent() {
+        return abonent;
+    }
 
-  public void setAbonent(Abonent abonent) {
-    this.abonent = abonent;
-  }
+    public void setAbonent(Abonent abonent) {
+        this.abonent = abonent;
+    }
 
-  @Basic
-  @Column(name = "amount")
-  public Double getAmount() {
-    return amount;
-  }
+    @Basic
+    @Column(name = "amount")
+    public Double getAmount() {
+        return amount;
+    }
 
-  public void setAmount(Double amount) {
-    this.amount = amount;
-  }
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
 
-  @Basic
-  @Column(name = "create_date", updatable = false, insertable = false)
-  public Timestamp getCreateDate() {
-    return createDate;
-  }
+    @Basic
+    @Column(name = "create_date", updatable = false, insertable = false)
+    public Timestamp getCreateDate() {
+        return createDate;
+    }
 
-  public void setCreateDate(Timestamp createDate) {
-    this.createDate = createDate;
-  }
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
+    }
 
-  @Basic
-  @Column(name = "oper_date")
-  public Date getOperDate() {
-    return operDate;
-  }
+    @Basic
+    @Column(name = "oper_date")
+    public Date getOperDate() {
+        return operDate;
+    }
 
-  public void setOperDate(Date operDate) {
-    this.operDate = operDate;
-  }
+    public void setOperDate(Date operDate) {
+        this.operDate = operDate;
+    }
 
-  @Basic
-  @Column(name = "action_user")
-  public Integer getActionUser() {
-    return actionUser;
-  }
+    @Basic
+    @Column(name = "action_user")
+    public Integer getActionUser() {
+        return actionUser;
+    }
 
-  public void setActionUser(Integer actionUser) {
-    this.actionUser = actionUser;
-  }
+    public void setActionUser(Integer actionUser) {
+        this.actionUser = actionUser;
+    }
 
+    @Basic
+    @Column(name = "purpose")
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
 }
