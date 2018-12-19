@@ -51,6 +51,7 @@ public class AbonentDTO {
     private Double restoreBill;
     private Double dailyBill;
     private Double collectedBill;
+    private Double avans;
 
     public static AbonentDTO parse(Abonent record) {
         if (record != null) {
@@ -88,6 +89,7 @@ public class AbonentDTO {
             dto.setRoomNumber(record.getRoomNumber());
             dto.setFloor(record.getFloor());
             dto.setPhone(record.getPhone());
+            dto.setAvans(record.getAvans());
             return dto;
         } else return null;
     }
@@ -98,6 +100,14 @@ public class AbonentDTO {
             list.add(AbonentDTO.parse(record));
         }
         return list;
+    }
+
+    public Double getAvans() {
+        return avans;
+    }
+
+    public void setAvans(Double avans) {
+        this.avans = avans;
     }
 
     public static Integer getJURIDICAL() {

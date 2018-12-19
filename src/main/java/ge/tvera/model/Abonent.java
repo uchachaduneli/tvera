@@ -29,7 +29,17 @@ public class Abonent {
     private Double restoreBill;
     private String phone;
     private Double collectedBill;
-  private Date startPay;
+    private Double avans;
+    private Date startPay;
+
+    @PostLoad
+    private void onLoad() {
+        if (balance != null && bill != null && balance < bill * -1) {
+            avans = balance + bill;
+        } else {
+            avans = null;
+        }
+    }
 
     @Id
     @Column(name = "id", nullable = false)
@@ -242,27 +252,6 @@ public class Abonent {
         this.restoreBill = restoreBill;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Abonent abonent = (Abonent) o;
-
-        if (installationBill != null ? !installationBill.equals(abonent.installationBill) : abonent.installationBill != null)
-            return false;
-        if (restoreBill != null ? !restoreBill.equals(abonent.restoreBill) : abonent.restoreBill != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = installationBill != null ? installationBill.hashCode() : 0;
-        result = 31 * result + (restoreBill != null ? restoreBill.hashCode() : 0);
-        return result;
-    }
-
     @Basic
     @Column(name = "phone")
     public String getPhone() {
@@ -283,13 +272,22 @@ public class Abonent {
         this.collectedBill = collectedBill;
     }
 
-  @Basic
-  @Column(name = "start_pay")
-  public Date getStartPay() {
-    return startPay;
-  }
+    @Basic
+    @Column(name = "start_pay")
+    public Date getStartPay() {
+        return startPay;
+    }
 
-  public void setStartPay(Date startPay) {
-    this.startPay = startPay;
-  }
+    public void setStartPay(Date startPay) {
+        this.startPay = startPay;
+    }
+
+    @Transient
+    public Double getAvans() {
+        return avans;
+    }
+
+    public void setAvans(Double avans) {
+        this.avans = avans;
+    }
 }

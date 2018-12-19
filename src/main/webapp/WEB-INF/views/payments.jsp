@@ -654,9 +654,9 @@
                             <th>აბონენტი(ტარიფი)</th>
                             <th>უბანი(ინკას.)</th>
                             <th>თანხა</th>
-                            <th>მიმდ.</th>
-                            <th>ავანსი</th>
-                            <th>დავალ.</th>
+                            <%--<th>მიმდ.</th>--%>
+                            <%--<th>ავანსი</th>--%>
+                            <%--<th>დავალ.</th>--%>
                             <th>ქვითრის N</th>
                             <th>გადახ. თარ.</th>
                             <th>ოპ. თარ.</th>
@@ -672,9 +672,9 @@
                                 {{r.abonent.district.incasator.lastname}})
                             </td>
                             <td>{{r.amount}}</td>
-                            <td>{{r.mimdinare | number: 2}}</td>
-                            <td>{{r.avans | number: 2}}</td>
-                            <td>{{r.daval | number: 2}}</td>
+                            <%--<td>{{r.mimdinare | number: 2}}</td>--%>
+                            <%--<td>{{r.avans | number: 2}}</td>--%>
+                            <%--<td>{{r.daval | number: 2}}</td>--%>
                             <td>{{r.checkNumber}}</td>
                             <td>{{r.payDate}}</td>
                             <td>{{r.strOperDate}}</td>
@@ -699,8 +699,8 @@
                         <th colspan="4"></th>
                         <th> {{total | number: 2}}</th>
                         <th></th>
-                        <th> {{avansTotal | number: 2}}</th>
-                        <th> {{davalTotal | number: 2}}</th>
+                        <%--<th> {{avansTotal | number: 2}}</th>--%>
+                        <%--<th> {{davalTotal | number: 2}}</th>--%>
                         <th colspan="4"></th>
                         </tfoot>
                     </table>

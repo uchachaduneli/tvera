@@ -49,13 +49,13 @@ public class PaymentController {
     rowhead.createCell(3).setCellValue("უბანი");
     rowhead.createCell(4).setCellValue("ინკასატორი");
     rowhead.createCell(5).setCellValue("თანხა");
-    rowhead.createCell(6).setCellValue("ავანსი");
-    rowhead.createCell(7).setCellValue("დავალ");
-    rowhead.createCell(8).setCellValue("ქვითრის N");
-    rowhead.createCell(9).setCellValue("გადახდის თარიღი");
-    rowhead.createCell(10).setCellValue("ოპერაციის თარიღი");
-    rowhead.createCell(11).setCellValue("ქუჩა");
-    rowhead.createCell(12).setCellValue("ბინის N");
+//    rowhead.createCell(6).setCellValue("ავანსი");
+//    rowhead.createCell(7).setCellValue("დავალ");
+      rowhead.createCell(6).setCellValue("ქვითრის N");
+      rowhead.createCell(7).setCellValue("გადახდის თარიღი");
+      rowhead.createCell(8).setCellValue("ოპერაციის თარიღი");
+      rowhead.createCell(9).setCellValue("ქუჩა");
+      rowhead.createCell(10).setCellValue("ბინის N");
 
     HSSFCellStyle cellStyle = workbook.createCellStyle();
     cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
@@ -82,13 +82,13 @@ public class PaymentController {
       row.createCell(3).setCellValue(obj.getAbonent().getDistrict().getName());
       row.createCell(4).setCellValue(obj.getAbonent().getDistrict().getIncasator().getName() + " " + obj.getAbonent().getDistrict().getIncasator().getName());
       row.createCell(5).setCellValue(obj.getAmount());
-      row.createCell(6).setCellValue(obj.getAvans());
-      row.createCell(7).setCellValue(obj.getDaval());
-      row.createCell(8).setCellValue(obj.getCheckNumber());
-      row.createCell(9).setCellValue(dtfrmt.format(obj.getPayDate()));
-      row.createCell(10).setCellValue(dtfrmt.format(obj.getOperationDate()));
-      row.createCell(11).setCellValue(obj.getAbonent().getStreet().getName() + " N" + obj.getAbonent().getStreetNumber());
-      row.createCell(12).setCellValue(obj.getAbonent().getRoomNumber());
+//      row.createCell(6).setCellValue(obj.getAvans());
+//      row.createCell(7).setCellValue(obj.getDaval());
+        row.createCell(6).setCellValue(obj.getCheckNumber());
+        row.createCell(7).setCellValue(dtfrmt.format(obj.getPayDate()));
+        row.createCell(8).setCellValue(dtfrmt.format(obj.getOperationDate()));
+        row.createCell(9).setCellValue(obj.getAbonent().getStreet().getName() + " N" + obj.getAbonent().getStreetNumber());
+        row.createCell(10).setCellValue(obj.getAbonent().getRoomNumber());
 
     }
     row = sheet.createRow(exportList.size() + 2);
@@ -98,13 +98,13 @@ public class PaymentController {
     row.createCell(3).setCellValue("");
     row.createCell(4).setCellValue("");
     row.createCell(5).setCellValue("სულ " + res.get("total"));
-    row.createCell(6).setCellValue("სულ " + res.get("avansTotal"));
-    row.createCell(7).setCellValue("სულ " + res.get("davalTotal"));
+//    row.createCell(6).setCellValue("სულ " + res.get("avansTotal"));
+//    row.createCell(7).setCellValue("სულ " + res.get("davalTotal"));
+      row.createCell(6).setCellValue("");
+      row.createCell(7).setCellValue("");
     row.createCell(8).setCellValue("");
     row.createCell(9).setCellValue("");
     row.createCell(10).setCellValue("");
-    row.createCell(11).setCellValue("");
-    row.createCell(12).setCellValue("");
 
     FileOutputStream fileOut = new FileOutputStream(realPath);
     workbook.write(fileOut);
