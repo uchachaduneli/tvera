@@ -250,7 +250,12 @@ public class AbonentService {
                     if (billSum != null) {
                         Double dailyBill = billSum / daysCountInMonth;
                         balance += (dailyBill * (daysCountBetween - 1 == 0 ? 1 : daysCountBetween));
-                        abonent.setCollectedBill(abonent.getCollectedBill() + (dailyBill * (daysCountBetween - 1 == 0 ? 1 : daysCountBetween)));
+                        if (abonent.getCollectedBill() + dailyBill * (daysCountBetween - 1 == 0 ? 1 : daysCountBetween) >= abonent.getBill()) {
+                            int daysAfterFirstOfMonth = daysFromMonthStart(getZeroTimeDate(new java.util.Date()));
+                            abonent.setCollectedBill(dailyBill * daysAfterFirstOfMonth);
+                        } else {
+                            abonent.setCollectedBill(abonent.getCollectedBill() + (dailyBill * (daysCountBetween - 1 == 0 ? 1 : daysCountBetween)));
+                        }
                     }
                 } else {
                     // მომავლის თარიღით არის დარეგისტრირებული ანუ არაფერს ვუშვებით ბალანსს მხოლოდ startPay -ში ვუწერთ billDate-ს
@@ -403,11 +408,16 @@ public class AbonentService {
 
             if (stHistory.getStatus().getId() == StatusDTO.STATUS_ACTIVE) {
                 if (oldDate) {
-                    // ძველი თარიღით თიშავს ანუ ბალანსიდან უნდა მოაკლდეს გათიშვის თარიღის მერე რა დღეებისაც დაერიცხა
+                    // უფრო ადრე უნდა გამეაქტიურებინაო ანუ ვალად უნდა დაემატოს გათიშვის თარიღის მერე რა დღეებისაც დაერიცხა
                     if (obj.getBill() != null) {
                         Double dailyBill = obj.getBill() / daysCountInMonth;
                         obj.setBalance(obj.getBalance() + (dailyBill * daysCountBetween));
-                        obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * daysCountBetween));
+                        if (obj.getCollectedBill() + dailyBill * (daysCountBetween - 1 == 0 ? 1 : daysCountBetween) >= obj.getBill()) {
+                            int daysAfterFirstOfMonth = daysFromMonthStart(getZeroTimeDate(new java.util.Date()));
+                            obj.setCollectedBill(dailyBill * daysAfterFirstOfMonth);
+                        } else {
+                            obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * daysCountBetween));
+                        }
                     }
                 } else {
                     // მომავლის თარიღით თიშავს ანუ ბალანსს უნდა დაემატოს დღეიდან გათიშვის თარიღამდე რამდენი დღისაც იქნება
@@ -522,6 +532,16 @@ public class AbonentService {
 
     public List<Package> getAbonentPackages(int id) {
         return abonentDAO.getAbonentPackages(id);
+    }
+
+    public int daysFromMonthStart(java.util.Date till) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(till);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        int daysCountBetween = Math.abs(Days.daysBetween(new LocalDate(c.getTime()), new LocalDate(till)).getDays());
+        if (daysCountBetween - 1 == 0) return 1;
+        return daysCountBetween;
+
     }
 
     public int daysBetween(java.util.Date d1, java.util.Date d2) {
