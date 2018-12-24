@@ -406,25 +406,44 @@ public class AbonentService {
             tmpCal.setTime(disableDate);
             int daysCountInMonth = tmpCal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
+            // მოწმდება ახალი დისაბლე დეითი, ისტორიის დისაბლე დეითი და ლაივ დეითი თუ მიმდინარე თვეშია
+            Calendar histCal = Calendar.getInstance();
+            Calendar newDisDateCal = Calendar.getInstance();
+            Calendar crntCal = Calendar.getInstance();
+
+            histCal.setTime(stHistory.getDisableDate());
+            newDisDateCal.setTime(disableDate);
+
+            boolean modifyCollected = false;
+
+            if (histCal.get(Calendar.YEAR) == newDisDateCal.get(Calendar.YEAR)
+                    && histCal.get(Calendar.MONTH) == newDisDateCal.get(Calendar.MONTH)
+                    && crntCal.get(Calendar.YEAR) == newDisDateCal.get(Calendar.YEAR)
+                    && crntCal.get(Calendar.MONTH) == newDisDateCal.get(Calendar.MONTH)
+            ) {
+                modifyCollected = true;
+            }
+            /*********/
+
             if (stHistory.getStatus().getId() == StatusDTO.STATUS_ACTIVE) {
                 if (oldDate) {
                     // უფრო ადრე უნდა გამეაქტიურებინაო ანუ ვალად უნდა დაემატოს გათიშვის თარიღის მერე რა დღეებისაც დაერიცხა
                     if (obj.getBill() != null) {
                         Double dailyBill = obj.getBill() / daysCountInMonth;
                         obj.setBalance(obj.getBalance() + (dailyBill * daysCountBetween));
-                        if (obj.getCollectedBill() + dailyBill * (daysCountBetween - 1 == 0 ? 1 : daysCountBetween) >= obj.getBill()) {
-                            int daysAfterFirstOfMonth = daysFromMonthStart(getZeroTimeDate(new java.util.Date()));
-                            obj.setCollectedBill(dailyBill * daysAfterFirstOfMonth);
-                        } else {
-                            obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * daysCountBetween));
+
+                        if (modifyCollected) {
+                            obj.setCollectedBill(obj.getCollectedBill() + dailyBill * daysCountBetween);
                         }
                     }
                 } else {
-                    // მომავლის თარიღით თიშავს ანუ ბალანსს უნდა დაემატოს დღეიდან გათიშვის თარიღამდე რამდენი დღისაც იქნება
+                    // მომავლის თარიღით ააქტიურებს ანუ უნდა დაუბრუნდეს ისტორიის თარიღიდან ახალ თარიღამდე რამდენი დღისაც ექნება დარიცხული
                     if (obj.getBill() != null) {
                         Double dailyBill = obj.getBill() / daysCountInMonth;
                         obj.setBalance(obj.getBalance() - (dailyBill * daysCountBetween));
-                        obj.setCollectedBill(obj.getCollectedBill() - (dailyBill * daysCountBetween));
+                        if (modifyCollected) {
+                            obj.setCollectedBill(obj.getCollectedBill() - (dailyBill * daysCountBetween));
+                        }
                     }
                 }
                 abonentDAO.update(obj);
@@ -436,7 +455,9 @@ public class AbonentService {
                             obj.setStartPay(null);
                             Double dailyBill = obj.getBill() / daysCountInMonth;
                             obj.setBalance(obj.getBalance() - (dailyBill * daysCountBetween));
-                            obj.setCollectedBill(obj.getCollectedBill() - (dailyBill * daysCountBetween));
+                            if (modifyCollected) {
+                                obj.setCollectedBill(obj.getCollectedBill() - (dailyBill * daysCountBetween));
+                            }
                         }
                     } else {
                         // მომავლის თარიღით რაც არ დაერიცხა უნდა დაუმატოს გადასახდელში
@@ -444,7 +465,9 @@ public class AbonentService {
                             obj.setStartPay(null);
                             Double dailyBill = obj.getBill() / daysCountInMonth;
                             obj.setBalance(obj.getBalance() + (dailyBill * daysCountBetween));
-                            obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * daysCountBetween));
+                            if (modifyCollected) {
+                                obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * daysCountBetween));
+                            }
                         }
                     }
                     abonentDAO.update(obj);
@@ -475,6 +498,24 @@ public class AbonentService {
         Calendar tmpCal = Calendar.getInstance();
         tmpCal.setTime(disableDate);
         int daysCountInMonth = tmpCal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        // მოწმდება ახალი დისაბლე დეითი, ისტორიის დისაბლე დეითი და ლაივ დეითი თუ მიმდინარე თვეშია
+        Calendar histCal = Calendar.getInstance();
+        Calendar newDisDateCal = Calendar.getInstance();
+        Calendar crntCal = Calendar.getInstance();
+
+        histCal.setTime(stHistory.getDisableDate());
+        newDisDateCal.setTime(disableDate);
+
+        boolean modifyCollected = false;
+
+        if (histCal.get(Calendar.YEAR) == newDisDateCal.get(Calendar.YEAR)
+                && histCal.get(Calendar.MONTH) == newDisDateCal.get(Calendar.MONTH)
+                && crntCal.get(Calendar.YEAR) == newDisDateCal.get(Calendar.YEAR)
+                && crntCal.get(Calendar.MONTH) == newDisDateCal.get(Calendar.MONTH)
+        ) {
+            modifyCollected = true;
+        }
 
         if (obj.getStatus().getId() == StatusDTO.STATUS_ACTIVE) {
             if (!isToday) {
@@ -545,7 +586,11 @@ public class AbonentService {
     }
 
     public int daysBetween(java.util.Date d1, java.util.Date d2) {
-        return Math.abs(Days.daysBetween(new LocalDate(d1), new LocalDate(d2)).getDays());
+        int daysCountBetween = Math.abs(Days.daysBetween(new LocalDate(d1), new LocalDate(d2)).getDays());
+        if (daysCountBetween == 0) {
+            return 1;
+        }
+        return daysCountBetween;
 //        int res;
 //        Long sxvaoba;
 //        Long mult = Long.valueOf(1000 * 60 * 60 * 24);
