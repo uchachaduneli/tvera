@@ -249,12 +249,13 @@ public class AbonentService {
                     // ძველი თარიღით არის დამატებული და გამაზულია იმ დღეების დარიცხვები და ერთიანად უნდა დავამატოთ ახლა
                     if (billSum != null) {
                         Double dailyBill = billSum / daysCountInMonth;
-                        balance += (dailyBill * (daysCountBetween - 1 == 0 ? 1 : daysCountBetween));
-                        if (abonent.getCollectedBill() + dailyBill * (daysCountBetween - 1 == 0 ? 1 : daysCountBetween) >= abonent.getBill()) {
+                        balance += (dailyBill * daysCountBetween);
+                        if (abonent.getCollectedBill() + dailyBill * daysCountBetween >= abonent.getBill()) {
                             int daysAfterFirstOfMonth = daysFromMonthStart(getZeroTimeDate(new java.util.Date()));
                             abonent.setCollectedBill(dailyBill * daysAfterFirstOfMonth);
                         } else {
-                            abonent.setCollectedBill(abonent.getCollectedBill() + (dailyBill * (daysCountBetween - 1 == 0 ? 1 : daysCountBetween)));
+                            abonent.setCollectedBill((abonent.getCollectedBill() + (dailyBill * daysCountBetween)) > abonent.getBill() ?
+                                    abonent.getBill() : (abonent.getCollectedBill() + (dailyBill * daysCountBetween)));
                         }
                     }
                 } else {
@@ -433,7 +434,8 @@ public class AbonentService {
                         obj.setBalance(obj.getBalance() + (dailyBill * daysCountBetween));
 
                         if (modifyCollected) {
-                            obj.setCollectedBill(obj.getCollectedBill() + dailyBill * daysCountBetween);
+                            obj.setCollectedBill((obj.getCollectedBill() + dailyBill * daysCountBetween) > obj.getBill() ?
+                                    obj.getBill() : (obj.getCollectedBill() + dailyBill * daysCountBetween));
                         }
                     }
                 } else {
@@ -442,7 +444,8 @@ public class AbonentService {
                         Double dailyBill = obj.getBill() / daysCountInMonth;
                         obj.setBalance(obj.getBalance() - (dailyBill * daysCountBetween));
                         if (modifyCollected) {
-                            obj.setCollectedBill(obj.getCollectedBill() - (dailyBill * daysCountBetween));
+                            obj.setCollectedBill((obj.getCollectedBill() - (dailyBill * daysCountBetween)) < 0 ?
+                                    0 : (obj.getCollectedBill() - (dailyBill * daysCountBetween)));
                         }
                     }
                 }
@@ -456,7 +459,8 @@ public class AbonentService {
                             Double dailyBill = obj.getBill() / daysCountInMonth;
                             obj.setBalance(obj.getBalance() - (dailyBill * daysCountBetween));
                             if (modifyCollected) {
-                                obj.setCollectedBill(obj.getCollectedBill() - (dailyBill * daysCountBetween));
+                                obj.setCollectedBill((obj.getCollectedBill() - (dailyBill * daysCountBetween)) < 0 ?
+                                        0 : obj.getCollectedBill() - (dailyBill * daysCountBetween));
                             }
                         }
                     } else {
@@ -466,7 +470,8 @@ public class AbonentService {
                             Double dailyBill = obj.getBill() / daysCountInMonth;
                             obj.setBalance(obj.getBalance() + (dailyBill * daysCountBetween));
                             if (modifyCollected) {
-                                obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * daysCountBetween));
+                                obj.setCollectedBill((obj.getCollectedBill() + (dailyBill * daysCountBetween)) > obj.getBill() ?
+                                        obj.getBill() : (obj.getCollectedBill() + (dailyBill * daysCountBetween)));
                             }
                         }
                     }
@@ -523,7 +528,8 @@ public class AbonentService {
                         } else {
                             daysAfteFirstDayInCrntMonth = daysBetween(getZeroTimeDate(firstDayInLiveMonthCal.getTime()), getZeroTimeDate(new java.util.Date()));
                         }
-                        obj.setCollectedBill(obj.getCollectedBill() - (dailyBill * daysAfteFirstDayInCrntMonth));
+                        obj.setCollectedBill((obj.getCollectedBill() - (dailyBill * daysAfteFirstDayInCrntMonth)) < 0 ?
+                                0 : (obj.getCollectedBill() - (dailyBill * daysAfteFirstDayInCrntMonth)));
                     }
                 } else {
                     // მომავლის თარიღით თიშავს ანუ ბალანსს უნდა დაემატოს დღეიდან გათიშვის თარიღამდე რამდენი დღისაც იქნება
