@@ -166,7 +166,7 @@ public class AbonentService {
 
             for (PackageDTO pack : request.getAbonentPackages()) {// ხელახლა ინსერტი შესაძლო ცვლილიებებიანა
                 abonentPack = new AbonentPackages(abonent, abonentDAO.getEntityManager().find(Package.class, pack.getId()),
-                    isJuridical ? pack.getJuridicalPrice() : null, isJuridical ? null : pack.getPersonalPrice(), user, pack.getExternalPointCount());
+                        isJuridical ? pack.getJuridicalPrice() : null, isJuridical ? null : pack.getPersonalPrice(), user, pack.getExternalPointCount());
                 abonentDAO.create(abonentPack);
             }
 
@@ -201,7 +201,7 @@ public class AbonentService {
                 }
             }
             if (existChangeBalanseOnUpdate == false && newChangeBalanseOnUpdate == true &&
-                existBalance != null && newBalance != null && existBalance != newBalance) {
+                    existBalance != null && newBalance != null && existBalance != newBalance) {
                 if (existBalance > newBalance) {
                     balance -= Math.abs((existBalance - newBalance));
                 } else {
@@ -229,7 +229,7 @@ public class AbonentService {
 
             for (PackageDTO pack : request.getAbonentPackages()) {
                 abonentPack = new AbonentPackages(abonent, abonentDAO.getEntityManager().find(Package.class, pack.getId()),
-                    isJuridical ? pack.getJuridicalPrice() : null, isJuridical ? null : pack.getPersonalPrice(), user, pack.getExternalPointCount());
+                        isJuridical ? pack.getJuridicalPrice() : null, isJuridical ? null : pack.getPersonalPrice(), user, pack.getExternalPointCount());
                 abonentDAO.create(abonentPack);
             }
             billSum = (Double) resultMap.get("billSum");
@@ -269,7 +269,7 @@ public class AbonentService {
         //ფინალური სეივი ბაზაში
         if (!request.getAbonentPackages().isEmpty()) {
             abonent.setPackageType((PackageType) abonentDAO.find(PackageType.class,
-                request.getPackageTypeId() != null ? request.getPackageTypeId() : request.getAbonentPackages().get(0).getType().getId()));
+                    request.getPackageTypeId() != null ? request.getPackageTypeId() : request.getAbonentPackages().get(0).getType().getId()));
             abonent.setBill(billSum);
             abonent.setBalance(balance);
             abonent.setServicePointsNumber(servicePointsNumber);
@@ -395,7 +395,7 @@ public class AbonentService {
         StatusHistory stHistory = (StatusHistory) abonentDAO.find(StatusHistory.class, statHistoryId);
 
         logger.warn("*********  Change Status History Date By " + user.getUserDesc()
-            + " ************ Old Date: " + stHistory.getDisableDate() + "  Changed To: " + disableDate);
+                + " ************ Old Date: " + stHistory.getDisableDate() + "  Changed To: " + disableDate);
 
         if (stHistory != null && stHistory.getDisableDate() != null) {
             Abonent obj = (Abonent) abonentDAO.find(Abonent.class, stHistory.getAbonent().getId());
@@ -488,7 +488,7 @@ public class AbonentService {
         Calendar dis = Calendar.getInstance();
         dis.setTime(disableDate);
         boolean isToday = crnt.get(Calendar.YEAR) == dis.get(Calendar.YEAR) && crnt.get(Calendar.MONTH) == dis.get(Calendar.MONTH)
-            && crnt.get(Calendar.DAY_OF_MONTH) == dis.get(Calendar.DAY_OF_MONTH);
+                && crnt.get(Calendar.DAY_OF_MONTH) == dis.get(Calendar.DAY_OF_MONTH);
         if (lastExistStatusHistory != null && disableDate != null && lastExistStatusHistory.getDisableDate().after(disableDate)) {
             throw new IncorrectDateException("არასწორი თარიღი, დაარედაქტირეთ სტატუსის ისტორია !!!");
         }
@@ -501,11 +501,14 @@ public class AbonentService {
 
         // მოწმდება ახალი დისაბლე დეითი, ისტორიის დისაბლე დეითი და ლაივ დეითი თუ მიმდინარე თვეშია
         Calendar newDisDateCal = Calendar.getInstance();
-        Calendar crntCal = Calendar.getInstance();
-      Calendar firstDayInLiveMonthCal = Calendar.getInstance();
+        Calendar firstDayInLiveMonthCal = Calendar.getInstance();
+        Calendar prevMonthLastDay = Calendar.getInstance();
 
         newDisDateCal.setTime(disableDate);
-      firstDayInLiveMonthCal.set(Calendar.DAY_OF_MONTH, 1);
+        firstDayInLiveMonthCal.set(Calendar.DAY_OF_MONTH, 1);
+
+        prevMonthLastDay.set(Calendar.MONTH, -1);
+        prevMonthLastDay.set(Calendar.DAY_OF_MONTH, prevMonthLastDay.getActualMaximum(Calendar.DAY_OF_MONTH));
 
         if (obj.getStatus().getId() == StatusDTO.STATUS_ACTIVE) {
             if (!isToday) {
@@ -514,21 +517,21 @@ public class AbonentService {
                     if (obj.getBill() != null) {
                         Double dailyBill = obj.getBill() / daysCountInMonth;
                         obj.setBalance(obj.getBalance() - (dailyBill * daysCountBetween));
-
-                      if (histCal.get(Calendar.YEAR) == newDisDateCal.get(Calendar.YEAR)
-                          && histCal.get(Calendar.MONTH) == newDisDateCal.get(Calendar.MONTH)
-                          && crntCal.get(Calendar.YEAR) == newDisDateCal.get(Calendar.YEAR)
-                          && crntCal.get(Calendar.MONTH) == newDisDateCal.get(Calendar.MONTH)
-                      ) {
-                        obj.setCollectedBill(obj.getCollectedBill() - (dailyBill * daysCountBetween));
-                      }
+                        int daysAfteFirstDayInCrntMonth = 1;
+                        if (newDisDateCal.after(prevMonthLastDay)) {
+                            daysAfteFirstDayInCrntMonth = daysBetween(getZeroTimeDate(newDisDateCal.getTime()), getZeroTimeDate(new java.util.Date()));
+                        } else {
+                            daysAfteFirstDayInCrntMonth = daysBetween(getZeroTimeDate(firstDayInLiveMonthCal.getTime()), getZeroTimeDate(new java.util.Date()));
+                        }
+                        obj.setCollectedBill(obj.getCollectedBill() - (dailyBill * daysAfteFirstDayInCrntMonth));
                     }
                 } else {
                     // მომავლის თარიღით თიშავს ანუ ბალანსს უნდა დაემატოს დღეიდან გათიშვის თარიღამდე რამდენი დღისაც იქნება
                     if (obj.getBill() != null) {
                         Double dailyBill = obj.getBill() / daysCountInMonth;
                         obj.setBalance(obj.getBalance() + (dailyBill * (daysCountBetween + 1)));
-                        obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * (daysCountBetween + 1)));
+                        obj.setCollectedBill((obj.getCollectedBill() + (dailyBill * (daysCountBetween + 1))) > obj.getBill() ?
+                                obj.getBill() : (obj.getCollectedBill() + (dailyBill * (daysCountBetween + 1))));
                     }
                 }
             }
@@ -544,7 +547,14 @@ public class AbonentService {
                             obj.setStartPay(null);
                             Double dailyBill = obj.getBill() / daysCountInMonth;
                             obj.setBalance(obj.getBalance() + (dailyBill * daysCountBetween));
-                            obj.setCollectedBill(obj.getCollectedBill() + (dailyBill * daysCountBetween));
+                            int daysAfteFirstDayInCrntMonth = 1;
+                            if (newDisDateCal.after(prevMonthLastDay)) {
+                                daysAfteFirstDayInCrntMonth = daysBetween(getZeroTimeDate(newDisDateCal.getTime()), getZeroTimeDate(new java.util.Date()));
+                            } else {
+                                daysAfteFirstDayInCrntMonth = daysBetween(getZeroTimeDate(firstDayInLiveMonthCal.getTime()), getZeroTimeDate(new java.util.Date()));
+                            }
+                            obj.setCollectedBill((obj.getCollectedBill() + (dailyBill * daysAfteFirstDayInCrntMonth)) > obj.getBill() ?
+                                    obj.getBill() : (obj.getCollectedBill() + (dailyBill * daysAfteFirstDayInCrntMonth)));
                         }
                     } else {
                         // მომავლის თარიღით ააქტიურებს ანუ ბალანსს უნდა დაემატოს დღეიდან გათიშვის თარიღამდე რამდენი დღისაც იქნება
