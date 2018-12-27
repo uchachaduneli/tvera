@@ -364,7 +364,7 @@ public class AbonentService {
             Double increment = (obj.getJuridicalOrPhisical() == AbonentDTO.JURIDICAL ? pack.getJuridicalPrice() : pack.getPersonalPrice());
             obj.setBalance(obj.getBalance() + increment);
             if (pack.getGroup().getId() == PackageDTO.INSTALLATION || pack.getGroup().getId() == PackageDTO.EXTRA_POINT_INSTALLATION) {
-                obj.setInstallationBill(obj.getInstallationBill() + increment);
+                obj.setInstallationBill(obj.getInstallationBill() == null ? 0.0 : obj.getInstallationBill() + increment);
             }
             abonentDAO.update(obj);
 
