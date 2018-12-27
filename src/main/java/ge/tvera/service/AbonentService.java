@@ -325,6 +325,9 @@ public class AbonentService {
         } else {
             obj.setBalance(0.0);
             obj.setCollectedBill(0.0);
+            obj.setBill(0.0);
+            obj.setInstallationBill(0.0);
+            obj.setRestoreBill(0.0);
             obj.setStatus((Status) abonentDAO.find(Status.class, StatusDTO.STATUS_ACTIVE));
             obj = (Abonent) abonentDAO.create(obj);
         }
