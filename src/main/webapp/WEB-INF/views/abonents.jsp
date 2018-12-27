@@ -1408,7 +1408,7 @@
                         </tbody>
                         <tfoot>
                         <th colspan="5"></th>
-                        <th> {{avansTotal*-1 | number: 2}}</th>
+                        <th ng-if="srchCase.hasBill != 1"> {{avansTotal*-1 | number: 2}}</th>
                         <th colspan="2"></th>
                         </tfoot>
                     </table>

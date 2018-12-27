@@ -33,46 +33,56 @@ public class AbonentDAO extends AbstractDAO {
     public HashMap<String, Object> getAbonents(int start, int limit, AbonentDTO srchRequest) {
 
         String countQuery = "Select count(e.id) From ";
-        String avansQuery = "select sum(case when e.balance <= e.bill*-1 then e.balance + e.bill else 0 end) From abonent ";
+        String avansQuery = "select sum(case when e.balance <= e.bill*-1 then e.balance + e.bill else 0 end) From abonent e " +
+                " join district d on d.id=e.district_id " +
+                " join incasator i on i.id=d.incasator_id Where 1=1 ";
 
         StringBuilder q = new StringBuilder();
         q.append(" e Where 1=1 ");
 
         if (srchRequest.getId() != null && srchRequest.getId() > 0) {
             q.append(" and e.id ='").append(srchRequest.getId()).append("'");
+            avansQuery += " and e.id =" + srchRequest.getId();
         }
         if (srchRequest.getName() != null) {
             q.append(" and e.name like '%").append(srchRequest.getName()).append("%'");
+            avansQuery += " and e.name like '%" + srchRequest.getName() + "%'";
         }
         if (srchRequest.getLastname() != null) {
             q.append(" and e.lastname like '%").append(srchRequest.getLastname()).append("%'");
+            avansQuery += " and e.lastname like '%" + srchRequest.getLastname() + "%'";
         }
         if (srchRequest.getStreetNumber() != null) {
             q.append(" and e.streetNumber like '%").append(srchRequest.getStreetNumber()).append("%'");
-        }
-        if (srchRequest.getRoomNumber() != null) {
-            q.append(" and e.roomNumber like '%").append(srchRequest.getRoomNumber()).append("%'");
+            avansQuery += " and e.street_number like '%" + srchRequest.getStreetNumber() + "%'";
         }
         if (srchRequest.getPersonalNumber() != null) {
             q.append(" and e.personalNumber ='").append(srchRequest.getPersonalNumber()).append("'");
+            avansQuery += " and e.personal_number ='" + srchRequest.getPersonalNumber() + "'";
         }
         if (srchRequest.getRoomNumber() != null) {
             q.append(" and e.roomNumber ='").append(srchRequest.getRoomNumber()).append("'");
+            avansQuery += " and e.room_number ='" + srchRequest.getRoomNumber() + "'";
         }
         if (srchRequest.getDistrictId() != null) {
             q.append(" and e.district.id ='").append(srchRequest.getDistrictId()).append("'");
+            avansQuery += " and e.district_id ='" + srchRequest.getDistrictId() + "'";
         }
         if (srchRequest.getStatusId() != null) {
             q.append(" and e.status.id ='").append(srchRequest.getStatusId()).append("'");
+            avansQuery += "and e.status_id='" + srchRequest.getStatusId() + "'";
         }
         if (srchRequest.getStreetId() != null) {
             q.append(" and e.street.id ='").append(srchRequest.getStreetId()).append("'");
+            avansQuery += " and e.street_id ='" + srchRequest.getStreetId() + "'";
         }
         if (srchRequest.getIncasatorId() != null) {
             q.append(" and e.district.incasator.id ='").append(srchRequest.getIncasatorId()).append("'");
+            avansQuery += " and i.id='" + srchRequest.getIncasatorId() + "'";
         }
         if (srchRequest.getPackageTypeId() != null) {
             q.append(" and e.packageType.id ='").append(srchRequest.getPackageTypeId()).append("'");
+            avansQuery += " and e.package_type_id='" + srchRequest.getPackageTypeId() + "'";
         }
         if (srchRequest.getHasBill() != null) {
             if (srchRequest.getHasBill() == 1) {
@@ -80,11 +90,15 @@ public class AbonentDAO extends AbstractDAO {
             }
             if (srchRequest.getHasBill() == 2) {
                 q.append(" and e.balance < 0");
+                avansQuery += " and e.balance < 0";
             }
         }
         if (srchRequest.getBillDateFrom() != null && srchRequest.getBillDateTo() != null) {
             q.append(" and e.billDate between '").append(new java.sql.Date(srchRequest.getBillDateFrom().getTime())).append("' and '")
                     .append(new java.sql.Date(srchRequest.getBillDateTo().getTime())).append("'");
+            avansQuery += " and e.billDate between '" + new java.sql.Date(srchRequest.getBillDateFrom().getTime()) + "' and '" +
+                    new java.sql.Date(srchRequest.getBillDateTo().getTime()) + "'";
+
         }
         String orderByStr = " order by status_id asc, id desc";
         if (srchRequest.getForTickets() != null && srchRequest.getForTickets() == 1) {
@@ -94,7 +108,7 @@ public class AbonentDAO extends AbstractDAO {
 //        TypedQuery<Abonent> query = entityManager.createQuery(q.toString(), Abonent.class);
         HashMap<String, Object> resultMap = new HashMap();
         resultMap.put("size", entityManager.createQuery(countQuery + Abonent.class.getSimpleName() + q.toString()).getSingleResult());
-        resultMap.put("avansTotal", entityManager.createNativeQuery(avansQuery + q.toString()).getSingleResult());
+        resultMap.put("avansTotal", entityManager.createNativeQuery(avansQuery).getSingleResult());
         resultMap.put("list", AbonentDTO.parseToList(entityManager.createQuery("Select e From " + Abonent.class.getSimpleName() + q.toString() + orderByStr, Abonent.class).setFirstResult(start).setMaxResults(limit).getResultList()));
         return resultMap;
     }
