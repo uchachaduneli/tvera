@@ -1337,6 +1337,10 @@
                                         </option>
                                     </select>
                                 </div>
+                                    <div class="form-group col-md-2">
+                                        <input type="text" class="form-control srch" ng-model="srchCase.deviceNumber"
+                                               placeholder="მოწყობილობის N">
+                                    </div>
                                 <div class="form-group col-md-3 ">
                                     <button class="btn btn-default col-md-11" ng-click="srchBtnClicked()"
                                             id="srchBtnId">

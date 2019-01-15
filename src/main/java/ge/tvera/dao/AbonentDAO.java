@@ -64,6 +64,10 @@ public class AbonentDAO extends AbstractDAO {
             q.append(" and e.roomNumber ='").append(srchRequest.getRoomNumber()).append("'");
             avansQuery += " and e.room_number ='" + srchRequest.getRoomNumber() + "'";
         }
+        if (srchRequest.getDeviceNumber() != null) {
+            q.append(" and e.deviceNumber ='").append(srchRequest.getDeviceNumber()).append("'");
+            avansQuery += " and e.device_number ='" + srchRequest.getDeviceNumber() + "'";
+        }
         if (srchRequest.getDistrictId() != null) {
             q.append(" and e.district.id ='").append(srchRequest.getDistrictId()).append("'");
             avansQuery += " and e.district_id ='" + srchRequest.getDistrictId() + "'";
