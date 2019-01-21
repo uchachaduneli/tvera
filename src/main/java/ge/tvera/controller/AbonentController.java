@@ -135,6 +135,7 @@ public class AbonentController {
         rowhead.createCell(6).setCellValue("ბინის N");
         rowhead.createCell(7).setCellValue("გადასახადი");
         rowhead.createCell(8).setCellValue("ბალანსი");
+        rowhead.createCell(9).setCellValue("მოწყობილობის N");
 
         HSSFCellStyle cellStyle = workbook.createCellStyle();
         cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
@@ -161,6 +162,7 @@ public class AbonentController {
             else row.createCell(7).setCellValue(exportList.get(i - 1).getBill());
             if (exportList.get(i - 1).getBalance() == null) row.createCell(7).setCellValue("");
             else row.createCell(8).setCellValue(exportList.get(i - 1).getBalance() * -1);
+            row.createCell(9).setCellValue(exportList.get(i - 1).getDeviceNumber());
         }
 
         FileOutputStream fileOut = new FileOutputStream(realPath);
