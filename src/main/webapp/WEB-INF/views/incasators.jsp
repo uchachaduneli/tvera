@@ -7,6 +7,13 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="header.jsp" %>
+<%
+  if (isAuditor) {
+    response.sendRedirect("/tvera/monthlybills");
+  } else if (!isAdmin) {
+    response.sendRedirect("/tvera/abonents");
+  }
+%>
 <script>
 
   app.controller("angController", function ($scope, $http, $filter) {

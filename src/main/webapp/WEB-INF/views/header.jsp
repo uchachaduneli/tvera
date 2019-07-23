@@ -1,8 +1,10 @@
+<%@ page import="ge.tvera.dto.UsersDTO" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    //    boolean isAdmin = ((Integer) session.getAttribute("typeId") != null && (Integer) session.getAttribute("typeId") == UserDTO.USER_ADMIN);
-    boolean isAdmin = true;
+    boolean isAdmin = ((Integer) session.getAttribute("typeId") != null && (Integer) session.getAttribute("typeId") == UsersDTO.ADMINISTRATOR);
+    boolean isOperator = ((Integer) session.getAttribute("typeId") != null && (Integer) session.getAttribute("typeId") == UsersDTO.OPERATOR);
+    boolean isAuditor = ((Integer) session.getAttribute("typeId") != null && (Integer) session.getAttribute("typeId") == UsersDTO.AUDITOR);
 %>
 <!DOCTYPE html>
 <html>
@@ -184,61 +186,67 @@
                 <img src="resources/imgs/logo.png" style="width: 100%; margin-top: 5%;"/>
                 <hr/>
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li>
-                        <a href="abonents">
-                            <i class="fa fa-users"></i>
-                            <span>აბონენტი</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="payments">
-                            <i class="fa fa-dollar"></i>
-                            <span>გადახდა</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="monthlybills">
-                            <i class="fa fa-history"></i>
-                            <span>დეკლარაცია</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="packages">
-                            <i class="fa fa-tasks"></i>
-                            <span>პაკეტები</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="streets">
-                            <i class="fa fa-map-marker"></i>
-                            <span>ქუჩა</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="incasators">
-                            <i class="fa fa-male"></i>
-                            <span>ინკასატორი</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="districts">
-                            <i class="fa fa-map-signs"></i>
-                            <span>უბანი</span>
-                        </a>
-                    </li>
-                    <c:if test="<%= isAdmin %>">
+                    <c:if test="<%= !isAuditor %>">
                         <li>
-                            <a href="users">
-                                <i class="fa fa-address-card"></i>
-                                <span>თანამშრომელი</span>
+                            <a href="abonents">
+                                <i class="fa fa-users"></i>
+                                <span>აბონენტი</span>
                             </a>
                         </li>
                         <li>
-                            <a href="statistics">
-                                <i class="fa fa-bar-chart"></i>
-                                <span>სტატისტიკა</span>
+                            <a href="payments">
+                                <i class="fa fa-dollar"></i>
+                                <span>გადახდა</span>
                             </a>
                         </li>
+                    </c:if>
+                    <c:if test="<%= isAuditor %>">
+                        <li>
+                            <a href="monthlybills">
+                                <i class="fa fa-history"></i>
+                                <span>დეკლარაცია</span>
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="<%= !isAuditor %>">
+                        <li>
+                            <a href="packages">
+                                <i class="fa fa-tasks"></i>
+                                <span>პაკეტები</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="streets">
+                                <i class="fa fa-map-marker"></i>
+                                <span>ქუჩა</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="incasators">
+                                <i class="fa fa-male"></i>
+                                <span>ინკასატორი</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="districts">
+                                <i class="fa fa-map-signs"></i>
+                                <span>უბანი</span>
+                            </a>
+                        </li>
+                        <c:if test="<%= isAdmin %>">
+                            <li>
+                                <a href="users">
+                                    <i class="fa fa-address-card"></i>
+                                    <span>თანამშრომელი</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="statistics">
+                                    <i class="fa fa-bar-chart"></i>
+                                    <span>სტატისტიკა</span>
+                                </a>
+                            </li>
+                        </c:if>
                     </c:if>
                 </ul>
             </section>

@@ -29,7 +29,13 @@ public class AuthController {
             if (loginedUserId == null) {
                 return "login";
             } else {
-                return "redirect:abonents";
+                Integer typeId = (Integer) request.getSession().getAttribute("typeId");
+                if (typeId == UsersDTO.AUDITOR) {
+                    return "redirect:monthlybills";
+                } else {
+                    return "redirect:abonents";
+                }
+
             }
         } catch (Exception ex) {
             return "login";
@@ -47,7 +53,11 @@ public class AuthController {
             request.getSession().setAttribute("userDesc", foundedUser.getUserDesc());
             request.getSession().setAttribute("typeId", foundedUser.getType().getUserTypeId());
             request.getSession().setAttribute("typeName", foundedUser.getType().getUserTypeName());
-            response.sendRedirect("abonents");
+            if (foundedUser.getType().getUserTypeId() == UsersDTO.AUDITOR) {
+                response.sendRedirect("monthlybills");
+            } else {
+                response.sendRedirect("abonents");
+            }
             return null;
         } else {
             response.sendError(400, "Incorrect Username Or Password");

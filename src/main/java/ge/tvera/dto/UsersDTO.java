@@ -21,6 +21,7 @@ public class UsersDTO {
 
     public static int ADMINISTRATOR = 1;
     public static int OPERATOR = 2;
+    public static int AUDITOR = 3;
 
     public static UsersDTO parse(Users record) {
         if (record != null) {

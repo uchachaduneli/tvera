@@ -306,10 +306,12 @@
                             <td>{{r.amount | number: 2}}</td>
                             <td>{{r.strOperDate}}</td>
                             <td class="text-center">
-                                <a ng-click="edit(r.id)" data-toggle="modal" data-target="#editModal"
-                                   class="btn btn-xs">
-                                    <i class="fa fa-pencil"></i>&nbsp;რედაქტირება
-                                </a>
+                                <c:if test="<%= !isAuditor %>">
+                                    <a ng-click="edit(r.id)" data-toggle="modal" data-target="#editModal"
+                                       class="btn btn-xs">
+                                        <i class="fa fa-pencil"></i>&nbsp;რედაქტირება
+                                    </a>
+                                </c:if>
                             </td>
                         </tr>
                         </tbody>
