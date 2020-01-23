@@ -59,7 +59,7 @@
         $scope.loadMainData();
 
         $scope.downloadExcell = function () {
-
+            $('#loadingModal').modal('show');
             if ($scope.srchCase.billDateFrom != undefined && $scope.srchCase.billDateFrom.includes('/')) {
                 $scope.srchCase.billDateFrom = $scope.srchCase.billDateFrom.split(/\//).reverse().join('-')
             }
@@ -68,6 +68,7 @@
             }
 
             function redirectToFile() {
+                $('#loadingModal').modal('hide');
                 $window.open("resources/excell/excel.xls", "_blank");
             }
 

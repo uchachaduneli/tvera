@@ -2,6 +2,7 @@ package ge.tvera.controller;
 
 import ge.tvera.dto.AbonentDTO;
 import ge.tvera.dto.PackageDTO;
+import ge.tvera.dto.StatusHistoryDTO;
 import ge.tvera.misc.IncorrectDateException;
 import ge.tvera.misc.Response;
 import ge.tvera.request.AbonentPackagesRequest;
@@ -136,8 +137,9 @@ public class AbonentController {
         rowhead.createCell(7).setCellValue("გადასახადი");
         rowhead.createCell(8).setCellValue("ბალანსი");
         rowhead.createCell(9).setCellValue("მოწყობილობის N");
-      rowhead.createCell(10).setCellValue("ტელეფონი");
-      rowhead.createCell(11).setCellValue("სტატუსი");
+        rowhead.createCell(10).setCellValue("ტელეფონი");
+        rowhead.createCell(11).setCellValue("სტატუსი");
+        rowhead.createCell(12).setCellValue("სტატუსის ისტორია");
 
         HSSFCellStyle cellStyle = workbook.createCellStyle();
         cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
@@ -165,8 +167,14 @@ public class AbonentController {
             if (exportList.get(i - 1).getBalance() == null) row.createCell(7).setCellValue("");
             else row.createCell(8).setCellValue(exportList.get(i - 1).getBalance() * -1);
             row.createCell(9).setCellValue(exportList.get(i - 1).getDeviceNumber());
-          row.createCell(10).setCellValue(exportList.get(i - 1).getPhone());
-          row.createCell(11).setCellValue(exportList.get(i - 1).getStatus().getName());
+            row.createCell(10).setCellValue(exportList.get(i - 1).getPhone());
+            row.createCell(11).setCellValue(exportList.get(i - 1).getStatus().getName());
+            String statusHistory = "";
+            List<StatusHistoryDTO> hist = abonentService.getStatusHistory(exportList.get(i - 1).getId());
+            for (StatusHistoryDTO h : hist) {
+                statusHistory += h.getStatus().getName() + " - " + h.getDisableDate() + " - " + h.getUser().getUserDesc() + " \n";
+            }
+            row.createCell(12).setCellValue(statusHistory);
         }
 
         FileOutputStream fileOut = new FileOutputStream(realPath);
